@@ -1,6 +1,6 @@
 class UserProfile {
     constructor(
-        private nickName: string,
+        private nick_name: string,
         private introduce_text: string | null,
         private profile_picture_url: string | null,
         private git_hub_url: string | null,
@@ -16,5 +16,6 @@ export default class User {
         private readonly id: string,
         private is_deleted: boolean,
         private profile: UserProfile | null
-    ) {}
+    ) {
+    }
 }
