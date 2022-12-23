@@ -3,11 +3,12 @@ import Text from "@/components/atom/Text";
 import styled from "@emotion/styled";
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
-import {GoogleLogin } from '@react-oauth/google';
+import {GoogleLogin} from '@react-oauth/google';
 
 export interface Props {
     title?: string
     buttonName?: string
+    onGoogleLogin?: (success: boolean, access_token?: string) => Promise<void>
 }
 
 const Root = styled(CBox)`
@@ -73,13 +74,12 @@ export default function Login(props: Props) {
                 <GoogleLogin
                     type={"icon"}
                     onSuccess={credentialResponse => {
-                        console.log(credentialResponse);
+                        props.onGoogleLogin?.(true, credentialResponse.credential).then()
                     }}
                     onError={() => {
-                        console.log('Login Failed');
+                        props.onGoogleLogin?.(false).then()
                     }}
                 />
-
             </Body>
         </Root>
     )
