@@ -1,7 +1,8 @@
 import LoginMolecule from "@/components/molecule/Login"
 
 async function onLoginGoogle(success: boolean, access_key?: string): Promise<void> {
-    const res = await fetch("http://localhost:8000/api/v1/user/auth20_login",
+    console.log(access_key)
+    const res = await fetch("http://localhost:8000/api/v1/user/reauthorize",
         {
             method: "POST",
             headers: {

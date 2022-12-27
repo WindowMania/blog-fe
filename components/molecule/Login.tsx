@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
 import {GoogleLogin} from '@react-oauth/google';
+import {GithubLoginButton} from "@/components/molecule/GithubLoginButton";
 
 export interface Props {
     title?: string
@@ -80,6 +81,8 @@ export default function Login(props: Props) {
                         props.onGoogleLogin?.(false).then()
                     }}
                 />
+
+                <GithubLoginButton />
             </Body>
         </Root>
     )
