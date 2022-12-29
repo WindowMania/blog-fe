@@ -1,30 +1,38 @@
-import styled from "@emotion/styled";
-import React, {useState, useEffect} from "react"
-import Button from "@/components/atom/Button";
+import React, {useState, useCallback, useEffect} from "react";
 
-const CLIENT_ID = "af25e309d8d0219d5e43";
-const GITHUB_AUTH_SERVER = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`;
+export interface OAuthContext {
 
-// https://velog.io/@shyuuuuni/React-%ED%8C%9D%EC%97%85%EA%B3%BC-%EC%86%8C%ED%86%B5%ED%95%98%EA%B8%B0
+    get_url(): string
 
-export const GithubLoginButton = () => {
+    get_platform(): string
+
+    get_client_id(): string
+}
+
+
+
+
+export interface Props {
+    oauth_context: OAuthContext
+}
+
+
+export default function LoginOAuthIcon(props: Props) {
     const [popup, setPopup] = useState<Window | null>();
 
-    const handleOpenPopup = () => {
+    const handleOpenPopup = useCallback(() => {
         const width = 500;
         const height = 650;
         const left = window.screenX + (window.outerWidth - width) / 2;
         const top = window.screenY + (window.outerHeight - height) / 2;
         const popup = window.open(
-            GITHUB_AUTH_SERVER,
-            "로그인 중...",
+            props.oauth_context.get_url(),
+            "로그인 중",
             `width=${width},height=${height},left=${left},top=${top}`
         );
         setPopup(popup);
-    }
+    }, [])
 
-
-    // 로그인 팝입이 열리면 로그인 로직을 처리합니다.
     useEffect(() => {
         if (!popup) {
             return;
@@ -34,8 +42,9 @@ export const GithubLoginButton = () => {
                 return;
             }
             const {code} = e.data;
-            console.log("데이터 보자구~", e.data)
+            console.log(e.data)
             if (code) {
+                // 코드 보는곳..
                 console.log(`The popup URL has URL code param = ${code}`);
             }
             popup?.close();
@@ -50,9 +59,8 @@ export const GithubLoginButton = () => {
     }, [popup]);
 
     return (
-        <div className="App">
-            <button onClick={handleOpenPopup}>팝업 열기</button>
+        <div>
+            <button onClick={handleOpenPopup}>아이콘 열기</button>
         </div>
     );
-};
-
+}
