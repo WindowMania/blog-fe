@@ -66,13 +66,15 @@ const Body = styled(CBox)`
   width: 100%;
 `
 
+const BodyItem = styled(Box)`
+  width: 100%;
+`
+
 const SubmitBtn = styled(Button)`
   margin-top: 12px;
   margin-bottom: 8px;
   height: 3rem;
-`
-
-const IconRoot = styled(Box)`
+  font-size: 1rem;
 `
 
 /*
@@ -85,49 +87,69 @@ export default function Login(props: Props) {
     return (
         <Root>
             <Header>
-                <Text variant={"h5"}> {props.title ?? "Login"} </Text>
+                <Text variant={"h5"}> {props.title ?? "로그인"} </Text>
             </Header>
             <Body>
+                <BodyItem>
+                    <TextInputBox
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                    />
+                </BodyItem>
 
-                <TextInputBox
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                />
-                <TextInputBox
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                />
+                <BodyItem>
+                    <TextInputBox
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                    />
+                </BodyItem>
 
-                <SubmitBtn fullWidth type={"submit"} variant="contained">
-                    {props.buttonName ?? "Login"}
-                </SubmitBtn>
+                <BodyItem>
+                    <Button variant={"text"}>비밀번호를 잊으셨나요?</Button>
+                </BodyItem>
 
-                <DividerText flexItem={true} text={"다음으로 로그인"}/>
+                <BodyItem>
+                    <SubmitBtn  fullWidth type={"submit"} variant="contained">
+                        {props.buttonName ?? "로그인"}
+                    </SubmitBtn>
+                </BodyItem>
 
-                <IconRoot mt={2}>
-                    <Box mr={1}>
+                <BodyItem>
+                    <Box ml={1} mt={1.5}>
+                        <Text fontSize={"8px"}> 계정이 없으신가요? </Text>
+                    </Box>
+                    <Box>
+                        <Button variant={"text"}>회원가입</Button>
+                    </Box>
+                </BodyItem>
+                <BodyItem mt={1}>
+                    <DividerText flexItem={true} text={"외부 서비스로 로그인"}/>
+                </BodyItem>
+
+                <BodyItem mt={2}>
+                    <Box ml={'auto'} mr={1}>
                         <LoginOAuthIcon oauth_context={github_oauth_ctx}>
                             <GithubLoginLogo/>
                         </LoginOAuthIcon>
                     </Box>
-                    <Box>
+                    <Box mr={'auto'}>
                         <LoginOAuthIcon oauth_context={google_oauth_ctx}>
                             <GoogleLoginLogo/>
                         </LoginOAuthIcon>
                     </Box>
-                </IconRoot>
+                </BodyItem>
             </Body>
         </Root>
     )
