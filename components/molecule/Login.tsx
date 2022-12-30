@@ -7,6 +7,12 @@ import LoginOAuthIcon, {OAuthContext} from "@/components/molecule/LoginOAuthIcon
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
 import {DividerText} from "@/components/atom/Divider";
+import React from 'react'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import {AlertAutoSnackbar} from "@/components/atom/Snackbar";
 
 
 class GithubOAuthContext implements OAuthContext {
@@ -77,13 +83,88 @@ const SubmitBtn = styled(Button)`
   font-size: 1rem;
 `
 
-/*
-* https://www.npmjs.com/package/@react-oauth/google 구글 로그인 문서
-* */
+
+function JoinFormDialogButton() {
+    const [open, setOpen] = React.useState(false)
+    const [snackbarStamp, setSnackbarStamp] = React.useState(0)
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        // setOpen(false);
+        setSnackbarStamp(snackbarStamp+1)
+    };
+
+    return (
+        <Box>
+            <Button variant="text" onClick={handleClickOpen}>
+                회원가입
+            </Button>
+            <Dialog maxWidth={"xs"} open={open} onClose={handleClose}>
+                <DialogTitle>회원 가입</DialogTitle>
+                <DialogContent style={{marginTop: "-16px"}}>
+                    <TextInputBox
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="닉네임"
+                        label="닉네임"
+                        type="text"
+                        id="nickName"
+                    />
+
+                    <TextInputBox
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="이메일"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                    />
+
+                    <TextInputBox
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password_1"
+                        label="비밀번호"
+                        type="password"
+                        id="password_1"
+                        autoComplete="current-password"
+                    />
+
+                    <TextInputBox
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="비밀번호 확인"
+                        type="password"
+                        id="password_2"
+                        autoComplete="current-password"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Box width={"100%"} padding={2} mt={-5}>
+                        <SubmitBtn fullWidth type={"submit"} variant="contained" onClick={handleClose}>가입 요청</SubmitBtn>
+                    </Box>
+                </DialogActions>
+            </Dialog>
+
+            <AlertAutoSnackbar
+                stamp={snackbarStamp}
+                autoHideDuration={2000}
+                message="I love snacks"
+            />
+        </Box>
+    );
+}
 
 
 export default function Login(props: Props) {
-
     return (
         <Root>
             <Header>
@@ -121,7 +202,7 @@ export default function Login(props: Props) {
                 </BodyItem>
 
                 <BodyItem>
-                    <SubmitBtn  fullWidth type={"submit"} variant="contained">
+                    <SubmitBtn fullWidth type={"submit"} variant="contained">
                         {props.buttonName ?? "로그인"}
                     </SubmitBtn>
                 </BodyItem>
@@ -131,9 +212,10 @@ export default function Login(props: Props) {
                         <Text fontSize={"8px"}> 계정이 없으신가요? </Text>
                     </Box>
                     <Box>
-                        <Button variant={"text"}>회원가입</Button>
+                        <JoinFormDialogButton/>
                     </Box>
                 </BodyItem>
+
                 <BodyItem mt={1}>
                     <DividerText flexItem={true} text={"외부 서비스로 로그인"}/>
                 </BodyItem>
