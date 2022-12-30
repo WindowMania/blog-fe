@@ -1,21 +1,28 @@
 import React, {useState, useCallback, useEffect} from "react";
+import styled from '@emotion/styled'
+import Box from '@/components/atom/Box'
 
 export interface OAuthContext {
-
     get_url(): string
 
     get_platform(): string
 
     get_client_id(): string
+
 }
-
-
 
 
 export interface Props {
     oauth_context: OAuthContext
+    children:any
 }
 
+
+const Root = styled(Box)`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 export default function LoginOAuthIcon(props: Props) {
     const [popup, setPopup] = useState<Window | null>();
@@ -59,8 +66,8 @@ export default function LoginOAuthIcon(props: Props) {
     }, [popup]);
 
     return (
-        <div>
-            <button onClick={handleOpenPopup}>아이콘 열기</button>
-        </div>
+        <Root onClick={handleOpenPopup}>
+            {props.children}
+        </Root>
     );
 }

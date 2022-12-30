@@ -1,11 +1,13 @@
-import {CBox} from "@/components/atom/Box";
+import Box, {CBox} from "@/components/atom/Box";
 import Text from "@/components/atom/Text";
 import styled from "@emotion/styled";
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
-import {GoogleLogin} from '@react-oauth/google';
-import {GithubLoginButton} from "@/components/molecule/GithubLoginButton";
 import LoginOAuthIcon, {OAuthContext} from "@/components/molecule/LoginOAuthIcon";
+import GoogleLoginLogo from "@/public/svg/google_icon.svg";
+import GithubLoginLogo from "@/public/svg/github_icon.svg";
+import {DividerText} from "@/components/atom/Divider";
+
 
 class GithubOAuthContext implements OAuthContext {
     get_client_id(): string {
@@ -70,6 +72,9 @@ const SubmitBtn = styled(Button)`
   height: 3rem;
 `
 
+const IconRoot = styled(Box)`
+`
+
 /*
 * https://www.npmjs.com/package/@react-oauth/google 구글 로그인 문서
 * */
@@ -83,6 +88,7 @@ export default function Login(props: Props) {
                 <Text variant={"h5"}> {props.title ?? "Login"} </Text>
             </Header>
             <Body>
+
                 <TextInputBox
                     margin="normal"
                     required
@@ -103,22 +109,25 @@ export default function Login(props: Props) {
                     id="password"
                     autoComplete="current-password"
                 />
+
                 <SubmitBtn fullWidth type={"submit"} variant="contained">
                     {props.buttonName ?? "Login"}
                 </SubmitBtn>
 
-                <GoogleLogin
-                    type={"icon"}
-                    onSuccess={credentialResponse => {
-                        props.onGoogleLogin?.(true, credentialResponse.credential).then()
-                    }}
-                    onError={() => {
-                        props.onGoogleLogin?.(false).then()
-                    }}
-                />
-                <GithubLoginButton/>
-                <LoginOAuthIcon oauth_context={github_oauth_ctx}/>
-                <LoginOAuthIcon oauth_context={google_oauth_ctx}/>
+                <DividerText flexItem={true} text={"다음으로 로그인"}/>
+
+                <IconRoot mt={2}>
+                    <Box mr={1}>
+                        <LoginOAuthIcon oauth_context={github_oauth_ctx}>
+                            <GithubLoginLogo/>
+                        </LoginOAuthIcon>
+                    </Box>
+                    <Box>
+                        <LoginOAuthIcon oauth_context={google_oauth_ctx}>
+                            <GoogleLoginLogo/>
+                        </LoginOAuthIcon>
+                    </Box>
+                </IconRoot>
             </Body>
         </Root>
     )
