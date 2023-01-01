@@ -12,7 +12,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {AlertAutoSnackbar} from "@/components/atom/Snackbar";
+import {useSnackbar} from 'notistack';
 
 
 class GithubOAuthContext implements OAuthContext {
@@ -86,14 +86,27 @@ const SubmitBtn = styled(Button)`
 
 function JoinFormDialogButton() {
     const [open, setOpen] = React.useState(false)
-    const [snackbarStamp, setSnackbarStamp] = React.useState(0)
+
+    const {enqueueSnackbar} = useSnackbar();
+
+    const [error, setError] = React.useState(null)
+
     const handleClickOpen = () => {
         setOpen(true);
     };
 
+    const handleSubmit = () => {
+        enqueueSnackbar("hi..", {
+            variant: "error",
+            anchorOrigin: {
+                horizontal: "center",
+                vertical: "top"
+            }
+        })
+    }
+
     const handleClose = () => {
-        // setOpen(false);
-        setSnackbarStamp(snackbarStamp+1)
+
     };
 
     return (
@@ -149,16 +162,11 @@ function JoinFormDialogButton() {
                 </DialogContent>
                 <DialogActions>
                     <Box width={"100%"} padding={2} mt={-5}>
-                        <SubmitBtn fullWidth type={"submit"} variant="contained" onClick={handleClose}>가입 요청</SubmitBtn>
+                        <SubmitBtn fullWidth type={"submit"} variant="contained" onClick={handleSubmit}>가입
+                            요청</SubmitBtn>
                     </Box>
                 </DialogActions>
             </Dialog>
-
-            <AlertAutoSnackbar
-                stamp={snackbarStamp}
-                autoHideDuration={2000}
-                message="I love snacks"
-            />
         </Box>
     );
 }
