@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useEffect} from "react";
 import styled from '@emotion/styled'
 import Box from '@/components/atom/Box'
+import {useSnackbar} from "notistack";
 
 export interface OAuthContext {
     get_url(): string
@@ -11,10 +12,17 @@ export interface OAuthContext {
 
 }
 
+export interface OAuthLoginResult {
+    success: boolean
+    access_key: string
+    exp: Date
+}
+
 
 export interface Props {
     oauth_context: OAuthContext
-    children:any
+    children: any
+    onOAuthLogin: (res: OAuthLoginResult) => Promise<boolean>
 }
 
 
@@ -26,6 +34,7 @@ const Root = styled(Box)`
 
 export default function LoginOAuthIcon(props: Props) {
     const [popup, setPopup] = useState<Window | null>();
+    const {enqueueSnackbar} = useSnackbar();
 
     const handleOpenPopup = useCallback(() => {
         const width = 500;
@@ -44,22 +53,32 @@ export default function LoginOAuthIcon(props: Props) {
         if (!popup) {
             return;
         }
-        const githubOAuthCodeListener = (e: any) => {
+
+        const oauthListener = (e: any) => {
             if (e.origin !== window.location.origin) {
                 return;
             }
-            const {code} = e.data;
-            console.log(e.data)
-            if (code) {
-                // 코드 보는곳..
-                console.log(`The popup URL has URL code param = ${code}`);
-            }
-            popup?.close();
-            setPopup(null);
+            const {success, data} = e.data;
+            const {exp, access_key} = data
+            props.onOAuthLogin({
+                success, exp, access_key
+            }).then((res) => {
+                popup?.close();
+                setPopup(null);
+                if (!res) {
+                    enqueueSnackbar("OAuth2.0 로그인 실패", {
+                        variant: "error",
+                        anchorOrigin: {
+                            horizontal: "center",
+                            vertical: "top"
+                        }
+                    })
+                }
+            })
         };
-        window.addEventListener("message", githubOAuthCodeListener, false);
+        window.addEventListener("message", oauthListener, false);
         return () => {
-            window.removeEventListener("message", githubOAuthCodeListener);
+            window.removeEventListener("message", oauthListener);
             popup?.close();
             setPopup(null);
         };

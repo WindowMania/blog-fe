@@ -3,7 +3,7 @@ import Text from "@/components/atom/Text";
 import styled from "@emotion/styled";
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
-import LoginOAuthIcon, {OAuthContext} from "@/components/molecule/LoginOAuthIcon";
+import LoginOAuthIcon, {OAuthContext,OAuthLoginResult} from "@/components/molecule/LoginOAuthIcon";
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
 import {DividerText} from "@/components/atom/Divider";
@@ -15,44 +15,31 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {useSnackbar} from 'notistack';
 
 
-class GithubOAuthContext implements OAuthContext {
-    get_client_id(): string {
-        return "af25e309d8d0219d5e43";
-    }
-
-    get_platform(): string {
-        return "github";
-    }
-
-    get_url(): string {
-        return `https://github.com/login/oauth/authorize?client_id=${this.get_client_id()}`;
-    }
+interface MyInputCtx {
+    value: string
+    error: boolean
+    message?: string
 }
 
-class GoogleOAuthContext implements OAuthContext {
-    get_client_id(): string {
-        return "157841089521-n4qi1ohapk3qh9a2i9me3482v9909j8p.apps.googleusercontent.com";
-    }
-
-    get_platform(): string {
-        return "google";
-    }
-
-    get_url(): string {
-        const client_id = this.get_client_id()
-        const redirect_uri = "http://localhost:3000/callback?platform=google"
-        const scope = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
-        return `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${redirect_uri}&scope=${scope}&response_type=code&client_id=${client_id}`;
-    }
+export interface JoinUserDto {
+    email?: string
+    password?: string
+    nick_name?: string
 }
 
-const github_oauth_ctx = new GithubOAuthContext()
-const google_oauth_ctx = new GoogleOAuthContext()
+const emailReg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+// 8~30글자 하나 이상의 문자와 하나 이상의 숫자
+const passwordRed = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$/
+
 
 export interface Props {
     title?: string
     buttonName?: string
-    onGoogleLogin?: (success: boolean, access_token?: string) => Promise<void>
+
+    onJoinSubmit: (dto: JoinUserDto) => Promise<boolean>
+    onOAuthLogin: (res:OAuthLoginResult) => Promise<boolean>
+    googleOAuthCtx: OAuthContext
+    githubOAuthCtx: OAuthContext
 }
 
 const Root = styled(CBox)`
@@ -83,24 +70,17 @@ const SubmitBtn = styled(Button)`
   font-size: 1rem;
 `
 
-interface MyInputCtx {
-    value: string
-    error: boolean
-    message?: string
+
+interface JoinFormProps {
+    onSubmit: (info: JoinUserDto) => Promise<boolean>
 }
 
-const emailReg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-// 8~30글자 하나 이상의 문자와 하나 이상의 숫자
-const passwordRed = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$/
-
-
-function JoinFormDialogButton() {
+function JoinFormDialogButton(props: JoinFormProps) {
     const [open, setOpen] = React.useState(false)
     const [nickNameCtx, setNickNameCtx] = React.useState<MyInputCtx | null>(null)
     const [emailCtx, setEmailCtx] = React.useState<MyInputCtx | null>(null)
     const [pwdOneCtx, setPwdOneCtx] = React.useState<MyInputCtx | null>(null)
     const [pwdTwoCtx, setPwdTwoCtx] = React.useState<MyInputCtx | null>(null)
-
 
     const {enqueueSnackbar} = useSnackbar();
 
@@ -190,7 +170,6 @@ function JoinFormDialogButton() {
             setPwdTwoCtx({error: true, message: "반드시 값을 입력 해야 합니다.", value: ""})
             is_empty = true
         }
-
         if (is_empty) {
             return
         }
@@ -206,15 +185,32 @@ function JoinFormDialogButton() {
                         vertical: "top"
                     }
                 })
-                break
+                return
             }
         }
 
-
+        props.onSubmit({
+            email: emailCtx?.value,
+            password: pwdOneCtx?.value,
+            nick_name: nickNameCtx?.value
+        }).then((r) => {
+            if (r) {
+                setOpen(false)
+            } else {
+                enqueueSnackbar("회원 가입 요청 실패", {
+                    variant: "error",
+                    anchorOrigin: {
+                        horizontal: "center",
+                        vertical: "top"
+                    }
+                })
+            }
+        })
     }
 
 
     const handleClose = () => {
+        setOpen(false)
     };
 
     return (
@@ -326,9 +322,9 @@ export default function Login(props: Props) {
                     />
                 </BodyItem>
 
-                <BodyItem>
-                    <Button variant={"text"}>비밀번호를 잊으셨나요?</Button>
-                </BodyItem>
+                {/*<BodyItem>*/}
+                {/*    <Button variant={"text"}>비밀번호를 잊으셨나요?</Button>*/}
+                {/*</BodyItem>*/}
 
                 <BodyItem>
                     <SubmitBtn fullWidth type={"submit"} variant="contained">
@@ -341,7 +337,7 @@ export default function Login(props: Props) {
                         <Text fontSize={"8px"}> 계정이 없으신가요? </Text>
                     </Box>
                     <Box>
-                        <JoinFormDialogButton/>
+                        <JoinFormDialogButton onSubmit={props.onJoinSubmit}/>
                     </Box>
                 </BodyItem>
 
@@ -351,15 +347,21 @@ export default function Login(props: Props) {
 
                 <BodyItem mt={2}>
                     <Box ml={'auto'} mr={1}>
-                        <LoginOAuthIcon oauth_context={github_oauth_ctx}>
+                        <LoginOAuthIcon oauth_context={props.githubOAuthCtx}
+                                        onOAuthLogin={props.onOAuthLogin}
+                        >
                             <GithubLoginLogo/>
                         </LoginOAuthIcon>
                     </Box>
+
                     <Box mr={'auto'}>
-                        <LoginOAuthIcon oauth_context={google_oauth_ctx}>
+                        <LoginOAuthIcon oauth_context={props.googleOAuthCtx}
+                                        onOAuthLogin={props.onOAuthLogin}
+                        >
                             <GoogleLoginLogo/>
                         </LoginOAuthIcon>
                     </Box>
+
                 </BodyItem>
             </Body>
         </Root>
