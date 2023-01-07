@@ -7,12 +7,12 @@ import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/components/molec
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
 import {DividerText} from "@/components/atom/Divider";
-import React, {ChangeEvent} from 'react'
+import React, {ChangeEvent, useState} from 'react'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {useSnackbar} from 'notistack';
+import {OptionsObject, useSnackbar} from 'notistack';
 import {RestResponse} from '@/libs/RestApi'
 
 interface MyInputCtx {
@@ -38,6 +38,7 @@ export interface Props {
 
     onJoinSubmit: (dto: JoinUserDto) => Promise<RestResponse>
     onOAuthLogin: (res: OAuthLoginResult) => Promise<boolean>
+    onLogin: (username: string, password: string) => Promise<RestResponse>
     googleOAuthCtx: OAuthContext
     githubOAuthCtx: OAuthContext
 }
@@ -70,6 +71,13 @@ const SubmitBtn = styled(Button)`
   font-size: 1rem;
 `
 
+const snackbar_error_default: OptionsObject = {
+    variant: "error",
+    anchorOrigin: {
+        horizontal: "center",
+        vertical: "top"
+    }
+}
 
 interface JoinFormProps {
     onSubmit: (info: JoinUserDto) => Promise<RestResponse>
@@ -178,13 +186,7 @@ function JoinFormDialogButton(props: JoinFormProps) {
         for (let i = 0; i < ctxList.length; i++) {
             const ctx = ctxList[i]
             if (ctx?.error) {
-                enqueueSnackbar("회원 가입 양식을 다시 확인 부탁 드립니다.", {
-                    variant: "error",
-                    anchorOrigin: {
-                        horizontal: "center",
-                        vertical: "top"
-                    }
-                })
+                enqueueSnackbar("회원 가입 양식을 다시 확인 부탁 드립니다.", snackbar_error_default)
                 return
             }
         }
@@ -197,13 +199,7 @@ function JoinFormDialogButton(props: JoinFormProps) {
             if (r.success) {
                 setOpen(false)
             } else {
-                enqueueSnackbar(r.detail, {
-                    variant: "error",
-                    anchorOrigin: {
-                        horizontal: "center",
-                        vertical: "top"
-                    }
-                })
+                enqueueSnackbar(r.detail, snackbar_error_default)
             }
         })
     }
@@ -290,6 +286,35 @@ function JoinFormDialogButton(props: JoinFormProps) {
 
 
 export default function Login(props: Props) {
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const {enqueueSnackbar} = useSnackbar();
+
+    const onChangeEmail = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        e.stopPropagation()
+        setEmail(e.target.value)
+    }
+
+    const onChangePassword = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        e.stopPropagation()
+        setPassword(e.target.value)
+    }
+
+    const onLogin = async () => {
+        if (!emailReg.test(email)) {
+            enqueueSnackbar("잘못된 이메일 형식", snackbar_error_default)
+            return
+        }
+        if (!passwordRed.test(password)) {
+            enqueueSnackbar("비밀번호는 8글자 이상 30글자 이하, 최소 하나의 숫자와 문자 포함 해야 합니다.", snackbar_error_default)
+            return
+        }
+        const res = await props.onLogin(email, password)
+        if (!res.success) {
+            enqueueSnackbar(res.detail,snackbar_error_default)
+        }
+    }
+
     return (
         <Root>
             <Header>
@@ -306,6 +331,7 @@ export default function Login(props: Props) {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        onChange={onChangeEmail}
                     />
                 </BodyItem>
 
@@ -319,6 +345,7 @@ export default function Login(props: Props) {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={onChangePassword}
                     />
                 </BodyItem>
 
@@ -327,7 +354,7 @@ export default function Login(props: Props) {
                 {/*</BodyItem>*/}
 
                 <BodyItem>
-                    <SubmitBtn fullWidth type={"submit"} variant="contained">
+                    <SubmitBtn onClick={onLogin} fullWidth type={"submit"} variant="contained">
                         {props.buttonName ?? "로그인"}
                     </SubmitBtn>
                 </BodyItem>

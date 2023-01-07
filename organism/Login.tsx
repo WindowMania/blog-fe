@@ -54,6 +54,13 @@ async function onOAuthLogin(res: OAuthLoginResult) {
 }
 
 
+async function onLogin(username: string, password: string): Promise<RestResponse> {
+    const url = "http://localhost:8000/api/v1/user/login"
+    const res = await restApi.post(url, {username, password})
+    return res
+}
+
+
 export default function Login() {
     return (
         <LoginMolecule
@@ -61,6 +68,7 @@ export default function Login() {
             googleOAuthCtx={google_oauth_ctx}
             githubOAuthCtx={github_oauth_ctx}
             onOAuthLogin={onOAuthLogin}
+            onLogin={onLogin}
         />
     )
 }
