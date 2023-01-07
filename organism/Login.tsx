@@ -1,6 +1,6 @@
-import LoginMolecule from "@/components/molecule/Login"
+import LoginMolecule, {JoinUserDto} from "@/components/molecule/Login"
 import {OAuthContext, OAuthLoginResult} from "@/components/molecule/LoginOAuthIcon";
-
+import restApi, {RestResponse} from "@/libs/RestApi";
 
 class GithubOAuthContext implements OAuthContext {
     get_client_id(): string {
@@ -38,13 +38,19 @@ const github_oauth_ctx = new GithubOAuthContext()
 const google_oauth_ctx = new GoogleOAuthContext()
 
 
-async function onJoinSubmit(): Promise<boolean> {
-    return Promise.resolve(true)
+async function onJoinSubmit(dto: JoinUserDto): Promise<RestResponse> {
+    const url = "http://localhost:8000/api/v1/user/join"
+    const res = await restApi.post(url, dto)
+    return Promise.resolve(res)
 }
 
 async function onOAuthLogin(res: OAuthLoginResult) {
-    console.log("oauth login..", res)
-    return Promise.resolve(true)
+    if (res.success) {
+        window.localStorage.setItem("access_key", res.access_key)
+        console.log(window.localStorage.getItem("access_key"))
+        return Promise.resolve(true)
+    }
+    return Promise.resolve(false)
 }
 
 

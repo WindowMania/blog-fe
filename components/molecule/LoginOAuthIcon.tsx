@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import Box from '@/components/atom/Box'
 import {useSnackbar} from "notistack";
 
+import {RestResponse} from '@/libs/RestApi'
+
 export interface OAuthContext {
     get_url(): string
 

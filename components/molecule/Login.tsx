@@ -3,7 +3,7 @@ import Text from "@/components/atom/Text";
 import styled from "@emotion/styled";
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
-import LoginOAuthIcon, {OAuthContext,OAuthLoginResult} from "@/components/molecule/LoginOAuthIcon";
+import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/components/molecule/LoginOAuthIcon";
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
 import {DividerText} from "@/components/atom/Divider";
@@ -13,7 +13,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {useSnackbar} from 'notistack';
-
+import {RestResponse} from '@/libs/RestApi'
 
 interface MyInputCtx {
     value: string
@@ -36,8 +36,8 @@ export interface Props {
     title?: string
     buttonName?: string
 
-    onJoinSubmit: (dto: JoinUserDto) => Promise<boolean>
-    onOAuthLogin: (res:OAuthLoginResult) => Promise<boolean>
+    onJoinSubmit: (dto: JoinUserDto) => Promise<RestResponse>
+    onOAuthLogin: (res: OAuthLoginResult) => Promise<boolean>
     googleOAuthCtx: OAuthContext
     githubOAuthCtx: OAuthContext
 }
@@ -72,7 +72,7 @@ const SubmitBtn = styled(Button)`
 
 
 interface JoinFormProps {
-    onSubmit: (info: JoinUserDto) => Promise<boolean>
+    onSubmit: (info: JoinUserDto) => Promise<RestResponse>
 }
 
 function JoinFormDialogButton(props: JoinFormProps) {
@@ -194,10 +194,10 @@ function JoinFormDialogButton(props: JoinFormProps) {
             password: pwdOneCtx?.value,
             nick_name: nickNameCtx?.value
         }).then((r) => {
-            if (r) {
+            if (r.success) {
                 setOpen(false)
             } else {
-                enqueueSnackbar("회원 가입 요청 실패", {
+                enqueueSnackbar(r.detail, {
                     variant: "error",
                     anchorOrigin: {
                         horizontal: "center",

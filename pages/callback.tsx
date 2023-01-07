@@ -3,6 +3,7 @@ import type {NextPage} from 'next';
 import {useEffect} from "react";
 
 
+
 const Callback: NextPage = () => {
     useEffect(() => {
         const currentUrl = window.location.href;
