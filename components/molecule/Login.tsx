@@ -7,7 +7,7 @@ import LoginOAuthIcon, {OAuthContext} from "@/components/molecule/LoginOAuthIcon
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
 import {DividerText} from "@/components/atom/Divider";
-import React from 'react'
+import React, {ChangeEvent} from 'react'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -83,30 +83,138 @@ const SubmitBtn = styled(Button)`
   font-size: 1rem;
 `
 
+interface MyInputCtx {
+    value: string
+    error: boolean
+    message?: string
+}
+
+const emailReg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+// 8~30글자 하나 이상의 문자와 하나 이상의 숫자
+const passwordRed = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$/
+
 
 function JoinFormDialogButton() {
     const [open, setOpen] = React.useState(false)
+    const [nickNameCtx, setNickNameCtx] = React.useState<MyInputCtx | null>(null)
+    const [emailCtx, setEmailCtx] = React.useState<MyInputCtx | null>(null)
+    const [pwdOneCtx, setPwdOneCtx] = React.useState<MyInputCtx | null>(null)
+    const [pwdTwoCtx, setPwdTwoCtx] = React.useState<MyInputCtx | null>(null)
+
 
     const {enqueueSnackbar} = useSnackbar();
-
-    const [error, setError] = React.useState(null)
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
-    const handleSubmit = () => {
-        enqueueSnackbar("hi..", {
-            variant: "error",
-            anchorOrigin: {
-                horizontal: "center",
-                vertical: "top"
-            }
+    const onChangeNickName = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        e.stopPropagation()
+        const value = e.target.value
+        let error = false
+        let message = ''
+
+        if (value.length < 2) {
+            error = true
+            message = "닉네임은 두 글자 이상이어야 합니다."
+        }
+
+        setNickNameCtx({value, error, message})
+    }
+
+    const onChangeEmail = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        e.stopPropagation()
+        const value = e.target.value
+        let error = false
+        let message = ''
+        if (!emailReg.test(value)) {
+            error = true
+            message = "이메일 형식이 맞지 않습니다."
+        }
+        setEmailCtx({
+            value, error, message
         })
     }
 
-    const handleClose = () => {
+    const onChangePwdOne = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        e.stopPropagation()
+        const value = e.target.value
+        let error = false
+        let message = ''
 
+        if (!passwordRed.test(value)) {
+            error = true
+            message = "8 ~ 30글자 최소 하나의 문자와 하나의 숫자 포함 해야 합니다."
+        }
+
+        setPwdOneCtx({
+            value, error, message
+        })
+    }
+
+    const onChangePwdTwo = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        e.stopPropagation()
+        const value = e.target.value
+        let error = false
+        let message = ''
+
+        if (!passwordRed.test(value)) {
+            error = true
+            message = "8 ~ 30글자 최소 하나의 문자와 하나의 숫자 포함 해야 합니다."
+        } else if (!pwdOneCtx || value != pwdOneCtx.value) {
+            error = true
+            message = "비밀번호가 일치 하지 않습니다."
+        }
+        setPwdTwoCtx({
+                value, error, message
+            }
+        )
+    }
+
+
+    const handleSubmit = () => {
+        let is_empty = false
+        if (!nickNameCtx) {
+            setNickNameCtx({error: true, message: "반드시 값을 입력 해야 합니다.", value: ""})
+            is_empty = true
+        }
+        if (!emailCtx) {
+            setEmailCtx({error: true, message: "반드시 값을 입력 해야 합니다.", value: ""})
+            is_empty = true
+        }
+        if (!pwdOneCtx) {
+            setPwdOneCtx({error: true, message: "반드시 값을 입력 해야 합니다.", value: ""})
+            is_empty = true
+        }
+        if (!pwdTwoCtx) {
+            setPwdTwoCtx({error: true, message: "반드시 값을 입력 해야 합니다.", value: ""})
+            is_empty = true
+        }
+
+        if (is_empty) {
+            return
+        }
+
+        const ctxList = [nickNameCtx, emailCtx, pwdOneCtx, pwdTwoCtx]
+        for (let i = 0; i < ctxList.length; i++) {
+            const ctx = ctxList[i]
+            if (ctx?.error) {
+                enqueueSnackbar("회원 가입 양식을 다시 확인 부탁 드립니다.", {
+                    variant: "error",
+                    anchorOrigin: {
+                        horizontal: "center",
+                        vertical: "top"
+                    }
+                })
+                break
+            }
+        }
+
+
+    }
+
+
+    const handleClose = () => {
     };
 
     return (
@@ -117,6 +225,7 @@ function JoinFormDialogButton() {
             <Dialog maxWidth={"xs"} open={open} onClose={handleClose}>
                 <DialogTitle>회원 가입</DialogTitle>
                 <DialogContent style={{marginTop: "-16px"}}>
+
                     <TextInputBox
                         margin="normal"
                         required
@@ -125,6 +234,9 @@ function JoinFormDialogButton() {
                         label="닉네임"
                         type="text"
                         id="nickName"
+                        onChange={onChangeNickName}
+                        error={nickNameCtx?.error}
+                        helperText={nickNameCtx?.message}
                     />
 
                     <TextInputBox
@@ -136,6 +248,9 @@ function JoinFormDialogButton() {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        onChange={onChangeEmail}
+                        error={emailCtx?.error}
+                        helperText={emailCtx?.message}
                     />
 
                     <TextInputBox
@@ -147,6 +262,9 @@ function JoinFormDialogButton() {
                         type="password"
                         id="password_1"
                         autoComplete="current-password"
+                        onChange={onChangePwdOne}
+                        error={pwdOneCtx?.error}
+                        helperText={pwdOneCtx?.message}
                     />
 
                     <TextInputBox
@@ -158,6 +276,9 @@ function JoinFormDialogButton() {
                         type="password"
                         id="password_2"
                         autoComplete="current-password"
+                        onChange={onChangePwdTwo}
+                        error={pwdTwoCtx?.error}
+                        helperText={pwdTwoCtx?.message}
                     />
                 </DialogContent>
                 <DialogActions>
