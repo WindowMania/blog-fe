@@ -33,7 +33,7 @@ const Item = styled(Box)`
 
 const LogoItem = styled(Item)`
   font-family: 'Nanum Myeongjo', serif;
-  font-weight: 700;
+  font-weight: 800;
 `
 
 const ThemeToggleItem = styled(Item)`
@@ -51,7 +51,7 @@ function BlogHeaderMenu(props: Props) {
                     <img height={"48px"} src={"/images/pizza-48.png"}/>
                 </Box>
                 <Box ml={0.5}>
-                    kyb
+                    blog.kyb
                 </Box>
             </LogoItem>
 

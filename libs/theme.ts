@@ -82,7 +82,7 @@ const theme = createTheme({
             main: "#f5f5f5"
         },
         secondary: {
-            main: '#a9a9a9'
+            main: '#dadada'
         },
     },
     palette: {
@@ -95,12 +95,12 @@ const theme = createTheme({
     },
     fontColor: {
         primary: {
-            main: "black",
+            main: "#000000",
             highlight: "#ff540f",
-            summary: "#666"
+            summary: "#a9a9a9"
         },
         secondary: {
-            main: "black",
+            main: "rgb(73,80,87)",
             highlight: "#ff540f",
             summary: "#666"
         }

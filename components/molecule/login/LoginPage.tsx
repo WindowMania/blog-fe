@@ -26,7 +26,6 @@ const Container = styled(Box)`
 `
 
 export default function LoginPage(props: Props) {
-
     return (
         <Root>
             <Container>
