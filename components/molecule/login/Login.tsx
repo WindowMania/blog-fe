@@ -3,7 +3,7 @@ import Text from "@/components/atom/Text";
 import styled from "@emotion/styled";
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
-import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/components/molecule/LoginOAuthIcon";
+import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/components/molecule/login/LoginOAuthIcon";
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
 import {DividerText} from "@/components/atom/Divider";
@@ -47,7 +47,7 @@ const Root = styled(CBox)`
   padding: 1rem;
   align-items: center;
   width: 100%;
-  border: black solid 1px;
+  //border: black solid 1px;
 `
 
 const Header = styled(CBox)`

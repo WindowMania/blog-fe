@@ -111,7 +111,7 @@ const theme = createTheme({
             main: "#cdcde6"
         },
         secondary: {
-            main: "#cdcde6"
+            main: "#848383"
         }
     }
 });

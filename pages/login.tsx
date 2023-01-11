@@ -1,5 +1,5 @@
 import Box from "@/components/atom/Box"
-import Login from "@/organism/Login"
+import Login from "../organism/LoginPage"
 
 import type {NextPage} from 'next';
 

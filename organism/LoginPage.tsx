@@ -1,5 +1,6 @@
-import LoginMolecule, {JoinUserDto} from "@/components/molecule/Login"
-import {OAuthContext, OAuthLoginResult} from "@/components/molecule/LoginOAuthIcon";
+import {JoinUserDto} from "@/components/molecule/login/Login"
+import LoginPageMolecule from "@/components/molecule/login/LoginPage";
+import {OAuthContext, OAuthLoginResult} from "@/components/molecule/login/LoginOAuthIcon";
 import restApi, {RestResponse} from "@/libs/RestApi";
 
 class GithubOAuthContext implements OAuthContext {
@@ -61,9 +62,9 @@ async function onLogin(username: string, password: string): Promise<RestResponse
 }
 
 
-export default function Login() {
+export default function LoginPage() {
     return (
-        <LoginMolecule
+        <LoginPageMolecule
             onJoinSubmit={onJoinSubmit}
             googleOAuthCtx={google_oauth_ctx}
             githubOAuthCtx={github_oauth_ctx}
