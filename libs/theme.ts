@@ -1,13 +1,89 @@
-import { createTheme } from '@mui/material/styles';
-import { blue,lightBlue } from '@mui/material/colors';
+import {blue, lightBlue} from '@mui/material/colors';
+import {
+    ThemeProvider as MuiThemeProvider,
+    Theme,
+    StyledEngineProvider,
+    createTheme,
+} from "@mui/material/styles";
+
+
+declare module "@mui/material/styles" {
+    interface Theme {
+        bg: {
+            primary: {
+                main: string
+            }
+            secondary: {
+                main: string
+            }
+        },
+        fontColor: {
+            primary: {
+                main: string
+                highlight: string
+                summary: string
+            }
+            secondary: {
+                main: string
+                highlight: string
+                summary: string
+            }
+        }
+    }
+
+    // allow configuration using `createTheme`
+    interface ThemeOptions {
+        bg: {
+            primary: {
+                main: string
+            }
+            secondary: {
+                main: string
+            }
+        },
+        fontColor: {
+            primary: {
+                main: string
+                highlight: string
+                summary: string
+            }
+            secondary: {
+                main: string
+                highlight: string
+                summary: string
+            }
+        }
+    }
+}
+
 
 const theme = createTheme({
-    palette: {
+    bg: {
         primary: {
-            main: blue.A400
+            main: "#f5f5f5"
         },
         secondary: {
-            main: lightBlue.A400
+            main: '#f5f5f5'
+        },
+    },
+    palette: {
+        primary: {
+            main: '#3F8AE0'
+        },
+        secondary: {
+            main: '#326eb3'
+        },
+    },
+    fontColor: {
+        primary: {
+            main: "black",
+            highlight: "#ff540f",
+            summary: "#666"
+        },
+        secondary: {
+            main: "black",
+            highlight: "#ff540f",
+            summary: "#666"
         }
     },
 });
