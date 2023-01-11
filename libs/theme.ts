@@ -17,6 +17,16 @@ declare module "@mui/material/styles" {
                 main: string
             }
         },
+
+        border: {
+            primary: {
+                main: string
+            }
+            secondary: {
+                main: string
+            }
+        }
+
         fontColor: {
             primary: {
                 main: string
@@ -41,6 +51,15 @@ declare module "@mui/material/styles" {
                 main: string
             }
         },
+        border: {
+            primary: {
+                main: string
+            }
+            secondary: {
+                main: string
+            }
+        }
+
         fontColor: {
             primary: {
                 main: string
@@ -63,7 +82,7 @@ const theme = createTheme({
             main: "#f5f5f5"
         },
         secondary: {
-            main: '#f5f5f5'
+            main: '#a9a9a9'
         },
     },
     palette: {
@@ -86,6 +105,15 @@ const theme = createTheme({
             summary: "#666"
         }
     },
+
+    border: {
+        primary: {
+            main: "#cdcde6"
+        },
+        secondary: {
+            main: "#cdcde6"
+        }
+    }
 });
 
 export default theme;

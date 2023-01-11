@@ -19,6 +19,7 @@ export default class _Document extends Document {
                         rel='stylesheet'
                         href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
                     />
+                    <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo&display=swap" rel="stylesheet"/>
                     <meta name='emotion-insertion-point' content=''/>
                     {this.props.styles}
                 </Head>

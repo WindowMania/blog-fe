@@ -6,6 +6,7 @@ import {useTheme,styled} from "@mui/material/styles"
 export interface Props {
     userName: string
     positionName: string
+    profilePictureSrc:string
     introScript?: string
 }
 
@@ -27,7 +28,7 @@ function UserIntroCard(props: Props) {
                 <ProfileContainer>
                     <Box>
                         <Avatar
-                            src={"/images/kim.png"}
+                            src={props.profilePictureSrc}
                             sx={{width: 65, height: 65}}
                         />
                     </Box>
