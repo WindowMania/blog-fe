@@ -10,5 +10,23 @@ interface BasicRestResponse {
     ok: boolean
     message?: string
     data?: any
-    code?:number
+    code?: number
+}
+
+
+interface PostEditorContext {
+    postId?: string
+    title: string
+    content: string
+}
+
+interface PostContext {
+    postId: string
+    title: string
+    content: string
+    username: string
+    createdAt: Date
+    updatedAt: Date
+    tags: string []
+
 }

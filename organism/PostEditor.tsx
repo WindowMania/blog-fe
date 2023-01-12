@@ -1,10 +1,9 @@
-import PostEditMolecule, {EditorContext} from "@/components/molecule/post-editor"
+import PostEditMolecule from "@/components/molecule/post-editor"
 
 export interface Props {
-
 }
 
-async function submit(ctx: EditorContext) {
+async function submit(ctx: PostEditorContext) {
     const ret: BasicRestResponse = {
         ok: true
     }
@@ -14,6 +13,6 @@ async function submit(ctx: EditorContext) {
 
 export default function PostEditor(props: Props) {
     return (
-        <PostEditMolecule context={{}} onSubmit={submit}/>
+        <PostEditMolecule onSubmit={submit}/>
     )
 }

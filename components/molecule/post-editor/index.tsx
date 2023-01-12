@@ -7,15 +7,10 @@ import ToastEditor from '@/components/molecule/post-editor/ToastEditor'
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
 
-export interface EditorContext {
-    postId?:string
-    title?: string
-    content?: string
-}
 
 export interface Props {
-    context: EditorContext
-    onSubmit: (newContext: EditorContext) => Promise<BasicRestResponse>
+    context?: PostEditorContext
+    onSubmit: (newContext: PostEditorContext) => Promise<BasicRestResponse>
 }
 
 const Root = styled(CBox)`
@@ -44,9 +39,13 @@ const snackbar_error_default: OptionsObject = {
 
 export default function PostEditor(props: Props) {
     const ref = React.useRef<any>(null);
-    const submitBtnText = props.context.postId ? "수정 하기" : "작성 하기"
-    const content = props.context.content || ''
-    const [title, setTitle] = React.useState<string>(props.context.title || '')
+    const ctx: PostEditorContext = props.context || {
+        title: '',
+        content: ''
+    }
+    const submitBtnText = ctx.postId ? "수정 하기" : "작성 하기"
+    const content = ctx.content
+    const [title, setTitle] = React.useState<string>(ctx.title)
     const {enqueueSnackbar} = useSnackbar();
 
     function handleTitle(e: any) {
@@ -66,7 +65,7 @@ export default function PostEditor(props: Props) {
             enqueueSnackbar("내용을 입력 해주세요", snackbar_error_default)
             return
         }
-        const newCtx: EditorContext = {
+        const newCtx: PostEditorContext = {
             title,
             content: contentMark
         }

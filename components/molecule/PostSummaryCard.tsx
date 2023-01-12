@@ -2,6 +2,7 @@ import Box, {CBox} from "@/components/atom/Box";
 import {styled} from "@mui/material/styles";
 import Text from '@/components/atom/Text'
 import Divider from "@/components/atom/Divider";
+import Tag from "@/components/molecule/Tag"
 
 export interface Props {
     tags: string []
@@ -44,28 +45,10 @@ const Tags = styled(Item)`
 `
 
 
-const TagBox = styled(Box)`
-  border-radius: 14px;
-  border: 1px solid ${props => props.theme.border.primary.main};
-  margin-right: 8px;
-  padding: 6px;
-  
-  &:hover {
-    cursor: pointer;
-    background-color: ${props => props.theme.bg.secondary.main};
-  }
-`
-
-const TagText = styled(Text)`
-  font-size: 12px;
-`
-
 
 export default function PostSummaryCard(props: Props) {
 
-    async function handleClickTag(tag: string) {
-
-    }
+    async function handleClickTag(tag: string) {}
 
     return (
         <Root>
@@ -80,7 +63,6 @@ export default function PostSummaryCard(props: Props) {
                     {props.createdAt} 작성
                 </CreatedAt>
             </Item>
-
 
             <Item>
                 <Summary>
@@ -97,22 +79,5 @@ export default function PostSummaryCard(props: Props) {
 
             <Divider />
         </Root>
-    )
-}
-
-
-function Tag(props: {
-    tag: string,
-    onClick: (tag: string) => Promise<void>
-}) {
-    function handleOnClick(e: any) {
-        e?.stopPropagation()
-        props.onClick(props.tag).then(r => r)
-    }
-
-    return (
-        <TagBox onClick={handleOnClick}>
-            <TagText>#{props.tag}</TagText>
-        </TagBox>
     )
 }

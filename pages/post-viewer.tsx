@@ -3,14 +3,14 @@ import type {NextPage} from 'next';
 import dynamic from 'next/dynamic';
 
 
-const NoSsrPostEditor = dynamic(() => import('@/organism/PostEditor'), {
+const NoSsrPostViewer = dynamic(() => import('@/organism/PostViewer'), {
     ssr: false,
 });
 
 
 const PostEditHome: NextPage = () => {
     return (
-        <NoSsrPostEditor />
+        <NoSsrPostViewer postId={"111111"} />
     );
 };
 
