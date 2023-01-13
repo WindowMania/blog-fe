@@ -11,7 +11,8 @@ export interface Props {
 }
 
 const Root = styled(CBox)`
-  min-width: 300px;
+  min-width: 500px;
+  width: 100%;
 `
 const Item = styled(Box)`
   margin-bottom: 4px;
@@ -47,6 +48,7 @@ const CreatedAtBox = styled(Box)`
 const ViewerItem = styled(Item)`
   //border: 1px solid black;
   height: 100vh;
+  min-height: 100vh;
 `
 
 const TagItem = styled(Item)`
