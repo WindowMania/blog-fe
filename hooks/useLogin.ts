@@ -1,14 +1,24 @@
 import {useState, useEffect, useContext} from "react";
-import {LoginReactContext} from '@/providers/LoginProvider'
+
 
 export default function useLogin() {
+    const [accessKey, __setAccessKey] = useState<string>()
     const [isLogin, setIsLogin] = useState<boolean>(false)
-    const loginCtx = useContext(LoginReactContext)
-    useEffect(() => {
-        if (loginCtx?.accessKey) {
-            setIsLogin(true)
-        }
-    }, [loginCtx])
 
-    return {isLogin, accessKey: loginCtx?.accessKey, setAccessKey: loginCtx?.setAccessKey}
+    function setAccessKey(s: string) {
+        __setAccessKey(s)
+        window.localStorage.setItem("accessKey", s)
+    }
+
+    useEffect(() => {
+        if (window && window.localStorage) {
+            const token = window.localStorage.getItem("accessKey")
+            if (token) {
+                setIsLogin(true)
+                setAccessKey(token)
+            }
+        }
+    }, [])
+
+    return {isLogin, accessKey, setAccessKey}
 }

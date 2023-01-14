@@ -12,8 +12,6 @@ import {SnackbarProvider} from 'notistack';
 
 import theme from '../libs/theme';
 import createEmotionCache from '../libs/emotionCache';
-import LoginProvider from "@/providers/LoginProvider";
-
 
 const queryClient = new QueryClient();
 
@@ -40,9 +38,7 @@ const MyApp = ({
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools initialIsOpen={true}/>
                         <CssBaseline/>
-                        <LoginProvider>
-                            <Component {...pageProps} />
-                        </LoginProvider>
+                        <Component {...pageProps} />
                     </QueryClientProvider>
                 </SnackbarProvider>
             </ThemeProvider>
