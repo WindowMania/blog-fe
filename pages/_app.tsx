@@ -1,19 +1,19 @@
-import * as React from 'react';
 import Head from 'next/head';
-import {ThemeProvider} from '@mui/material/styles';
-import {CacheProvider} from '@emotion/react';
-import CssBaseline from '@mui/material/CssBaseline';
-import {GoogleOAuthProvider} from '@react-oauth/google';
-
-import theme from '../libs/theme';
-import createEmotionCache from '../libs/emotionCache';
-
 import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
 import type {EmotionCache} from '@emotion/react';
+import {ThemeProvider} from '@mui/material/styles';
+import {CacheProvider} from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
 import {SnackbarProvider} from 'notistack';
+
+
+import theme from '../libs/theme';
+import createEmotionCache from '../libs/emotionCache';
+import LoginProvider from "@/providers/LoginProvider";
+
 
 const queryClient = new QueryClient();
 
@@ -40,7 +40,9 @@ const MyApp = ({
                     <QueryClientProvider client={queryClient}>
                         <ReactQueryDevtools initialIsOpen={true}/>
                         <CssBaseline/>
-                        <Component {...pageProps} />
+                        <LoginProvider>
+                            <Component {...pageProps} />
+                        </LoginProvider>
                     </QueryClientProvider>
                 </SnackbarProvider>
             </ThemeProvider>

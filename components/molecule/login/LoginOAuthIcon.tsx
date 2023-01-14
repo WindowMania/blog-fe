@@ -15,7 +15,7 @@ export interface OAuthContext {
 }
 
 export interface OAuthLoginResult {
-    success: boolean
+    ok: boolean
     access_key: string
     exp: Date
 }
@@ -63,7 +63,7 @@ export default function LoginOAuthIcon(props: Props) {
             const {success, data} = e.data;
             const {exp, access_key} = data
             props.onOAuthLogin({
-                success, exp, access_key
+                ok: success, exp, access_key
             }).then((res) => {
                 popup?.close();
                 setPopup(null);

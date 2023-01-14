@@ -30,6 +30,13 @@ interface PostContext {
     tags: string []
 }
 
+interface LoginContext {
+    accessKey?: string
+    exp?: Date
+    setAccessKey?: (token: string) => void
+    setExp?: (d:Date) => void
+}
+
 
 const MenuItems = ["Home", "Login", "PostWrite", "Setting"]
 type MenuItem = typeof MenuItems[number]

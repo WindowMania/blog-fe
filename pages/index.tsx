@@ -3,8 +3,12 @@ import type {NextPage} from 'next';
 import UserIntroCard from "@/components/molecule/UserIntroCard";
 import BlogHeaderMenu from "@/organism/BlogHeaderMenu";
 import PostSummaryBody from "@/organism/PostSummaryBody";
+import useLogin from "@/hooks/useLogin";
 
 const Home: NextPage = () => {
+    const {isLogin, accessKey} = useLogin()
+    console.log("보자,111111", isLogin, accessKey)
+
     return (
         <CBox width={"100%"}>
             <Box>

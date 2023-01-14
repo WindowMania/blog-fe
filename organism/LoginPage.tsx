@@ -1,7 +1,13 @@
+import {useCallback} from "react";
+import {useRouter} from "next/router";
+
+
 import {JoinUserDto} from "@/components/molecule/login/Login"
 import LoginPageMolecule from "@/components/molecule/login/LoginPage";
 import {OAuthContext, OAuthLoginResult} from "@/components/molecule/login/LoginOAuthIcon";
 import restApi, {RestResponse} from "@/libs/RestApi";
+import useLogin from "@/hooks/useLogin";
+
 
 class GithubOAuthContext implements OAuthContext {
     get_client_id(): string {
@@ -39,14 +45,14 @@ const github_oauth_ctx = new GithubOAuthContext()
 const google_oauth_ctx = new GoogleOAuthContext()
 
 
-async function onJoinSubmit(dto: JoinUserDto): Promise<RestResponse> {
+async function onJoinSubmit(dto: JoinUserDto): Promise<BasicRestResponse> {
     const url = "http://localhost:8000/api/v1/user/join"
     const res = await restApi.post(url, dto)
     return Promise.resolve(res)
 }
 
 async function onOAuthLogin(res: OAuthLoginResult) {
-    if (res.success) {
+    if (res.ok) {
         window.localStorage.setItem("access_key", res.access_key)
         console.log(window.localStorage.getItem("access_key"))
         return Promise.resolve(true)
@@ -55,14 +61,21 @@ async function onOAuthLogin(res: OAuthLoginResult) {
 }
 
 
-async function onLogin(username: string, password: string): Promise<RestResponse> {
-    const url = "http://localhost:8000/api/v1/user/login"
-    const res = await restApi.post(url, {username, password})
-    return res
-}
-
-
 export default function LoginPage() {
+    const route = useRouter()
+    const {isLogin, accessKey, setAccessKey} = useLogin()
+    const homeHref = "/"
+
+    const onLogin = useCallback(async (username: string, password: string): Promise<BasicRestResponse> => {
+        const url = "http://localhost:8000/api/v1/user/login"
+        const res = await restApi.post(url, {username, password})
+        if (res.ok) {
+            setAccessKey?.(res.data['access_key'] as string)
+            await route.replace(homeHref)
+        }
+        return res
+    }, [])
+
     return (
         <LoginPageMolecule
             onJoinSubmit={onJoinSubmit}

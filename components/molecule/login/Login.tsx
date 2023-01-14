@@ -36,9 +36,9 @@ export interface Props {
     title?: string
     buttonName?: string
 
-    onJoinSubmit: (dto: JoinUserDto) => Promise<RestResponse>
+    onJoinSubmit: (dto: JoinUserDto) => Promise<BasicRestResponse>
+    onLogin: (username: string, password: string) => Promise<BasicRestResponse>
     onOAuthLogin: (res: OAuthLoginResult) => Promise<boolean>
-    onLogin: (username: string, password: string) => Promise<RestResponse>
     googleOAuthCtx: OAuthContext
     githubOAuthCtx: OAuthContext
 }
@@ -80,7 +80,7 @@ const snackbar_error_default: OptionsObject = {
 }
 
 interface JoinFormProps {
-    onSubmit: (info: JoinUserDto) => Promise<RestResponse>
+    onSubmit: (info: JoinUserDto) => Promise<BasicRestResponse>
 }
 
 function JoinFormDialogButton(props: JoinFormProps) {
@@ -196,10 +196,10 @@ function JoinFormDialogButton(props: JoinFormProps) {
             password: pwdOneCtx?.value,
             nick_name: nickNameCtx?.value
         }).then((r) => {
-            if (r.success) {
+            if (r.ok) {
                 setOpen(false)
             } else {
-                enqueueSnackbar(r.detail, snackbar_error_default)
+                enqueueSnackbar(r.message, snackbar_error_default)
             }
         })
     }
@@ -310,8 +310,8 @@ export default function Login(props: Props) {
             return
         }
         const res = await props.onLogin(email, password)
-        if (!res.success) {
-            enqueueSnackbar(res.detail,snackbar_error_default)
+        if (!res.ok) {
+            enqueueSnackbar(res.message, snackbar_error_default)
         }
     }
 
