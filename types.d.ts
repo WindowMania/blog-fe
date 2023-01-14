@@ -28,5 +28,8 @@ interface PostContext {
     createdAt: Date
     updatedAt: Date
     tags: string []
-
 }
+
+
+const MenuItems = ["Home", "Login", "PostWrite", "Setting"]
+type MenuItem = typeof MenuItems[number]

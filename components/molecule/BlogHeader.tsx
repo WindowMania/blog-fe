@@ -1,12 +1,17 @@
-import Box from "@/components/atom/Box"
-import {styled} from "@mui/material/styles"
 import React, {useState} from "react";
-import IconButton from "@/components/atom/IconButton";
-import {Search, Home, MessageOutlined, GitHub, CreateOutlined, Brightness7, Brightness4} from "@mui/icons-material"
+import {styled} from "@mui/material/styles"
+import {Brightness7, Brightness4} from "@mui/icons-material"
+
+import Box from "@/components/atom/Box"
 import Menu, {MenuItem} from "@/components/atom/Menu"
 import Avatar from "@/components/atom/Avatar";
 
+
 export interface Props {
+    menuItems: MenuItem []
+    onClickMenu: (item: MenuItem) => Promise<void>
+    defaultTheme?: ThemeToggleType
+    onClickThemeIcon?: (t: ThemeToggleType) => void
 }
 
 const Root = styled(Box)`
@@ -44,9 +49,25 @@ const ThemeToggleItem = styled(Item)`
 const BlogMenuItem = styled(Item)``
 
 function BlogHeaderMenu(props: Props) {
+    const menuItems = props.menuItems
+    const [theme, setTheme] = React.useState<ThemeToggleType>(props.defaultTheme || 'light')
+
+    const handleMenuClick = React.useCallback(async (item: MenuItem) => {
+        await props.onClickMenu(item)
+    }, [props.onClickMenu])
+
+    const handleThemeClick = React.useCallback((t: ThemeToggleType) => {
+        props.onClickThemeIcon?.(t)
+    }, [props?.onClickThemeIcon])
+
+    const handleHomeIconClick = React.useCallback(async (e: any) => {
+        e.stopPropagation()
+        await props.onClickMenu("Home")
+    }, [props.onClickMenu])
+
     return (
         <Root>
-            <LogoItem>
+            <LogoItem onClick={handleHomeIconClick}>
                 <Box>
                     <img height={"48px"} src={"/images/pizza-48.png"}/>
                 </Box>
@@ -56,11 +77,11 @@ function BlogHeaderMenu(props: Props) {
             </LogoItem>
 
             <ThemeToggleItem>
-                <ThemeToggleIcon onChangeType={(t) => console.log(t)} type="light"/>
+                <ThemeToggleIcon onChangeType={handleThemeClick} type={theme}/>
             </ThemeToggleItem>
 
             <BlogMenuItem>
-                <ProfileIcon menuItemNames={["login"]} onMenuItemClick={(opt: string) => console.log(opt)}/>
+                <ProfileIcon menuItems={menuItems} onMenuItemClick={handleMenuClick}/>
             </BlogMenuItem>
         </Root>
     )
@@ -116,11 +137,22 @@ const AvatarMenuItem = styled(MenuItem)`
 
 function ProfileIcon(props: {
     hrefImage?: string
-    menuItemNames: string []
+    menuItems: MenuItem []
     onMenuItemClick: (opt: string) => void
 }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const menuItemNames = props.menuItemNames ?? ["Login"]
+    const covertMenuItems = React.useCallback((i: MenuItem) => {
+        switch (i) {
+            case "Home":
+                return "Home"
+            case "Login":
+                return "로그인"
+            case "PostWrite":
+                return "글 쓰기"
+            case "Setting":
+                return "설정"
+        }
+    }, [])
 
     function handleClose() {
         setAnchorEl(null)
@@ -149,9 +181,9 @@ function ProfileIcon(props: {
                 onClose={() => handleClose()}
             >
                 {
-                    menuItemNames.map((option) =>
+                    props.menuItems.map((option) =>
                         <AvatarMenuItem key={option} onClick={() => handleChange(option)}>
-                            {option}
+                            {covertMenuItems(option)}
                         </AvatarMenuItem>
                     )
                 }
