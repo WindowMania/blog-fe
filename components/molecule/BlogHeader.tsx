@@ -3,7 +3,7 @@ import {styled} from "@mui/material/styles"
 import {Brightness7, Brightness4} from "@mui/icons-material"
 
 import Box from "@/components/atom/Box"
-import Menu, {MenuItem} from "@/components/atom/Menu"
+import Menu, {MenuItemComponent} from "@/components/atom/Menu"
 import Avatar from "@/components/atom/Avatar";
 
 
@@ -129,7 +129,7 @@ const ProfileAvatar = styled(Box)`
   }
 `
 
-const AvatarMenuItem = styled(MenuItem)`
+const AvatarMenuItem = styled(MenuItemComponent)`
   font-size: 16px;
   width: ${props => props.theme.spacing(10)};
 `

@@ -5,4 +5,4 @@ const DefaultMenu = Menu
 
 export default DefaultMenu;
 
-export const MenuItem = MuiMenuItem
+export const MenuItemComponent = MuiMenuItem

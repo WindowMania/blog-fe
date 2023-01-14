@@ -21,6 +21,12 @@ export default function BlogHeaderMenu(props: Props) {
             case "PostWrite":
                 await router.push(writeHref)
                 break
+            case "Login":
+                await router.push(loginHref)
+                break
+            case "Home":
+                await router.push(home)
+                break
         }
     }, [])
 

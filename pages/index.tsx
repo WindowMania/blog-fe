@@ -1,7 +1,7 @@
 import Box, {CBox} from "@/components/atom/Box"
 import type {NextPage} from 'next';
 import UserIntroCard from "@/components/molecule/UserIntroCard";
-import BlogHeaderMenu from "@/components/molecule/BlogHeader";
+import BlogHeaderMenu from "@/organism/BlogHeaderMenu";
 import PostSummaryBody from "@/organism/PostSummaryBody";
 
 const Home: NextPage = () => {
