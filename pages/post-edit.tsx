@@ -1,6 +1,7 @@
 import type {NextPage} from 'next';
-
 import dynamic from 'next/dynamic';
+
+import useLoginRoute from '@/hooks/useLoginRedirect'
 
 
 const NoSsrPostEditor = dynamic(() => import('@/organism/PostEditor'), {
@@ -9,8 +10,10 @@ const NoSsrPostEditor = dynamic(() => import('@/organism/PostEditor'), {
 
 
 const PostEditHome: NextPage = () => {
+    useLoginRoute("/")
+
     return (
-        <NoSsrPostEditor />
+        <NoSsrPostEditor/>
     );
 };
 

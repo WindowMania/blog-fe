@@ -1,9 +1,10 @@
-import {useState, useEffect, useCallback} from "react";
+import {useState, useCallback, useMemo} from "react";
 
 
 export default function useLogin() {
+
     const [accessKey, __setAccessKey] = useState<string>()
-    const [isLogin, setIsLogin] = useState<boolean>(false)
+    const [isLogin, setIsLogin] = useState<boolean>()
     const setAccessKey = useCallback((token: string) => {
         __setAccessKey(token)
         window.localStorage.setItem("accessKey", token)
@@ -15,17 +16,18 @@ export default function useLogin() {
         setIsLogin(false)
     }, [])
 
-
-    useEffect(() => {
-        if (window && window.localStorage) {
-            const token = window.localStorage.getItem("accessKey")
-            if (token) {
-                setIsLogin(true)
-                setAccessKey(token)
+    useMemo(() => {
+        if (typeof window !== 'undefined') {
+            let token = window.localStorage.getItem("accessKey")
+            let setupLogin = true
+            if (!token) {
+                setupLogin = false
+                token = ''
             }
+            setIsLogin(setupLogin)
+            setAccessKey(token)
         }
-    }, [])
-
+    }, [typeof window !== 'undefined'])
 
     return {isLogin, accessKey, setAccessKey, setLogout}
 }
