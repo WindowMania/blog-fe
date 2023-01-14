@@ -13,7 +13,7 @@ export function useMenu(props: Props) {
     const {isLogin, setLogout} = useLogin()
     const router = useRouter()
 
-    const writeHref = props.writeHref || "/post-edit"
+    const writeHref = props.writeHref || "/post-write"
     const loginHref = props.homeHref || "/login"
     const home = props.homeHref || "/"
 

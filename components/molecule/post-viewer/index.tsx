@@ -7,7 +7,7 @@ import Tag from "@/components/molecule/Tag"
 import Divider from "@mui/material/Divider";
 
 export interface Props {
-    postContext: PostContext
+    postContext: PostModel
 }
 
 const Root = styled(CBox)`

@@ -9,8 +9,9 @@ import Button from "@/components/atom/Button";
 
 
 export interface Props {
-    context?: PostEditorContext
-    onSubmit: (newContext: PostEditorContext) => Promise<BasicRestResponse>
+    mode: 'edit' | 'create'
+    context?: PostEditorModel
+    onSubmit: (model: PostEditorModel) => Promise<BasicRestResponse>
 }
 
 const Root = styled(CBox)`
@@ -39,11 +40,12 @@ const snackbar_error_default: OptionsObject = {
 
 export default function PostEditor(props: Props) {
     const ref = React.useRef<any>(null);
-    const ctx: PostEditorContext = props.context || {
+    const ctx: PostEditorModel = props.context || {
         title: '',
-        content: ''
+        content: '',
+        tags: ['All']
     }
-    const submitBtnText = ctx.postId ? "수정 하기" : "작성 하기"
+    const submitBtnText = props.mode == 'edit' ? "수정 하기" : "작성 하기"
     const content = ctx.content
     const [title, setTitle] = React.useState<string>(ctx.title)
     const {enqueueSnackbar} = useSnackbar();
@@ -65,11 +67,11 @@ export default function PostEditor(props: Props) {
             enqueueSnackbar("내용을 입력 해주세요", snackbar_error_default)
             return
         }
-        const newCtx: PostEditorContext = {
+        const newCtx: PostEditorModel = {
             title,
-            content: contentMark
+            content: contentMark,
+            tags: ["All"]
         }
-
         const res = await props.onSubmit(newCtx)
         if (!res.ok) {
             enqueueSnackbar(res.message, snackbar_error_default)

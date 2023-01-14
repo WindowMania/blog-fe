@@ -4,7 +4,7 @@ export interface Props {
     postId: string
 }
 
-const textCtx: PostContext = {
+const textCtx: PostModel = {
     tags: ["리액트", "파이썬", "데이터베이스"],
     createdAt: new Date(),
     updatedAt: new Date(),

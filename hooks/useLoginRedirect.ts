@@ -8,7 +8,7 @@ export default function UseLoginRedirect(href: string) {
     const router = useRouter()
     console.log("userLoginRoute...", isLogin)
     useMemo(() => {
-        if (isLogin == false) {
+        if (isLogin === false) {
             router.push(href).then()
         }
     }, [isLogin])

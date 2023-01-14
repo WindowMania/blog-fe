@@ -14,13 +14,19 @@ interface BasicRestResponse {
 }
 
 
-interface PostEditorContext {
-    postId?: string
+// interface PostEditorContext {
+//     postId?: string
+//     title: string
+//     content: string
+// }
+
+interface PostEditorModel {
     title: string
     content: string
+    tags: string[]
 }
 
-interface PostContext {
+interface PostModel {
     postId: string
     title: string
     content: string
@@ -30,13 +36,19 @@ interface PostContext {
     tags: string []
 }
 
-interface LoginContext {
-    accessKey?: string
-    exp?: Date
-    setAccessKey?: (token: string) => void
-    setExp?: (d:Date) => void
-}
+// interface PostCreateModel {
+//     title: string
+//     content: string
+//     tags: string[]
+// }
+//
+// interface PostEditModel {
+//     postId: string
+//     title?: string
+//     content?: string
+//     tags?: string []
+// }
 
 
-const MenuItems = ["Home", "Login", "PostWrite", "Setting","Logout"]
+const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout"]
 type MenuItem = typeof MenuItems[number]
