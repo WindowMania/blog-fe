@@ -69,7 +69,7 @@ function BlogHeaderMenu(props: Props) {
         <Root>
             <LogoItem onClick={handleHomeIconClick}>
                 <Box>
-                    <img height={"48px"} src={"/images/pizza-48.png"}/>
+                    <img alt={"logo"} height={"48px"} src={"/images/pizza-48.png"}/>
                 </Box>
                 <Box ml={0.5}>
                     blog.kyb
@@ -151,6 +151,10 @@ function ProfileIcon(props: {
                 return "글 쓰기"
             case "Setting":
                 return "설정"
+            case "Logout":
+                return "로그아웃"
+            default:
+                return i
         }
     }, [])
 
@@ -166,7 +170,7 @@ function ProfileIcon(props: {
     function handleClick(event: React.MouseEvent<HTMLElement>) {
         setAnchorEl(event.currentTarget);
         event.preventDefault()
-    };
+    }
 
     return (
         <>

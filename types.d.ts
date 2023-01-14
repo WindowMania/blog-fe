@@ -38,5 +38,5 @@ interface LoginContext {
 }
 
 
-const MenuItems = ["Home", "Login", "PostWrite", "Setting"]
+const MenuItems = ["Home", "Login", "PostWrite", "Setting","Logout"]
 type MenuItem = typeof MenuItems[number]
