@@ -72,9 +72,9 @@ function toStringByFormatting(source: Date, delimiter = '-') {
 
 export default function PostViewer(props: Props) {
     const title = props.postContext.title
-    const content = props.postContext.content
+    const content = props.postContext.body
     const username = props.postContext.username
-    const createdAt = props.postContext.createdAt
+    const createdAt = props.postContext.created_at
     const tags = props.postContext.tags
 
     async function handleClickTag(tag: string) {

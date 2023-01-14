@@ -14,12 +14,6 @@ interface BasicRestResponse {
 }
 
 
-// interface PostEditorContext {
-//     postId?: string
-//     title: string
-//     content: string
-// }
-
 interface PostEditorModel {
     title: string
     content: string
@@ -27,27 +21,14 @@ interface PostEditorModel {
 }
 
 interface PostModel {
-    postId: string
+    post_id: string
     title: string
-    content: string
+    body: string
     username: string
-    createdAt: Date
-    updatedAt: Date
+    created_at: Date
+    updated_at: Date
     tags: string []
 }
-
-// interface PostCreateModel {
-//     title: string
-//     content: string
-//     tags: string[]
-// }
-//
-// interface PostEditModel {
-//     postId: string
-//     title?: string
-//     content?: string
-//     tags?: string []
-// }
 
 
 const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout"]
