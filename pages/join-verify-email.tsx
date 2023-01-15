@@ -18,11 +18,11 @@ const JoinVerifyEmail: NextPage = () => {
             code
         }).then(r => {
             console.log(r)
-            if (r.success) {
+            if (r.ok) {
                 setMsg("인증 성공.")
                 return
             }
-            setMsg("인증 실패: " + r.detail)
+            setMsg("인증 실패: " + r.message)
         })
 
     }, []);
