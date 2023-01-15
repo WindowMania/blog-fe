@@ -47,7 +47,7 @@ const google_oauth_ctx = new GoogleOAuthContext()
 
 
 async function onJoinSubmit(dto: JoinUserDto): Promise<BasicRestResponse> {
-    const url = env.backUrl + "/api/v1/user/join"
+    const url = env.backUrl + "/user/join"
     const res = await restApi.post(url, dto)
     return Promise.resolve(res)
 }

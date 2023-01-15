@@ -6,6 +6,7 @@ import {GetServerSideProps} from 'next'
 import Box, {CBox} from "@/components/atom/Box";
 import BlogHeaderMenu from "@/organism/BlogHeaderMenu";
 import restApi from "@/libs/RestApi";
+import env from '@/libs/env'
 
 export interface Props {
     post?: PostModel
@@ -13,7 +14,7 @@ export interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {id} = context.query
-    const url = "http://localhost:8000/api/v1/post/" + id
+    const url = env.backUrl + "/post/" + id
     const res = await restApi.get(url)
     const props: Props = {}
     if (res.ok) {
