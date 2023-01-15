@@ -5,8 +5,9 @@ import {useRouter} from "next/router";
 import {JoinUserDto} from "@/components/molecule/login/Login"
 import LoginPageMolecule from "@/components/molecule/login/LoginPage";
 import {OAuthContext, OAuthLoginResult} from "@/components/molecule/login/LoginOAuthIcon";
-import restApi, {RestResponse} from "@/libs/RestApi";
+import restApi from "@/libs/RestApi";
 import useLogin from "@/hooks/useLogin";
+import env from '@/libs/env'
 
 
 class GithubOAuthContext implements OAuthContext {
@@ -34,7 +35,7 @@ class GoogleOAuthContext implements OAuthContext {
 
     get_url(): string {
         const client_id = this.get_client_id()
-        const redirect_uri = "http://localhost:3000/callback?platform=google"
+        const redirect_uri = env.frontUrl + "/callback?platform=google"
         const scope = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
         return `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${redirect_uri}&scope=${scope}&response_type=code&client_id=${client_id}`;
     }
@@ -46,7 +47,7 @@ const google_oauth_ctx = new GoogleOAuthContext()
 
 
 async function onJoinSubmit(dto: JoinUserDto): Promise<BasicRestResponse> {
-    const url = "http://localhost:8000/api/v1/user/join"
+    const url = env.backUrl + "/api/v1/user/join"
     const res = await restApi.post(url, dto)
     return Promise.resolve(res)
 }
@@ -67,7 +68,8 @@ export default function LoginPage() {
     const homeHref = "/"
 
     const onLogin = useCallback(async (username: string, password: string): Promise<BasicRestResponse> => {
-        const url = "http://localhost:8000/api/v1/user/login"
+        const url =  env.backUrl  + "/user/login"
+
         const res = await restApi.post(url, {username, password})
         if (res.ok) {
             setAccessKey?.(res.data['access_key'] as string)

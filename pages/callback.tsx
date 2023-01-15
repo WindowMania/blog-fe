@@ -1,7 +1,7 @@
 import Box from "@/components/atom/Box"
 import type {NextPage} from 'next';
 import {useEffect} from "react";
-
+import env from "@/libs/env";
 
 
 const Callback: NextPage = () => {
@@ -11,7 +11,7 @@ const Callback: NextPage = () => {
         const code = searchParams.get("code");
         const platform = searchParams.get("platform");
         if (code && platform) {
-            fetch("http://localhost:8000/api/v1/user/oauth",
+            fetch(env.backUrl + "/user/oauth",
                 {
                     method: "POST",
                     headers: {

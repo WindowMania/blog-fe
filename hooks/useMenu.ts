@@ -39,6 +39,5 @@ export function useMenu(props: Props) {
     if (isLogin) {
         items = ["PostWrite", "Setting", "Logout"]
     }
-
     return {menuItems: items, onClickMenu: handleClickMenu}
 }

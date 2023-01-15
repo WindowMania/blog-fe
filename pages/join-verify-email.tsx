@@ -2,6 +2,7 @@ import Box from "@/components/atom/Box"
 import type {NextPage} from 'next';
 import {useEffect, useState} from "react";
 import restApi from "@/libs/RestApi";
+import env from "@/libs/env";
 
 const JoinVerifyEmail: NextPage = () => {
     const [msg, setMsg] = useState<string>("인증 중~")
@@ -12,7 +13,7 @@ const JoinVerifyEmail: NextPage = () => {
         const searchParams = new URL(currentUrl).searchParams;
         const user_account = searchParams.get("user_account");
         const code = searchParams.get("code");
-        const url = 'http://localhost:8000/api/v1/user/join/verify'
+        const url = env.backUrl + '/user/join/verify'
         restApi.post(url, {
             account: user_account,
             code

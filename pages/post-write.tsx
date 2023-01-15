@@ -9,7 +9,6 @@ const NoSsrPostEditor = dynamic(() => import('@/organism/PostCreator'), {
 
 const PostEditHome: NextPage = () => {
     useLoginRoute("/")
-
     return (
         <NoSsrPostEditor/>
     );
