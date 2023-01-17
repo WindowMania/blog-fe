@@ -8,9 +8,9 @@ export interface Props {
 
 const TuiEditor = ({content = ''}: Props) => {
     return (
-        <div style={{width: '100%', height: '100%', marginTop:'-40px'}}>
+        <div style={{width: '100%', height: '100%', marginTop: '10px'}}>
             {content && (
-                <Viewer initialValue={content || ''} />
+                <Viewer initialValue={content || ''}/>
             )}
         </div>
     );

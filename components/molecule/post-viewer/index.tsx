@@ -56,18 +56,8 @@ const TagItem = styled(Item)`
 `
 
 
-function toStringByFormatting(source: Date, delimiter = '-') {
-    function leftPad(value: number) {
-        if (value >= 10) {
-            return value;
-        }
-        return `0${value}`;
-    }
-
-    const year = source.getFullYear();
-    const month = leftPad(source.getMonth() + 1);
-    const day = leftPad(source.getDate());
-    return [year, month, day].join(delimiter);
+function toStringByFormatting(source: string, delimiter = '-') {
+    return source.split("T")[0]
 }
 
 export default function PostViewer(props: Props) {
@@ -99,8 +89,7 @@ export default function PostViewer(props: Props) {
                         <Tag key={tag} tag={tag} onClick={handleClickTag}/>)
                 }
             </TagItem>
-
-            <Divider />
+            <Divider/>
 
             <ViewerItem>
                 <TuiViewer content={content}/>

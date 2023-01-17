@@ -51,23 +51,22 @@ const ViewerItem = styled(Item)`
 `
 
 const PostEditHome: NextPage = (props: Props) => {
-    console.log("클라이언트..", props)
     useRedirect({
         href: "",
         callback: () => {
             return props.post === undefined
         }
     })
-
     return (
         <Root>
             <Item>
                 <BlogHeaderMenu/>
             </Item>
-
-            <ViewerItem>
-                <NoSsrPostViewer postId={"111111"}/>
-            </ViewerItem>
+            {
+                props.post && <ViewerItem>
+                    <NoSsrPostViewer post={props.post}/>
+                </ViewerItem>
+            }
         </Root>
 
     );
