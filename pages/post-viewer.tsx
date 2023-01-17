@@ -14,13 +14,11 @@ export interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {id} = context.query
-
     const url = env.backUrl + "/post/" + id
     const res = await restApi.get(url)
     const props: Props = {}
     if (res.ok) {
-        const resPost = res.data as PostModel
-        props['post'] = resPost
+        props['post'] = res.data as PostModel
     }
     return {
         props

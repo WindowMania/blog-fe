@@ -1,17 +1,16 @@
 import {useRouter} from "next/router";
-import {useEffect, useLayoutEffect, useMemo} from "react";
+import {useCallback} from "react";
 
-export interface Props {
-    href: string
-    callback: () => boolean
-}
 
-export default function useRedirect(props: Props) {
+export default function useRedirect(defaultHref?: string) {
     const router = useRouter()
-    useEffect(() => {
-        if (props.callback()) {
-            const redirect = "/redirect?goto="
-            router.push(redirect + props.href).then()
-        }
-    }, [props.callback])
+    const href = defaultHref || ''
+
+    const redirect = useCallback(async (_goto?: string) => {
+        const dir = "/redirect?goto="
+        const goto = _goto || href
+        await router.push(dir + goto)
+    }, [defaultHref])
+
+    return redirect
 }

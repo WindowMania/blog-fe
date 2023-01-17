@@ -8,11 +8,13 @@ import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
 import {FAIL_TOP_MIDDLE_OPTION} from '@/libs/snackbar'
 
+export type Mode = 'edit' | 'create'
 
 export interface Props {
-    mode: 'edit' | 'create'
+    mode: Mode
     post?: PostEditorModel
     onSubmit: (model: PostEditorModel) => Promise<BasicRestResponse>
+    onDelete?: () => Promise<BasicRestResponse>
 }
 
 const Root = styled(CBox)`
@@ -32,6 +34,29 @@ const EditorItem = styled(Item)`
 `
 
 
+function EditorButtonList(props: {
+    mode: Mode
+    onSubmit: () => Promise<void>
+    onDelete: () => Promise<void>
+}) {
+    const submitBtnText = props.mode == 'edit' ? "수정 하기" : "작성 하기"
+    return (
+        <Box>
+            <Box>
+                <Button onClick={props.onSubmit} variant={'outlined'}> {submitBtnText}</Button>
+            </Box>
+            {props.mode === 'edit' &&
+                <Box ml={1}>
+                    <Button onClick={props.onDelete} variant={'outlined'}>
+                        삭제 하기
+                    </Button>
+                </Box>
+            }
+        </Box>
+    )
+}
+
+
 export default function PostEditor(props: Props) {
     const ref = React.useRef<any>(null);
     const ctx: PostEditorModel = props.post || {
@@ -39,7 +64,6 @@ export default function PostEditor(props: Props) {
         body: '',
         tags: ['All']
     }
-    const submitBtnText = props.mode == 'edit' ? "수정 하기" : "작성 하기"
     const content = ctx.body
     const [title, setTitle] = React.useState<string>(ctx.title)
     const {enqueueSnackbar} = useSnackbar();
@@ -49,8 +73,7 @@ export default function PostEditor(props: Props) {
         setTitle(e.target.value)
     }
 
-    async function handleSubmit(e: any) {
-        e.stopPropagation()
+    async function handleSubmit() {
         if (title === '') {
             enqueueSnackbar("제목을 입력 해주세요.", FAIL_TOP_MIDDLE_OPTION)
             return
@@ -69,10 +92,18 @@ export default function PostEditor(props: Props) {
         await props.onSubmit(newCtx)
     }
 
+    async function handleDelete() {
+        await props.onDelete?.()
+    }
+
     return (
         <Root>
             <Item>
-                <Button onClick={handleSubmit} variant={'outlined'}> {submitBtnText}</Button>
+                <EditorButtonList
+                    mode={props.mode}
+                    onSubmit={handleSubmit}
+                    onDelete={handleDelete}
+                />
             </Item>
 
             <Item height={"64px"}>
