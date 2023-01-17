@@ -16,12 +16,12 @@ interface BasicRestResponse {
 
 interface PostEditorModel {
     title: string
-    content: string
+    body: string
     tags: string[]
 }
 
 interface PostModel {
-    post_id: string
+    id: string
     title: string
     body: string
     username: string

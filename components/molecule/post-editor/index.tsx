@@ -42,11 +42,11 @@ export default function PostEditor(props: Props) {
     const ref = React.useRef<any>(null);
     const ctx: PostEditorModel = props.post || {
         title: '',
-        content: '',
+        body: '',
         tags: ['All']
     }
     const submitBtnText = props.mode == 'edit' ? "수정 하기" : "작성 하기"
-    const content = ctx.content
+    const content = ctx.body
     const [title, setTitle] = React.useState<string>(ctx.title)
     const {enqueueSnackbar} = useSnackbar();
 
@@ -69,7 +69,7 @@ export default function PostEditor(props: Props) {
         }
         const newCtx: PostEditorModel = {
             title,
-            content: contentMark,
+            body: contentMark,
             tags: ["All"]
         }
         const res = await props.onSubmit(newCtx)

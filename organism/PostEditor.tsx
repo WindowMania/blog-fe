@@ -14,13 +14,19 @@ export default function PostEditor(props: Props) {
     const {accessKey} = useLogin()
     const submit = useCallback(async (ctx: PostEditorModel) => {
         const url = env.backUrl + "/post"
-        const res = await restApi.put(url, {...ctx}, {accessKey})
+        const data = {
+            id: props.post.id,
+            title: ctx.title,
+            body: ctx.body,
+            tags: ctx.tags
+        }
+        const res = await restApi.put(url, data, {accessKey})
         return Promise.resolve(res)
     }, [accessKey])
 
     const post: PostEditorModel = {
         title: props.post.title,
-        content: props.post.body,
+        body: props.post.body,
         tags: props.post.tags
     }
 
