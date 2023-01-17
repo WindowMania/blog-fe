@@ -1,5 +1,3 @@
-
-
 declare module '*module.css' {
     const styles: {
         [className: string]: string
@@ -20,6 +18,7 @@ interface PostEditorModel {
     title: string
     body: string
     tags: string[]
+    deleted?: boolean
 }
 
 
@@ -31,6 +30,7 @@ interface PostModel {
     created_at: string
     updated_at: string
     tags: string []
+    deleted: boolean
 }
 
 

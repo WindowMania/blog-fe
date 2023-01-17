@@ -2,7 +2,7 @@ import {useSnackbar} from "notistack";
 
 import PostEditMolecule from "@/components/molecule/post-editor"
 import useLogin from "@/hooks/useLogin";
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 import env from "@/libs/env";
 import restApi from "@/libs/RestApi";
 
@@ -15,6 +15,7 @@ export interface Props {
 
 
 export default function PostEditor(props: Props) {
+    const [post, setPost] = useState<PostModel>(props.post)
     const {accessKey} = useLogin()
     const {enqueueSnackbar} = useSnackbar()
     const redirect = useRedirect()
@@ -22,33 +23,37 @@ export default function PostEditor(props: Props) {
     const onSubmit = useCallback(async (ctx: PostEditorModel) => {
         const url = env.backUrl + "/post"
         const data = {
-            id: props.post.id,
+            id: post.id,
             title: ctx.title,
             body: ctx.body,
             tags: ctx.tags
         }
         const res = await restApi.put(url, data, {accessKey})
-        const {message, option} = restResponseToSnackbar(res, "업데이트성공")
+        const {message, option} = restResponseToSnackbar(res, "업데이트 성공")
         enqueueSnackbar(message, option)
+        res.ok && setPost({...post, ...data})
         return Promise.resolve(res)
-    }, [accessKey])
+    }, [accessKey, post])
 
-    const onDelete = useCallback(async () => {
-        const url = env.backUrl + "/post/" + props.post.id
-        const res = await restApi.delete(url, {accessKey})
-        const {message, option} = restResponseToSnackbar(res, "삭제 성공")
+    const onDelete = useCallback(async (toDelete: boolean) => {
+        const url = env.backUrl + "/post/set-delete"
+        const res = await restApi.put(url, {id: post.id, deleted: toDelete}, {accessKey})
+        const {message, option} = restResponseToSnackbar(res, toDelete ? "삭제 성공" : "복원 성공")
         enqueueSnackbar(message, option)
-        res.ok && await redirect()
+        res.ok && toDelete && await redirect()
+        res.ok && setPost({...post, deleted: toDelete})
         return Promise.resolve(res)
-    }, [accessKey])
+    }, [accessKey, post])
 
-    const post: PostEditorModel = {
-        title: props.post.title,
-        body: props.post.body,
-        tags: props.post.tags
+    const postEditorModel: PostEditorModel = {
+        title: post.title,
+        body: post.body,
+        tags: post.tags,
+        deleted: post.deleted
     }
+
     return (
-        <PostEditMolecule post={post}
+        <PostEditMolecule post={postEditorModel}
                           mode={'edit'}
                           onSubmit={onSubmit}
                           onDelete={onDelete}

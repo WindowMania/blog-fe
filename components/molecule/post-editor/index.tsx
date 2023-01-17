@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {styled} from "@mui/material/styles";
 import {useSnackbar} from 'notistack';
 
@@ -14,7 +14,7 @@ export interface Props {
     mode: Mode
     post?: PostEditorModel
     onSubmit: (model: PostEditorModel) => Promise<BasicRestResponse>
-    onDelete?: () => Promise<BasicRestResponse>
+    onDelete?: (toDelete:boolean) => Promise<BasicRestResponse>
 }
 
 const Root = styled(CBox)`
@@ -36,19 +36,32 @@ const EditorItem = styled(Item)`
 
 function EditorButtonList(props: {
     mode: Mode
+    post?: PostEditorModel
     onSubmit: () => Promise<void>
-    onDelete: () => Promise<void>
+    onDelete: (toDelete: boolean) => Promise<void>
 }) {
     const submitBtnText = props.mode == 'edit' ? "수정 하기" : "작성 하기"
+    const deleteText = props.post?.deleted ? "복원 하기" : "삭제 하기"
+
+    const onDelete = useCallback(async (e: any): Promise<void> => {
+        e.stopPropagation()
+        await props.onDelete(!props.post?.deleted)
+    }, [props.post])
+
+    const onSubmit = useCallback(async (e: any): Promise<void> => {
+        e.stopPropagation()
+        await props.onSubmit()
+    }, [props.mode])
+
     return (
         <Box>
             <Box>
-                <Button onClick={props.onSubmit} variant={'outlined'}> {submitBtnText}</Button>
+                <Button onClick={onSubmit} variant={'outlined'}> {submitBtnText}</Button>
             </Box>
             {props.mode === 'edit' &&
                 <Box ml={1}>
-                    <Button onClick={props.onDelete} variant={'outlined'}>
-                        삭제 하기
+                    <Button onClick={onDelete} variant={'outlined'}>
+                        {deleteText}
                     </Button>
                 </Box>
             }
@@ -92,8 +105,8 @@ export default function PostEditor(props: Props) {
         await props.onSubmit(newCtx)
     }
 
-    async function handleDelete() {
-        await props.onDelete?.()
+    async function handleDelete(toDelete:boolean) {
+        await props.onDelete?.(toDelete)
     }
 
     return (
@@ -101,6 +114,7 @@ export default function PostEditor(props: Props) {
             <Item>
                 <EditorButtonList
                     mode={props.mode}
+                    post={props.post}
                     onSubmit={handleSubmit}
                     onDelete={handleDelete}
                 />
