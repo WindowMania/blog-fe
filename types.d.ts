@@ -34,3 +34,6 @@ interface PostModel {
 
 const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout"]
 type MenuItem = typeof MenuItems[number]
+
+type LoadingState = "pending" | "success" | "fail"
+type LoadFailStrategy = "redirect" | 'failPage'

@@ -19,12 +19,7 @@ export class RestApi {
         return headers
     }
 
-    public async post(url: string, data: any, opt?: any): Promise<BasicRestResponse> {
-        const res = await fetch(url, {
-            method: "POST",
-            headers: this.getHeader(opt),
-            body: JSON.stringify(data),
-        })
+    private async makeResponse(res: Response) {
         const res_data = await res.json()
         const ret: BasicRestResponse = {
             ok: res.ok,
@@ -34,18 +29,38 @@ export class RestApi {
         return ret
     }
 
-    public async get(url:string,opt?:any):Promise<BasicRestResponse>{
+    public async post(url: string, data: any, opt?: any): Promise<BasicRestResponse> {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: this.getHeader(opt),
+            body: JSON.stringify(data),
+        })
+        return this.makeResponse(res)
+    }
+
+    public async get(url: string, opt?: any): Promise<BasicRestResponse> {
         const res = await fetch(url, {
             method: "GET",
             headers: this.getHeader(opt),
         })
-        const res_data = await res.json()
-        const ret: BasicRestResponse = {
-            ok: res.ok,
-            data: res_data,
-            message: res_data?.detail
-        }
-        return ret
+        return this.makeResponse(res)
+    }
+
+    public async put(url: string, data: any, opt?: any): Promise<BasicRestResponse> {
+        const res = await fetch(url, {
+            method: "PUT",
+            headers: this.getHeader(opt),
+            body: JSON.stringify(data),
+        })
+        return this.makeResponse(res)
+    }
+
+    public async delete(url: string, opt?: any): Promise<BasicRestResponse> {
+        const res = await fetch(url, {
+            method: "DELETE",
+            headers: this.getHeader(opt),
+        })
+        return this.makeResponse(res)
     }
 
 }

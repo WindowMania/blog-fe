@@ -1,5 +1,4 @@
 import {styled} from "@mui/material/styles";
-import type {NextPage} from 'next';
 import dynamic from 'next/dynamic';
 import {GetServerSideProps} from 'next'
 
@@ -7,7 +6,8 @@ import Box, {CBox} from "@/components/atom/Box";
 import BlogHeaderMenu from "@/organism/BlogHeaderMenu";
 import restApi from "@/libs/RestApi";
 import env from '@/libs/env'
-import useRedirect from "../../hooks/useRedirect";
+import LoadingPage from "@/organism/LoadingPage";
+
 
 export interface Props {
     post?: PostModel
@@ -50,26 +50,25 @@ const ViewerItem = styled(Item)`
   margin-top: 32px;
 `
 
-const PostEditHome: NextPage = (props: Props) => {
-    useRedirect({
-        href: "",
-        callback: () => {
-            return props.post === undefined
+export default function PostViewer(props: Props) {
+    const loading = async (): Promise<LoadingState> => {
+        if (props.post) {
+            return Promise.resolve("success")
         }
-    })
+        return Promise.resolve("fail")
+    }
+    const post = props.post as PostModel
     return (
-        <Root>
-            <Item>
-                <BlogHeaderMenu/>
-            </Item>
-            {
-                props.post && <ViewerItem>
-                    <NoSsrPostViewer post={props.post}/>
+        <LoadingPage getLoadingState={loading}>
+            <Root>
+                <Item>
+                    <BlogHeaderMenu/>
+                </Item>
+                <ViewerItem>
+                    <NoSsrPostViewer post={post}/>
                 </ViewerItem>
-            }
-        </Root>
-
+            </Root>
+        </LoadingPage>
     );
 };
 
-export default PostEditHome;

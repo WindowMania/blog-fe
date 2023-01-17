@@ -7,7 +7,7 @@ import Tag from "@/components/molecule/Tag"
 import Divider from "@mui/material/Divider";
 
 export interface Props {
-    postContext: PostModel
+    post: PostModel
 }
 
 const Root = styled(CBox)`
@@ -61,11 +61,11 @@ function toStringByFormatting(source: string, delimiter = '-') {
 }
 
 export default function PostViewer(props: Props) {
-    const title = props.postContext.title
-    const content = props.postContext.body
-    const username = props.postContext.username
-    const createdAt = props.postContext.created_at
-    const tags = props.postContext.tags
+    const title = props.post.title
+    const content = props.post.body
+    const username = props.post.username
+    const createdAt = props.post.created_at
+    const tags = props.post.tags
 
     async function handleClickTag(tag: string) {
     }
@@ -76,7 +76,6 @@ export default function PostViewer(props: Props) {
             <TitleItem>
                 <Title variant={"h1"}>{title}</Title>
             </TitleItem>
-
 
             <PostInfoItem>
                 <UserNameBox>{username}</UserNameBox>

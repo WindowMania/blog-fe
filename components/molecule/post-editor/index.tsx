@@ -10,7 +10,7 @@ import Button from "@/components/atom/Button";
 
 export interface Props {
     mode: 'edit' | 'create'
-    context?: PostEditorModel
+    post?: PostEditorModel
     onSubmit: (model: PostEditorModel) => Promise<BasicRestResponse>
 }
 
@@ -40,7 +40,7 @@ const snackbar_error_default: OptionsObject = {
 
 export default function PostEditor(props: Props) {
     const ref = React.useRef<any>(null);
-    const ctx: PostEditorModel = props.context || {
+    const ctx: PostEditorModel = props.post || {
         title: '',
         content: '',
         tags: ['All']

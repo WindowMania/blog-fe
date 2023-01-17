@@ -7,6 +7,6 @@ export interface Props {
 
 export default function PostViewer(props: Props) {
     return (
-        <PostViewerMolecule postContext={props.post}/>
+        <PostViewerMolecule post={props.post}/>
     )
 }
