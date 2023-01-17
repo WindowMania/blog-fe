@@ -7,6 +7,7 @@ import Box, {CBox} from "@/components/atom/Box";
 import BlogHeaderMenu from "@/organism/BlogHeaderMenu";
 import restApi from "@/libs/RestApi";
 import env from '@/libs/env'
+import useRedirect from "../../hooks/useRedirect";
 
 export interface Props {
     post?: PostModel
@@ -14,6 +15,7 @@ export interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {id} = context.query
+
     const url = env.backUrl + "/post/" + id
     const res = await restApi.get(url)
     const props: Props = {}
@@ -50,6 +52,13 @@ const ViewerItem = styled(Item)`
 
 const PostEditHome: NextPage = (props: Props) => {
     console.log("클라이언트..", props)
+    useRedirect({
+        href: "",
+        callback: () => {
+            return props.post === undefined
+        }
+    })
+
     return (
         <Root>
             <Item>
