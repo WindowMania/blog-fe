@@ -1,9 +1,12 @@
+import {useSnackbar} from "notistack";
+
 import PostEditMolecule from "@/components/molecule/post-editor"
 import useLogin from "@/hooks/useLogin";
 import {useCallback} from "react";
 import env from "@/libs/env";
 import restApi from "@/libs/RestApi";
 
+import {restResponseToSnackbar} from "@/libs/snackbar";
 
 export interface Props {
     post: PostModel
@@ -12,6 +15,8 @@ export interface Props {
 
 export default function PostEditor(props: Props) {
     const {accessKey} = useLogin()
+    const {enqueueSnackbar} = useSnackbar()
+
     const submit = useCallback(async (ctx: PostEditorModel) => {
         const url = env.backUrl + "/post"
         const data = {
@@ -21,6 +26,8 @@ export default function PostEditor(props: Props) {
             tags: ctx.tags
         }
         const res = await restApi.put(url, data, {accessKey})
+        const {message, option} = restResponseToSnackbar(res, "업데이트성공")
+        enqueueSnackbar(message, option)
         return Promise.resolve(res)
     }, [accessKey])
 

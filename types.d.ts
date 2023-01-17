@@ -1,3 +1,5 @@
+
+
 declare module '*module.css' {
     const styles: {
         [className: string]: string
@@ -20,6 +22,7 @@ interface PostEditorModel {
     tags: string[]
 }
 
+
 interface PostModel {
     id: string
     title: string
@@ -28,7 +31,6 @@ interface PostModel {
     created_at: string
     updated_at: string
     tags: string []
-
 }
 
 
@@ -37,3 +39,5 @@ type MenuItem = typeof MenuItems[number]
 
 type LoadingState = "pending" | "success" | "fail"
 type LoadFailStrategy = "redirect" | 'failPage'
+
+

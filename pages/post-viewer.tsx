@@ -8,7 +8,6 @@ import restApi from "@/libs/RestApi";
 import env from '@/libs/env'
 import LoadingPage from "@/organism/LoadingPage";
 
-
 export interface Props {
     post?: PostModel
 }

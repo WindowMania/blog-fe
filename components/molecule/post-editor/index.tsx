@@ -1,11 +1,12 @@
 import React from 'react'
 import {styled} from "@mui/material/styles";
-import {OptionsObject, useSnackbar} from 'notistack';
+import {useSnackbar} from 'notistack';
 
 import Box, {CBox} from '@/components/atom/Box'
 import ToastEditor from '@/components/molecule/post-editor/ToastEditor'
 import TextInputBox from "@/components/atom/TextInputBox";
 import Button from "@/components/atom/Button";
+import {FAIL_TOP_MIDDLE_OPTION} from '@/libs/snackbar'
 
 
 export interface Props {
@@ -30,13 +31,6 @@ const EditorItem = styled(Item)`
   min-height: 600px;
 `
 
-const snackbar_error_default: OptionsObject = {
-    variant: "error",
-    anchorOrigin: {
-        horizontal: "center",
-        vertical: "top"
-    }
-}
 
 export default function PostEditor(props: Props) {
     const ref = React.useRef<any>(null);
@@ -58,13 +52,13 @@ export default function PostEditor(props: Props) {
     async function handleSubmit(e: any) {
         e.stopPropagation()
         if (title === '') {
-            enqueueSnackbar("제목을 입력 해주세요.", snackbar_error_default)
+            enqueueSnackbar("제목을 입력 해주세요.", FAIL_TOP_MIDDLE_OPTION)
             return
         }
         const editorIns = ref?.current?.getInstance();
         const contentMark = editorIns.getHTML()
         if (contentMark?.length === 0) {
-            enqueueSnackbar("내용을 입력 해주세요", snackbar_error_default)
+            enqueueSnackbar("내용을 입력 해주세요", FAIL_TOP_MIDDLE_OPTION)
             return
         }
         const newCtx: PostEditorModel = {
@@ -72,10 +66,7 @@ export default function PostEditor(props: Props) {
             body: contentMark,
             tags: ["All"]
         }
-        const res = await props.onSubmit(newCtx)
-        if (!res.ok) {
-            enqueueSnackbar(res.message, snackbar_error_default)
-        }
+        await props.onSubmit(newCtx)
     }
 
     return (
