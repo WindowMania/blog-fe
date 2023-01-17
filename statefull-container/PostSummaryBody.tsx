@@ -1,5 +1,5 @@
-import PostSummaryCardMolecule from "@/components/molecule/PostSummaryCard";
-import {CBox} from "@/components/atom/Box";
+import PostSummaryCardMolecule from "@/stateless-container/advanced/PostSummaryCard";
+import {CBox} from "@/stateless-container/base/Box";
 
 export interface Props {
 

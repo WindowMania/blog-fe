@@ -1,6 +1,6 @@
 import {styled} from "@mui/material/styles";
-import Text from "@/components/atom/Text";
-import Box from "@/components/atom/Box";
+import Text from "@/stateless-container/base/Text";
+import Box from "@/stateless-container/base/Box";
 
 
 const TagText = styled(Text)`

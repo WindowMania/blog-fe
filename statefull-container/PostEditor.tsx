@@ -1,6 +1,6 @@
 import {useSnackbar} from "notistack";
 
-import PostEditMolecule from "@/components/molecule/post-editor"
+import PostEditMolecule from "@/stateless-container/advanced/post-editor"
 import useLogin from "@/hooks/useLogin";
 import {useCallback, useState} from "react";
 import env from "@/libs/env";

@@ -1,4 +1,4 @@
-import Box, {CBox} from "@/components/atom/Box"
+import Box, {CBox} from "../stateless-container/base/Box"
 import type {NextPage} from 'next';
 import styled from "@emotion/styled";
 

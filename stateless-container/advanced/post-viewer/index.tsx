@@ -1,9 +1,9 @@
 import {styled} from '@mui/material/styles'
 
-import Box, {CBox} from "@/components/atom/Box";
-import Text from "@/components/atom/Text";
-import TuiViewer from "@/components/molecule/post-viewer/ToastViewer"
-import Tag from "@/components/molecule/Tag"
+import Box, {CBox} from "@/stateless-container/base/Box";
+import Text from "@/stateless-container/base/Text";
+import TuiViewer from "@/stateless-container/advanced/post-viewer/ToastViewer"
+import Tag from "@/stateless-container/advanced/Tag"
 import Divider from "@mui/material/Divider";
 
 export interface Props {
@@ -56,7 +56,7 @@ const TagItem = styled(Item)`
 `
 
 
-function toStringByFormatting(source: string, delimiter = '-') {
+function toStringByFormatting(source: string) {
     return source.split("T")[0]
 }
 
@@ -68,6 +68,7 @@ export default function PostViewer(props: Props) {
     const tags = props.post.tags
 
     async function handleClickTag(tag: string) {
+        console.log(tag)
     }
 
 

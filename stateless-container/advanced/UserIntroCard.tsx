@@ -1,6 +1,6 @@
-import Box,{CBox} from "@/components/atom/Box";
-import Text from '@/components/atom/Text'
-import Avatar from "@/components/atom/Avatar";
+import Box,{CBox} from "@/stateless-container/base/Box";
+import Text from '@/stateless-container/base/Text'
+import Avatar from "@/stateless-container/base/Avatar";
 import {useTheme,styled} from "@mui/material/styles"
 
 export interface Props {

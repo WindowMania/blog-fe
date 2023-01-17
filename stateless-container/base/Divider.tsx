@@ -13,12 +13,22 @@ export interface DividerTextProps extends DividerProps {
 }
 
 
-const DividerTextRoot = styled('div')(({theme}) => ({
-    width: '100%',
-    '& > :not(style) + :not(style)': {
-        marginTop: "16px",
-    },
-}));
+// const DividerTextRoot = styled('div')(({theme}) => ({
+//     width: '100%',
+//     '& > :not(style) + :not(style)': {
+//         marginTop: "16px",
+//     },
+// }));
+
+
+const DividerTextRoot = styled('div')`
+  width: 100%;
+
+  & > :not(style) + :not(style) {
+    margin-top: 16px;
+  }
+`
+
 
 export function DividerText(props: DividerTextProps) {
     const style = {

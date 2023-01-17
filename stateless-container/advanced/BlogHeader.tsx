@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import {styled} from "@mui/material/styles"
 import {Brightness7, Brightness4} from "@mui/icons-material"
 
-import Box from "@/components/atom/Box"
-import Menu, {MenuItemComponent} from "@/components/atom/Menu"
-import Avatar from "@/components/atom/Avatar";
+import Box from "@/stateless-container/base/Box"
+import Menu, {MenuItemComponent} from "@/stateless-container/base/Menu"
+import Avatar from "@/stateless-container/base/Avatar";
 
 
 export interface Props {

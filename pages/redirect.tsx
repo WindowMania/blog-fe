@@ -1,4 +1,4 @@
-import Box from "@/components/atom/Box"
+import Box from "@/stateless-container/base/Box"
 import {useEffect} from "react";
 import {useRouter} from "next/router";
 

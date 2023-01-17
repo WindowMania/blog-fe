@@ -1,8 +1,8 @@
-import Box, {CBox} from "@/components/atom/Box";
+import Box, {CBox} from "@/stateless-container/base/Box";
 import {styled} from "@mui/material/styles";
-import Text from '@/components/atom/Text'
-import Divider from "@/components/atom/Divider";
-import Tag from "@/components/molecule/Tag"
+import Text from '@/stateless-container/base/Text'
+import Divider from "@/stateless-container/base/Divider";
+import Tag from "@/stateless-container/advanced/Tag"
 
 export interface Props {
     tags: string []
@@ -14,13 +14,13 @@ export interface Props {
 
 const Root = styled(CBox)`
   width: 100%;
-  // background-color: ${props => props.theme.bg.secondary.main};
-  background-color:white;
+    // background-color: ${props => props.theme.bg.secondary.main};
+  background-color: white;
   padding: 16px;
 `
 
 const Item = styled(Box)`
- margin-top: 8px;
+  margin-top: 8px;
 `
 
 const Title = styled(Text)`
@@ -41,14 +41,15 @@ const CreatedAt = styled(Text)`
 `
 
 const Tags = styled(Item)`
- padding: 4px;
+  padding: 4px;
 `
-
 
 
 export default function PostSummaryCard(props: Props) {
 
-    async function handleClickTag(tag: string) {}
+    async function handleClickTag(tag: string) {
+        console.log(tag)
+    }
 
     return (
         <Root>
@@ -77,7 +78,7 @@ export default function PostSummaryCard(props: Props) {
                 }
             </Tags>
 
-            <Divider />
+            <Divider/>
         </Root>
     )
 }

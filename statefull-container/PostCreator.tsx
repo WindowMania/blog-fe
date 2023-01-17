@@ -1,11 +1,11 @@
-import PostEditMolecule from "@/components/molecule/post-editor"
+import PostEditMolecule from "@/stateless-container/advanced/post-editor"
 import {useCallback} from "react";
 import restApi from "@/libs/RestApi";
 import useLogin from "@/hooks/useLogin";
 import env from "@/libs/env";
-import {restResponseToSnackbar} from "../libs/snackbar";
+import {restResponseToSnackbar} from "@/libs/snackbar";
 import {useSnackbar} from "notistack";
-import useRedirect from "../hooks/useRedirect";
+import useRedirect from "@/hooks/useRedirect";
 
 export interface Props {
 }

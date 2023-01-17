@@ -1,8 +1,8 @@
-import Box, {CBox} from "@/components/atom/Box"
+import Box, {CBox} from "@/stateless-container/base/Box"
 import type {NextPage} from 'next';
-import UserIntroCard from "@/components/molecule/UserIntroCard";
-import BlogHeaderMenu from "@/organism/BlogHeaderMenu";
-import PostSummaryBody from "@/organism/PostSummaryBody";
+import UserIntroCard from "@/stateless-container/advanced/UserIntroCard";
+import BlogHeaderMenu from "@/statefull-container/BlogHeaderMenu";
+import PostSummaryBody from "@/statefull-container/PostSummaryBody";
 import useLogin from "@/hooks/useLogin";
 
 const Home: NextPage = () => {

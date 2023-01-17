@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import {GetServerSideProps} from "next";
 
-import LoadingPage from "@/organism/LoadingPage";
+import LoadingPage from "@/statefull-container/LoadingPage";
 import env from "@/libs/env";
 import restApi from "@/libs/RestApi";
 
@@ -16,8 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const res = await restApi.get(url)
     const props: Props = {}
     if (res.ok) {
-        const resPost = res.data as PostModel
-        props['post'] = resPost
+        props['post'] = res.data as PostModel
     }
     return {
         props
@@ -25,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 
-const NoSsrPostEditor = dynamic(() => import('@/organism/PostEditor'), {
+const NoSsrPostEditor = dynamic(() => import('@/statefull-container/PostEditor'), {
     ssr: false,
 });
 

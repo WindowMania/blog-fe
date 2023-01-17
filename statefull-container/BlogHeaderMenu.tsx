@@ -1,6 +1,6 @@
 import React from 'react'
 
-import BlogHeaderMenuMolecule from "@/components/molecule/BlogHeader";
+import BlogHeaderMenuMolecule from "@/stateless-container/advanced/BlogHeader";
 import {useMenu} from "@/hooks/useMenu";
 
 

@@ -1,4 +1,4 @@
-import Box from "@/components/atom/Box"
+import Box from "../stateless-container/base/Box"
 import type {NextPage} from 'next';
 import {useEffect, useState} from "react";
 import restApi from "@/libs/RestApi";

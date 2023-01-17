@@ -2,10 +2,10 @@ import React, {useCallback} from 'react'
 import {styled} from "@mui/material/styles";
 import {useSnackbar} from 'notistack';
 
-import Box, {CBox} from '@/components/atom/Box'
-import ToastEditor from '@/components/molecule/post-editor/ToastEditor'
-import TextInputBox from "@/components/atom/TextInputBox";
-import Button from "@/components/atom/Button";
+import Box, {CBox} from '@/stateless-container/base/Box'
+import ToastEditor from '@/stateless-container/advanced/post-editor/ToastEditor'
+import TextInputBox from "@/stateless-container/base/TextInputBox";
+import Button from "@/stateless-container/base/Button";
 import {FAIL_TOP_MIDDLE_OPTION} from '@/libs/snackbar'
 
 export type Mode = 'edit' | 'create'

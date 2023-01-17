@@ -1,9 +1,7 @@
 import React, {useState, useCallback, useEffect} from "react";
 import styled from '@emotion/styled'
-import Box from '@/components/atom/Box'
+import Box from '../../base/Box'
 import {useSnackbar} from "notistack";
-
-import {RestResponse} from '@/libs/RestApi'
 
 export interface OAuthContext {
     get_url(): string

@@ -1,5 +1,5 @@
-import Box,{CBox} from "@/components/atom/Box";
-import Login, {Props as LoginProps} from '@/components/molecule/login/Login'
+import Box,{CBox} from "../../base/Box";
+import Login, {Props as LoginProps} from '@/stateless-container/advanced/login/Login'
 import {styled} from '@mui/material/styles'
 
 

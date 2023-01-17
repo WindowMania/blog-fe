@@ -2,9 +2,9 @@ import {useCallback} from "react";
 import {useRouter} from "next/router";
 
 
-import {JoinUserDto} from "@/components/molecule/login/Login"
-import LoginPageMolecule from "@/components/molecule/login/LoginPage";
-import {OAuthContext, OAuthLoginResult} from "@/components/molecule/login/LoginOAuthIcon";
+import {JoinUserDto} from "@/stateless-container/advanced/login/Login"
+import LoginPageMolecule from "@/stateless-container/advanced/login/LoginPage";
+import {OAuthContext, OAuthLoginResult} from "@/stateless-container/advanced/login/LoginOAuthIcon";
 import restApi from "@/libs/RestApi";
 import useLogin from "@/hooks/useLogin";
 import env from '@/libs/env'
@@ -64,12 +64,11 @@ async function onOAuthLogin(res: OAuthLoginResult) {
 
 export default function LoginPage() {
     const route = useRouter()
-    const {isLogin, accessKey, setAccessKey} = useLogin()
+    const {setAccessKey} = useLogin()
     const homeHref = "/"
 
     const onLogin = useCallback(async (username: string, password: string): Promise<BasicRestResponse> => {
-        const url =  env.backUrl  + "/user/login"
-
+        const url = env.backUrl + "/user/login"
         const res = await restApi.post(url, {username, password})
         if (res.ok) {
             setAccessKey?.(res.data['access_key'] as string)

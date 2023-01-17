@@ -1,19 +1,19 @@
-import Box, {CBox} from "@/components/atom/Box";
-import Text from "@/components/atom/Text";
+import Box, {CBox} from "../../base/Box";
+import Text from "../../base/Text";
 import styled from "@emotion/styled";
-import TextInputBox from "@/components/atom/TextInputBox";
-import Button from "@/components/atom/Button";
-import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/components/molecule/login/LoginOAuthIcon";
+import TextInputBox from "../../base/TextInputBox";
+import Button from "../../base/Button";
+import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/stateless-container/advanced/login/LoginOAuthIcon";
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
-import {DividerText} from "@/components/atom/Divider";
+import {DividerText} from "../../base/Divider";
 import React, {ChangeEvent, useState} from 'react'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {OptionsObject, useSnackbar} from 'notistack';
-import {RestResponse} from '@/libs/RestApi'
+
 
 interface MyInputCtx {
     value: string
@@ -27,7 +27,7 @@ export interface JoinUserDto {
     nick_name?: string
 }
 
-const emailReg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const emailReg = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 // 8~30글자 하나 이상의 문자와 하나 이상의 숫자
 const passwordRed = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$/
 

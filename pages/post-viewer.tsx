@@ -2,11 +2,11 @@ import {styled} from "@mui/material/styles";
 import dynamic from 'next/dynamic';
 import {GetServerSideProps} from 'next'
 
-import Box, {CBox} from "@/components/atom/Box";
-import BlogHeaderMenu from "@/organism/BlogHeaderMenu";
+import Box, {CBox} from "@/stateless-container/base/Box";
+import BlogHeaderMenu from "@/statefull-container/BlogHeaderMenu";
 import restApi from "@/libs/RestApi";
 import env from '@/libs/env'
-import LoadingPage from "@/organism/LoadingPage";
+import LoadingPage from "@/statefull-container/LoadingPage";
 
 export interface Props {
     post?: PostModel
@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 
-const NoSsrPostViewer = dynamic(() => import('@/organism/PostViewer'), {
+const NoSsrPostViewer = dynamic(() => import('@/statefull-container/PostViewer'), {
     ssr: false,
 });
 
