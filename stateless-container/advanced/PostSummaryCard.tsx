@@ -3,18 +3,15 @@ import {styled} from "@mui/material/styles";
 import Text from '@/stateless-container/base/Text'
 import Divider from "@/stateless-container/base/Divider";
 import Tag from "@/stateless-container/advanced/Tag"
+import {useState} from "react";
 
 export interface Props {
-    tags: string []
-    title: string
-    summary: string
-    createdAt: string
-    updatedAt: string
+    post: PostModel
 }
 
 const Root = styled(CBox)`
   width: 100%;
-    // background-color: ${props => props.theme.bg.secondary.main};
+  min-width: 720px;
   background-color: white;
   padding: 16px;
 `
@@ -44,6 +41,12 @@ const Tags = styled(Item)`
   padding: 4px;
 `
 
+function getSummary(post: PostModel) {
+    const target = post.body.split('.')[0]
+    const cleanText = target.replace(/<\/?[^>]+(>|$)/g, "");
+    return cleanText
+}
+
 
 export default function PostSummaryCard(props: Props) {
 
@@ -51,29 +54,29 @@ export default function PostSummaryCard(props: Props) {
         console.log(tag)
     }
 
+    const [title, setTitle] = useState<string>(props.post.title)
+    const [createdAt, setCreatedAt] = useState<string>(props.post.created_at.split('T')[0])
+    const [summary, setSummary] = useState<string>(getSummary(props.post))
+    const [tags, setTags] = useState<string[]>(props.post.tags)
+
+
     return (
         <Root>
             <Item mb={0.5}>
-                <Title>
-                    {props.title}
-                </Title>
+                <Title>{title}</Title>
             </Item>
 
             <Item>
-                <CreatedAt>
-                    {props.createdAt} 작성
-                </CreatedAt>
+                <CreatedAt>{createdAt} 작성</CreatedAt>
             </Item>
 
             <Item>
-                <Summary>
-                    {props.summary}
-                </Summary>
+                <Summary>{summary}</Summary>
             </Item>
 
             <Tags mb={4}>
                 {
-                    props.tags.map((tag) =>
+                    tags.map((tag) =>
                         <Tag key={tag} tag={tag} onClick={handleClickTag}/>)
                 }
             </Tags>

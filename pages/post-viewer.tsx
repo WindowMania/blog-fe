@@ -6,7 +6,7 @@ import Box, {CBox} from "@/stateless-container/base/Box";
 import BlogHeaderMenu from "@/statefull-container/BlogHeaderMenu";
 import restApi from "@/libs/RestApi";
 import env from '@/libs/env'
-import LoadingPage from "@/statefull-container/LoadingPage";
+import LoadingPage from "@/stateless-container/templates/LoadingPage";
 
 export interface Props {
     post?: PostModel

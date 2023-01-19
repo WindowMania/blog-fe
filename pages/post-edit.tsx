@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import {GetServerSideProps} from "next";
 
-import LoadingPage from "@/statefull-container/LoadingPage";
+import LoadingPage from "@/stateless-container/templates/LoadingPage";
 import env from "@/libs/env";
 import restApi from "@/libs/RestApi";
 
