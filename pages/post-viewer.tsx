@@ -28,10 +28,8 @@ const NoSsrPostViewer = dynamic(() => import('@/statefull-container/PostViewer')
     ssr: false,
 });
 
-const Root = styled(CBox)`
-  width: 100vw;
-  min-width: 100vw;
-`
+const Root = styled(CBox)``
+
 const Item = styled(Box)`
   margin-bottom: 16px;
 `

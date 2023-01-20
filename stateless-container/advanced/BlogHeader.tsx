@@ -17,8 +17,7 @@ export interface Props {
 const Root = styled(Box)`
   background-color: ${props => props.theme.bg.primary.main};
   position: sticky;
-  min-width: 100vw;
-  max-width: 100vw;
+  width: 100%;
   border-bottom: 1px solid ${props => props.theme.border.primary.main};
   min-height: 80px;
   max-height: 80px;

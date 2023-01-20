@@ -7,6 +7,7 @@ import {useState} from "react";
 
 export interface Props {
     post: PostModel
+    onClickTitle: (postId: string) => Promise<void>
 }
 
 const Root = styled(CBox)`
@@ -24,6 +25,10 @@ const Title = styled(Text)`
   font-size: 32px;
   font-weight: 600;
   color: ${props => props.theme.fontColor.primary.main};
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const Summary = styled(Text)`
@@ -60,9 +65,14 @@ export default function PostSummaryCard(props: Props) {
     const [tags, setTags] = useState<string[]>(props.post.tags)
 
 
+    const onClickTitle = async (e: any) => {
+        e.stopPropagation()
+        await props.onClickTitle(props.post.id)
+    }
+
     return (
         <Root>
-            <Item mb={0.5}>
+            <Item mb={0.5} onClick={onClickTitle}>
                 <Title>{title}</Title>
             </Item>
 

@@ -1,10 +1,9 @@
 import PostSummaryCardMolecule from "@/stateless-container/advanced/PostSummaryCard";
 import {CBox} from "@/stateless-container/base/Box";
-import {useCallback, useLayoutEffect, useRef, useState} from "react";
-import env from '@/libs/env'
-import restApi from "@/libs/RestApi";
+import {useLayoutEffect, useState} from "react";
 import useScroll from "@/hooks/useScroll";
 import PostRepository from "@/repository/post";
+import useMyRouter from "@/hooks/useMyRouter";
 
 
 export interface Props {
@@ -19,11 +18,13 @@ export default function PostSummaryBody(props: Props) {
     const [perPage, setPerPage] = useState<number>(props.perPage)
     const [posts, setPosts] = useState<PostModel []>(props.posts)
     const {isReached} = useScroll()
+    const {route} = useMyRouter()
 
+    async function onClickTitle(postId: string) {
+        console.log("보자..", postId)
+        await route("POST_READ", {"id": postId})
+    }
 
-    useLayoutEffect(() => {
-
-    }, [])
 
     useLayoutEffect(() => {
         if (isReached) {
@@ -41,10 +42,11 @@ export default function PostSummaryBody(props: Props) {
     return (
         <CBox>
             {
-                posts.map((post,key) => {
+                posts.map((post, key) => {
                     return <PostSummaryCardMolecule
                         key={key}
                         post={post}
+                        onClickTitle={onClickTitle}
                     />
                 })
             }
