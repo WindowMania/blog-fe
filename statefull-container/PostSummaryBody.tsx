@@ -26,11 +26,9 @@ export default function PostSummaryBody(props: Props) {
     }, [])
 
     useLayoutEffect(() => {
-        console.log("리치..?", isReached)
         if (isReached) {
             const nextPage = curPage + 1
             PostRepository.getPosts(nextPage, perPage).then((loadedPosts) => {
-                console.log("보자..", loadedPosts,nextPage)
                 if (loadedPosts.length) {
                     setPosts([...posts, ...loadedPosts])
                     setCurPage(nextPage)

@@ -24,8 +24,6 @@ export default function useScroll() {
         if (height && typeof window !== 'undefined') {
             const windowInnerHeight = window.innerHeight
             const bodyOffsetHeight = document.body.offsetHeight
-
-            console.log(windowInnerHeight, height, bodyOffsetHeight)
             let newReached = false
             // console.log(windowInnerHeight, height, bodyOffsetHeight)
             if (windowInnerHeight + height >= bodyOffsetHeight) {
