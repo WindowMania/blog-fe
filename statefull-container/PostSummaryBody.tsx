@@ -1,42 +1,51 @@
 import PostSummaryCardMolecule from "@/stateless-container/advanced/PostSummaryCard";
 import {CBox} from "@/stateless-container/base/Box";
-import {useCallback, useLayoutEffect, useState} from "react";
+import {useCallback, useLayoutEffect, useRef, useState} from "react";
 import env from '@/libs/env'
 import restApi from "@/libs/RestApi";
+import useScroll from "@/hooks/useScroll";
+import PostRepository from "@/repository/post";
 
 
 export interface Props {
-    curPage?: number
-    perPage?: number
+    posts: PostModel []
+    curPage: number
+    perPage: number
 }
 
-export default function PostSummaryBody(props: Props) {
-    const [curPage, setCurPage] = useState<number>(props.curPage || 1)
-    const [perPage, setPerPage] = useState<number>(props.perPage || 10)
-    const [posts, setPosts] = useState<PostModel []>([])
 
-    const loadPostList = useCallback(async (): Promise<PostModel []> => {
-        const url = env.backUrl + `/post/list?page=${curPage}&perPage=${perPage}`
-        const res = await restApi.get(url)
-        if (res.ok) {
-            return res.data['posts'] as PostModel []
-        }
-        return []
-    }, [curPage, perPage])
+export default function PostSummaryBody(props: Props) {
+    const [curPage, setCurPage] = useState<number>(props.curPage)
+    const [perPage, setPerPage] = useState<number>(props.perPage)
+    const [posts, setPosts] = useState<PostModel []>(props.posts)
+    const {isReached} = useScroll()
+
 
     useLayoutEffect(() => {
-        loadPostList().then((loadedPosts) => {
-            setPosts(loadedPosts)
-        })
+
     }, [])
+
+    useLayoutEffect(() => {
+        console.log("리치..?", isReached)
+        if (isReached) {
+            const nextPage = curPage + 1
+            PostRepository.getPosts(nextPage, perPage).then((loadedPosts) => {
+                console.log("보자..", loadedPosts,nextPage)
+                if (loadedPosts.length) {
+                    setPosts([...posts, ...loadedPosts])
+                    setCurPage(nextPage)
+                }
+            })
+        }
+    }, [isReached])
 
 
     return (
         <CBox>
             {
-                posts.map((post) => {
+                posts.map((post,key) => {
                     return <PostSummaryCardMolecule
-                        key={post.id}
+                        key={key}
                         post={post}
                     />
                 })

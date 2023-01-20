@@ -4,7 +4,7 @@ import {GetServerSideProps} from "next";
 import LoadingPage from "@/stateless-container/templates/LoadingPage";
 import env from "@/libs/env";
 import restApi from "@/libs/RestApi";
-
+import PostRepository from "@/repository/post";
 
 export interface Props {
     post?: PostModel
@@ -12,14 +12,11 @@ export interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {id} = context.query
-    const url = env.backUrl + "/post/" + id
-    const res = await restApi.get(url)
-    const props: Props = {}
-    if (res.ok) {
-        props['post'] = res.data as PostModel
-    }
+    const post = await PostRepository.getPost(id as string)
     return {
-        props
+        props: {
+            post
+        }
     }
 }
 

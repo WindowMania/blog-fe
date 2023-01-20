@@ -36,7 +36,7 @@ const MyApp = ({
             <ThemeProvider theme={theme}>
                 <SnackbarProvider maxSnack={3}>
                     <QueryClientProvider client={queryClient}>
-                        <ReactQueryDevtools initialIsOpen={true}/>
+                        {/*<ReactQueryDevtools initialIsOpen={true}/>*/}
                         <CssBaseline/>
                         <Component {...pageProps} />
                     </QueryClientProvider>
