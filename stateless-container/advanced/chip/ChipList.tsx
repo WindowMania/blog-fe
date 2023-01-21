@@ -6,14 +6,14 @@ import Chip from "@/stateless-container/base/Chip";
 
 
 export interface Props {
-    chips: Item []
+    chips: ItemData []
     onDeleteChip?: (chipId: string) => Promise<void>
     onClickChip?: (chipId: string) => Promise<void>
 
 }
 
 export interface ChipItemProps {
-    chip: Item
+    chip: ItemData
     onDelete?: (label: string) => Promise<void>
     onClick?: (label: string) => Promise<void>
 }

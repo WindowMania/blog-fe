@@ -1,6 +1,25 @@
 import env from "@/libs/env";
 import restApi from "@/libs/RestApi";
 
+export interface PostUpdate {
+    postId: string
+    title: string
+    body: string
+    tags: string[]
+}
+
+export interface PostCreate {
+    title: string
+    body: string
+    tags: string[]
+}
+
+export interface SetDeletedPost {
+    toDeleted: boolean
+    postId: string
+}
+
+
 export default class PostRepository {
 
     static async getPosts(curPage: number, perPage: number): Promise<PostModel []> {
@@ -18,6 +37,36 @@ export default class PostRepository {
         if (res.ok) {
             return res.data as PostModel
         }
+    }
+
+    static async createPost(data: PostCreate, accessKey: string) {
+        const url = env.backUrl + "/post"
+        const res = await restApi.post(url, data, {accessKey})
+        return res
+    }
+
+    static async updatePost(post: PostUpdate, accessKey: string) {
+        const url = env.backUrl + "/post"
+        const res = await restApi.put(url, {...post, id: post.postId}, {accessKey})
+        return res
+    }
+
+    static async setDeletedPost(p: SetDeletedPost, accessKey: string) {
+        const url = env.backUrl + "/post/set-delete"
+        const res = await restApi.put(url, {id: p.postId, deleted: p.toDeleted}, {accessKey})
+        return res
+    }
+
+    static async addTag(tag: string, accessKey: string) {
+        const url = env.backUrl + "/post/tag"
+        const res = await restApi.post(url, {tag}, {accessKey})
+        return res
+    }
+
+    static async deleteTag(tag: string, accessKey: string) {
+        const url = `${env.backUrl}/post/tag?name=${tag}`
+        const res = await restApi.delete(url, {accessKey})
+        return res
     }
 
 }

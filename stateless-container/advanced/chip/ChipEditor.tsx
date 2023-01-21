@@ -6,20 +6,22 @@ import Box, {CBox} from "@/stateless-container/base/Box";
 import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar"
 import TextInputBox from "@/stateless-container/base/TextInputBox";
 import ChipList from "@/stateless-container/advanced/chip/ChipList";
-import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
+
 
 export interface Props {
-    chips: Item []
+    chips: ItemData []
     onAddChip: (itemId: string) => Promise<BasicRestResponse>
     onDeleteChip: (itemId: string) => Promise<BasicRestResponse>
-    onChangeChips: (chips: Item[]) => void
+    onChangeChips: (chips: ItemData[]) => void
 }
 
-const Root = styled(CBox)``
+const Root = styled(CBox)`
+ width: 100%;
+`
 
 
 export default function ChipEditor(props: Props) {
-    const [chips, setChips] = useState<Item []>(props.chips)
+    const [chips, setChips] = useState<ItemData []>(props.chips)
     const [inputChip, setInputChip] = useState<string>('');
     const {enqueueSnackbar} = useSnackbar()
 
@@ -55,8 +57,7 @@ export default function ChipEditor(props: Props) {
     return (
         <Root>
             <ChipList chips={chips} onDeleteChip={handleDeleteChip}/>
-
-            <Box pl={"40px"}>
+            <Box>
                 <TextInputBox
                     fullWidth
                     value={inputChip}
@@ -65,14 +66,6 @@ export default function ChipEditor(props: Props) {
                     onKeyUp={handleKeyup}
                 />
             </Box>
-
-
-            <Box pl={"40px"}>
-                <ChipViewer chips={chips}
-                            onClickChip={async (chip) => console.log(chip)}/>
-
-            </Box>
-
 
         </Root>
 

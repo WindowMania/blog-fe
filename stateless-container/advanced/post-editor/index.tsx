@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import {styled} from "@mui/material/styles";
 import {useSnackbar} from 'notistack';
 
@@ -7,6 +7,7 @@ import ToastEditor from '@/stateless-container/advanced/post-editor/ToastEditor'
 import TextInputBox from "@/stateless-container/base/TextInputBox";
 import Button from "@/stateless-container/base/Button";
 import {FAIL_TOP_MIDDLE_OPTION} from '@/libs/snackbar'
+import ChipEditor from "@/stateless-container/advanced/chip/ChipEditor";
 
 export type Mode = 'edit' | 'create'
 
@@ -14,7 +15,10 @@ export interface Props {
     mode: Mode
     post?: PostEditorModel
     onSubmit: (model: PostEditorModel) => Promise<BasicRestResponse>
-    onDelete?: (toDelete:boolean) => Promise<BasicRestResponse>
+    onDelete?: (toDelete: boolean) => Promise<BasicRestResponse>
+
+    onAddTag: (tag: string) => Promise<BasicRestResponse>
+    onDeleteTag: (tag: string) => Promise<BasicRestResponse>
 }
 
 const Root = styled(CBox)`
@@ -43,15 +47,16 @@ function EditorButtonList(props: {
     const submitBtnText = props.mode == 'edit' ? "수정 하기" : "작성 하기"
     const deleteText = props.post?.deleted ? "복원 하기" : "삭제 하기"
 
-    const onDelete = useCallback(async (e: any): Promise<void> => {
+    async function onDelete(e: any): Promise<void> {
         e.stopPropagation()
         await props.onDelete(!props.post?.deleted)
-    }, [props.post])
+    }
 
-    const onSubmit = useCallback(async (e: any): Promise<void> => {
+    async function onSubmit(e: any): Promise<void> {
         e.stopPropagation()
         await props.onSubmit()
-    }, [props.mode])
+    }
+
 
     return (
         <Box>
@@ -72,10 +77,12 @@ function EditorButtonList(props: {
 
 export default function PostEditor(props: Props) {
     const ref = React.useRef<any>(null);
+    const [tags, setTags] = useState<string[]>(props.post ? props.post.tags : [])
+
     const ctx: PostEditorModel = props.post || {
         title: '',
         body: '',
-        tags: ['All']
+        tags: []
     }
     const content = ctx.body
     const [title, setTitle] = React.useState<string>(ctx.title)
@@ -87,10 +94,12 @@ export default function PostEditor(props: Props) {
     }
 
     async function handleSubmit() {
+        console.log(title, "뭐지??")
         if (title === '') {
             enqueueSnackbar("제목을 입력 해주세요.", FAIL_TOP_MIDDLE_OPTION)
             return
         }
+
         const editorIns = ref?.current?.getInstance();
         const contentMark = editorIns.getHTML()
         if (contentMark?.length === 0) {
@@ -100,13 +109,17 @@ export default function PostEditor(props: Props) {
         const newCtx: PostEditorModel = {
             title,
             body: contentMark,
-            tags: ["All"]
+            tags: [...tags, 'All']
         }
         await props.onSubmit(newCtx)
     }
 
-    async function handleDelete(toDelete:boolean) {
+    async function handleDelete(toDelete: boolean) {
         await props.onDelete?.(toDelete)
+    }
+
+    function onChangeTag(chips: ItemData[]) {
+        setTags(chips.map(chip => chip.id))
     }
 
     return (
@@ -120,11 +133,20 @@ export default function PostEditor(props: Props) {
                 />
             </Item>
 
+            <Item>
+                <ChipEditor chips={makeChipItems(tags)}
+                            onAddChip={props.onAddTag}
+                            onDeleteChip={props.onDeleteTag}
+                            onChangeChips={onChangeTag}
+                />
+            </Item>
+
             <Item height={"64px"}>
                 <TextInputBox
                     fullWidth
                     onChange={handleTitle}
-                    defaultValue={title} label={"제목"}/>
+                    defaultValue={title} label={"제목"}
+                />
             </Item>
 
             <EditorItem>
@@ -133,4 +155,8 @@ export default function PostEditor(props: Props) {
 
         </Root>
     )
+}
+
+function makeChipItems(tags: string[]): ItemData [] {
+    return tags.map((tag) => ({"id": tag, "viewValue": tag}))
 }

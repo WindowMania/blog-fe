@@ -33,10 +33,9 @@ interface PostModel {
     deleted: boolean
 }
 
-interface Item {
+interface ItemData {
     id: string
     viewValue: string
-
 }
 
 
