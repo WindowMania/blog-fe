@@ -6,6 +6,7 @@ import Box, {CBox} from "@/stateless-container/base/Box";
 import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar"
 import TextInputBox from "@/stateless-container/base/TextInputBox";
 import ChipList from "@/stateless-container/advanced/chip/ChipList";
+import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
 export interface Props {
     chips: string []
@@ -63,6 +64,13 @@ export default function ChipEditor(props: Props) {
                     variant={'standard'}
                     onKeyUp={handleKeyup}
                 />
+            </Box>
+
+
+            <Box pl={"40px"}>
+                <ChipViewer chips={chips}
+                            onClickChip={async (chip) => console.log(chip)}/>
+
             </Box>
 
 

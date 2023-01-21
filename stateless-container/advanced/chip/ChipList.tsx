@@ -8,11 +8,13 @@ import Chip from "@/stateless-container/base/Chip";
 export interface Props {
     chips: string []
     onDeleteChip?: (chip: string) => Promise<void>
+    onClickChip?: (chip: string) => Promise<void>
 }
 
 export interface ChipItemProps {
     label: string
     onDelete?: (label: string) => Promise<void>
+    onClick?: (label: string) => Promise<void>
 }
 
 const List = styled('ul')`
@@ -27,24 +29,23 @@ const ListItem = styled('li')(({theme}) => ({
 }));
 
 function ChipItem(props: ChipItemProps) {
-
     async function onDelete() {
         await props.onDelete?.(props.label)
     }
 
+    async function onClick() {
+        await props.onClick?.(props.label)
+    }
+
     return (
         <ListItem key={props.label}>
-            <Chip label={props.label} onDelete={props.onDelete ? onDelete : undefined}/>
+            <Chip label={props.label}
+                  onClick={props.onClick ? onClick : undefined}
+                  onDelete={props.onDelete ? onDelete : undefined}/>
         </ListItem>
     )
 }
 
-
-function setUniqueArray(a: string[]): string[] {
-    const set = new Set()
-    a.map(item => set.add(item));
-    return Array.from(set) as string []
-}
 
 export default function ChipList(props: Props) {
 
@@ -52,12 +53,18 @@ export default function ChipList(props: Props) {
         await props.onDeleteChip?.(chip)
     }, [props.chips])
 
+    const handleOnClickChip = useCallback(async (chip: string) => {
+        await props.onClickChip?.(chip)
+    }, [props.chips])
+
 
     return (
         <List>
             {
                 (props.chips).map((chip) => (
-                    <ChipItem key={chip} label={chip} onDelete={props.onDeleteChip ? handleDeleteChip : undefined}/>
+                    <ChipItem key={chip} label={chip}
+                              onClick={props.onClickChip ? handleOnClickChip : undefined}
+                              onDelete={props.onDeleteChip ? handleDeleteChip : undefined}/>
                 ))}
         </List>
     )
