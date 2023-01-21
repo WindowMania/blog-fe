@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback} from "react";
 import {styled} from "@mui/material";
-import {useSnackbar} from "notistack";
+
 
 import Chip from "@/stateless-container/base/Chip";
-import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
+
 
 export interface Props {
     chips: string []

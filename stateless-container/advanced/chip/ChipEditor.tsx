@@ -1,10 +1,9 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {styled} from "@mui/material";
 import {useSnackbar} from "notistack";
 
 import Box, {CBox} from "@/stateless-container/base/Box";
 import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar"
-import Chip from "@/stateless-container/base/Chip";
 import TextInputBox from "@/stateless-container/base/TextInputBox";
 import ChipList from "@/stateless-container/advanced/chip/ChipList";
 
@@ -16,35 +15,6 @@ export interface Props {
 }
 
 const Root = styled(CBox)``
-
-
-const List = styled('ul')`
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  min-width: 400px;
-`
-
-const ListItem = styled('li')(({theme}) => ({
-    margin: theme.spacing(0.5),
-}));
-
-
-function ChipItem(props: {
-    label: string
-    onDelete: (label: string) => Promise<void>
-}) {
-
-    async function onDelete() {
-        await props.onDelete(props.label)
-    }
-
-    return (
-        <ListItem key={props.label}>
-            <Chip label={props.label} onDelete={onDelete}/>
-        </ListItem>
-    )
-}
 
 
 export default function ChipEditor(props: Props) {
