@@ -1,4 +1,4 @@
-import ChipEditorStateless from "@/stateless-container/advanced/ChipEditor";
+import ChipEditorStateless from "@/stateless-container/advanced/chip/ChipEditor";
 
 export interface Props {
     initChips: string []

@@ -6,6 +6,7 @@ import Box, {CBox} from "@/stateless-container/base/Box";
 import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar"
 import Chip from "@/stateless-container/base/Chip";
 import TextInputBox from "@/stateless-container/base/TextInputBox";
+import ChipList from "@/stateless-container/advanced/chip/ChipList";
 
 export interface Props {
     chips: string []
@@ -29,13 +30,6 @@ const ListItem = styled('li')(({theme}) => ({
 }));
 
 
-function setUniqueArray(a: string[]): string[] {
-    const set = new Set()
-    a.map(item => set.add(item));
-    return Array.from(set) as string []
-}
-
-
 function ChipItem(props: {
     label: string
     onDelete: (label: string) => Promise<void>
@@ -54,7 +48,7 @@ function ChipItem(props: {
 
 
 export default function ChipEditor(props: Props) {
-    const [chips, setChips] = useState<string []>(setUniqueArray(props.chips))
+    const [chips, setChips] = useState<string []>(props.chips)
     const [inputChip, setInputChip] = useState<string>('');
     const {enqueueSnackbar} = useSnackbar()
 
@@ -66,43 +60,30 @@ export default function ChipEditor(props: Props) {
         setInputChip(event.target.value);
     };
 
-    const handleKeyup = async (event: React.KeyboardEvent) => {
-        if (event.key === 'Enter') {
-            if (inputChip.length >= 2) {
-                const ret = chips.find((chip) => chip === inputChip)
-                if (ret) {
-                    setInputChip('')
-                    return
-                }
-                const res = await props.onAddChip(inputChip)
-                if (res.ok) {
-                    setChips([...chips, inputChip])
-                    setInputChip('')
-                } else {
-                    enqueueSnackbar(res.message, FAIL_TOP_MIDDLE_OPTION)
-                }
-            }
+
+    async function handleKeyup(event: React.KeyboardEvent) {
+        if (event.key !== 'Enter') return
+        if (inputChip.length < 2) return
+        const ret = chips.find((chip) => chip === inputChip)
+        if (ret) {
+            setInputChip('')
+            return
         }
+        const res = await props.onAddChip(inputChip)
+        res.ok && setChips([...chips, inputChip]) && setInputChip('')
+        !res.ok && enqueueSnackbar(res.message, FAIL_TOP_MIDDLE_OPTION)
     }
-    const handleDeleteChip = useCallback(async (chip: string) => {
+
+    async function handleDeleteChip(chip: string) {
         const res = await props.onDeleteChip(chip)
-        if (res.ok) {
-            const filtered = chips.filter((c) => c !== chip)
-            setChips([...filtered])
-        } else {
-            enqueueSnackbar(res.message, FAIL_TOP_MIDDLE_OPTION)
-        }
-    }, [chips])
+        res.ok && setChips(chips.filter((c) => c !== chip))
+        !res.ok && enqueueSnackbar(res.message, FAIL_TOP_MIDDLE_OPTION)
+    }
 
 
     return (
         <Root>
-            <List>
-                {
-                    chips.map((chip) => (
-                        <ChipItem key={chip} label={chip} onDelete={handleDeleteChip}/>
-                    ))}
-            </List>
+            <ChipList chips={chips} onDeleteChip={handleDeleteChip}/>
 
             <Box pl={"40px"}>
                 <TextInputBox
