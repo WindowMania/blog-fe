@@ -4,6 +4,7 @@ import ChipList from "@/stateless-container/advanced/chip/ChipList";
 export interface Props {
     chips: ItemData [] | string []
     onClickChip?: (chipId: string) => Promise<void>
+    blackList?: string[]
 }
 
 
@@ -18,10 +19,10 @@ function toItems(it: ItemData [] | string []): ItemData[] {
 
 
 export default function ChipViewer(props: Props) {
-
     return (
         <ChipList chips={toItems(props.chips)}
                   onClickChip={props.onClickChip}
+                  blackList={props.blackList}
         />
     )
 }

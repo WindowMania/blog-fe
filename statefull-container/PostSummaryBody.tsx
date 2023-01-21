@@ -21,7 +21,6 @@ export default function PostSummaryBody(props: Props) {
     const {route} = useMyRouter()
 
     async function onClickTitle(postId: string) {
-        console.log("보자..", postId)
         await route("POST_READ", {"id": postId})
     }
 

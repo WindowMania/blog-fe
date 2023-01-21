@@ -4,6 +4,7 @@ import Text from '@/stateless-container/base/Text'
 import Divider from "@/stateless-container/base/Divider";
 import Tag from "@/stateless-container/advanced/Tag"
 import {useState} from "react";
+import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
 export interface Props {
     post: PostModel
@@ -84,12 +85,9 @@ export default function PostSummaryCard(props: Props) {
                 <Summary>{summary}</Summary>
             </Item>
 
-            <Tags mb={4}>
-                {
-                    tags.map((tag) =>
-                        <Tag key={tag} tag={tag} onClick={handleClickTag}/>)
-                }
-            </Tags>
+            <Item mb={4}>
+                <ChipViewer chips={tags} blackList={['All']}/>
+            </Item>
 
             <Divider/>
         </Root>

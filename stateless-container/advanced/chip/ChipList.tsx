@@ -10,6 +10,7 @@ export interface Props {
     onDeleteChip?: (chipId: string) => Promise<void>
     onClickChip?: (chipId: string) => Promise<void>
 
+    blackList?: string[]
 }
 
 export interface ChipItemProps {
@@ -48,6 +49,17 @@ function ChipItem(props: ChipItemProps) {
     )
 }
 
+function filterBlackList(it: ItemData [], blackList: string[]) {
+    const dict = blackList.reduce((acc: any, black) => {
+        acc[black] = true
+        return acc
+    }, {} as any)
+
+    return it.filter(item => {
+        if (dict[item.id]) return false
+        return true
+    })
+}
 
 export default function ChipList(props: Props) {
 
@@ -63,12 +75,16 @@ export default function ChipList(props: Props) {
     return (
         <List>
             {
-                (props.chips).map((chip) => (
-                    <ChipItem key={chip.id}
-                              chip={chip}
-                              onClick={props.onClickChip ? handleOnClickChip : undefined}
-                              onDelete={props.onDeleteChip ? handleDeleteChip : undefined}/>
-                ))}
+                (filterBlackList(props.chips, props.blackList || []))
+                    .map((chip) =>
+                        (
+                            <ChipItem key={chip.id}
+                                      chip={chip}
+                                      onClick={props.onClickChip ? handleOnClickChip : undefined}
+                                      onDelete={props.onDeleteChip ? handleDeleteChip : undefined}/>
+                        )
+                    )
+            }
         </List>
     )
 

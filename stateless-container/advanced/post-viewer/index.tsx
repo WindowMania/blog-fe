@@ -37,7 +37,7 @@ const UserNameBox = styled(Box)`
   font-size: 16px;
   margin-right: 8px;
   padding-left: 8px;
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -86,7 +86,7 @@ export default function PostViewer(props: Props) {
             </PostInfoItem>
 
             <TagItem>
-                <ChipViewer chips={tags}/>
+                <ChipViewer chips={tags} blackList={['All']}/>
             </TagItem>
             <Divider/>
 

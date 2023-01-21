@@ -16,7 +16,7 @@ export interface Props {
 }
 
 const Root = styled(CBox)`
- width: 100%;
+  width: 100%;
 `
 
 
@@ -36,7 +36,14 @@ export default function ChipEditor(props: Props) {
 
     async function handleKeyup(event: React.KeyboardEvent) {
         if (event.key !== 'Enter') return
-        if (inputChip.length < 2) return
+        if (inputChip.length < 2) {
+            enqueueSnackbar("태그는 최소 2글자 이상만 가능합니다.", FAIL_TOP_MIDDLE_OPTION)
+            return
+        }
+        if (inputChip === 'All') {
+            enqueueSnackbar("추가할 수 없는 태그 이름 입니다.", FAIL_TOP_MIDDLE_OPTION)
+            return
+        }
         const ret = chips.find((chip) => chip.viewValue === inputChip)
         if (ret) {
             setInputChip('')
@@ -56,7 +63,10 @@ export default function ChipEditor(props: Props) {
 
     return (
         <Root>
-            <ChipList chips={chips} onDeleteChip={handleDeleteChip}/>
+            <ChipList chips={chips}
+                      onDeleteChip={handleDeleteChip}
+                      blackList={["All"]}
+            />
             <Box>
                 <TextInputBox
                     fullWidth
