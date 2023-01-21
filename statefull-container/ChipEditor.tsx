@@ -14,18 +14,27 @@ async function onDeleteChip(chip: string) {
 }
 
 
-export default function ChipEditor(props: Props) {
-    const chipss = ["리액트",
-        "파이썬", "데이터베이스", "음악", "리뷰",
-        "FastAPI", "Docker", "proxmox", "공부", "일상", "휴식", "감상", "영화"]
+function stringToItem(list: string[]): Item[] {
+    return list.map((it) => ({
+        "id": it,
+        "viewValue": it
+    }))
+}
 
-    function onChangeChips(chips: string[]) {
-        console.log("변경 되었어요..", chips)
+function itemToString(items: Item[]): string [] {
+    return items.map(i => i.id)
+}
+
+
+export default function ChipEditor(props: Props) {
+
+    function onChangeChips(chips: Item[]) {
+        props.onChangeChips(itemToString(chips))
     }
 
     return (
         <ChipEditorStateless
-            chips={chipss}
+            chips={stringToItem(props.initChips)}
             onAddChip={onAddChip}
             onDeleteChip={onDeleteChip}
             onChangeChips={onChangeChips}

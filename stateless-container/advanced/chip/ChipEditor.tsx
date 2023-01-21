@@ -9,17 +9,17 @@ import ChipList from "@/stateless-container/advanced/chip/ChipList";
 import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
 export interface Props {
-    chips: string []
-    onAddChip: (chip: string) => Promise<BasicRestResponse>
-    onDeleteChip: (chip: string) => Promise<BasicRestResponse>
-    onChangeChips: (chips: string[]) => void
+    chips: Item []
+    onAddChip: (itemId: string) => Promise<BasicRestResponse>
+    onDeleteChip: (itemId: string) => Promise<BasicRestResponse>
+    onChangeChips: (chips: Item[]) => void
 }
 
 const Root = styled(CBox)``
 
 
 export default function ChipEditor(props: Props) {
-    const [chips, setChips] = useState<string []>(props.chips)
+    const [chips, setChips] = useState<Item []>(props.chips)
     const [inputChip, setInputChip] = useState<string>('');
     const {enqueueSnackbar} = useSnackbar()
 
@@ -35,19 +35,19 @@ export default function ChipEditor(props: Props) {
     async function handleKeyup(event: React.KeyboardEvent) {
         if (event.key !== 'Enter') return
         if (inputChip.length < 2) return
-        const ret = chips.find((chip) => chip === inputChip)
+        const ret = chips.find((chip) => chip.viewValue === inputChip)
         if (ret) {
             setInputChip('')
             return
         }
         const res = await props.onAddChip(inputChip)
-        res.ok && setChips([...chips, inputChip]) && setInputChip('')
+        res.ok && setChips([...chips, {id: inputChip, viewValue: inputChip}]) && setInputChip('')
         !res.ok && enqueueSnackbar(res.message, FAIL_TOP_MIDDLE_OPTION)
     }
 
-    async function handleDeleteChip(chip: string) {
-        const res = await props.onDeleteChip(chip)
-        res.ok && setChips(chips.filter((c) => c !== chip))
+    async function handleDeleteChip(chipId: string) {
+        const res = await props.onDeleteChip(chipId)
+        res.ok && setChips(chips.filter((c) => c.id !== chipId))
         !res.ok && enqueueSnackbar(res.message, FAIL_TOP_MIDDLE_OPTION)
     }
 

@@ -33,6 +33,12 @@ interface PostModel {
     deleted: boolean
 }
 
+interface Item {
+    id: string
+    viewValue: string
+
+}
+
 
 const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout"]
 type MenuItem = typeof MenuItems[number]

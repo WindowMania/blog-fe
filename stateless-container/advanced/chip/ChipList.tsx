@@ -6,13 +6,14 @@ import Chip from "@/stateless-container/base/Chip";
 
 
 export interface Props {
-    chips: string []
-    onDeleteChip?: (chip: string) => Promise<void>
-    onClickChip?: (chip: string) => Promise<void>
+    chips: Item []
+    onDeleteChip?: (chipId: string) => Promise<void>
+    onClickChip?: (chipId: string) => Promise<void>
+
 }
 
 export interface ChipItemProps {
-    label: string
+    chip: Item
     onDelete?: (label: string) => Promise<void>
     onClick?: (label: string) => Promise<void>
 }
@@ -21,7 +22,8 @@ const List = styled('ul')`
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-  min-width: 400px;
+  padding: 0px;
+  margin: 0px;
 `
 
 const ListItem = styled('li')(({theme}) => ({
@@ -30,16 +32,16 @@ const ListItem = styled('li')(({theme}) => ({
 
 function ChipItem(props: ChipItemProps) {
     async function onDelete() {
-        await props.onDelete?.(props.label)
+        await props.onDelete?.(props.chip.id)
     }
 
     async function onClick() {
-        await props.onClick?.(props.label)
+        await props.onClick?.(props.chip.id)
     }
 
     return (
-        <ListItem key={props.label}>
-            <Chip label={props.label}
+        <ListItem>
+            <Chip label={props.chip.viewValue}
                   onClick={props.onClick ? onClick : undefined}
                   onDelete={props.onDelete ? onDelete : undefined}/>
         </ListItem>
@@ -49,12 +51,12 @@ function ChipItem(props: ChipItemProps) {
 
 export default function ChipList(props: Props) {
 
-    const handleDeleteChip = useCallback(async (chip: string) => {
-        await props.onDeleteChip?.(chip)
+    const handleDeleteChip = useCallback(async (chipId: string) => {
+        await props.onDeleteChip?.(chipId)
     }, [props.chips])
 
-    const handleOnClickChip = useCallback(async (chip: string) => {
-        await props.onClickChip?.(chip)
+    const handleOnClickChip = useCallback(async (chipId: string) => {
+        await props.onClickChip?.(chipId)
     }, [props.chips])
 
 
@@ -62,7 +64,8 @@ export default function ChipList(props: Props) {
         <List>
             {
                 (props.chips).map((chip) => (
-                    <ChipItem key={chip} label={chip}
+                    <ChipItem key={chip.id}
+                              chip={chip}
                               onClick={props.onClickChip ? handleOnClickChip : undefined}
                               onDelete={props.onDeleteChip ? handleDeleteChip : undefined}/>
                 ))}

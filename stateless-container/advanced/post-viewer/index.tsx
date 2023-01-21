@@ -5,6 +5,7 @@ import Text from "@/stateless-container/base/Text";
 import TuiViewer from "@/stateless-container/advanced/post-viewer/ToastViewer"
 import Tag from "@/stateless-container/advanced/Tag"
 import Divider from "@mui/material/Divider";
+import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
 export interface Props {
     post: PostModel
@@ -35,7 +36,8 @@ const UserNameBox = styled(Box)`
   font-weight: 800;
   font-size: 16px;
   margin-right: 8px;
-
+  padding-left: 8px;
+  
   &:hover {
     cursor: pointer;
   }
@@ -84,10 +86,7 @@ export default function PostViewer(props: Props) {
             </PostInfoItem>
 
             <TagItem>
-                {
-                    tags.map((tag) =>
-                        <Tag key={tag} tag={tag} onClick={handleClickTag}/>)
-                }
+                <ChipViewer chips={tags}/>
             </TagItem>
             <Divider/>
 
