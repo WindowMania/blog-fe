@@ -4,11 +4,19 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import {Editor as TuiEditor} from '@toast-ui/react-editor';
 import React from 'react'
+import {HookCallback} from "@toast-ui/editor/types/editor";
+
+export interface ImageBlobHookResponse {
+    ok: boolean
+    url?: string
+    imageTxt?: string
+}
 
 
 interface Props {
     content?: string;
     editorRef: React.MutableRefObject<any>;
+    addImageBlobHook?: (f: Blob | File) => Promise<ImageBlobHookResponse>
 }
 
 
@@ -27,6 +35,14 @@ export default function ToastEditor(props: Props) {
     const content = props.content || ''
     const editorRef = props.editorRef
 
+    async function addImageBlobHook(f: Blob | File, callback: HookCallback) {
+        console.log(props.addImageBlobHook)
+        if (props.addImageBlobHook) {
+            const res = await props.addImageBlobHook(f)
+            res.ok && res.url && callback(res.url, res.imageTxt)
+        }
+    }
+
     return (
         <div style={{width: '100%', height: '100%'}}>
             {editorRef && (
@@ -42,6 +58,8 @@ export default function ToastEditor(props: Props) {
                     toolbarItems={toolbarItems}
                     useCommandShortcut={true}
                     plugins={[colorSyntax]}
+
+                    hooks={{addImageBlobHook}}
                 />
             )}
         </div>

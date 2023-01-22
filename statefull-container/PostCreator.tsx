@@ -1,12 +1,12 @@
 import PostEditMolecule from "@/stateless-container/advanced/post-editor"
 import {useCallback} from "react";
-import restApi from "@/libs/RestApi";
 import useLogin from "@/hooks/useLogin";
-import env from "@/libs/env";
 import {FAIL_TOP_MIDDLE_OPTION, restResponseToSnackbar} from "@/libs/snackbar";
 import {useSnackbar} from "notistack";
 import useRedirect from "@/hooks/useRedirect";
 import PostRepository from "@/repository/post";
+import {ImageBlobHookResponse} from "@/stateless-container/advanced/post-editor/ToastEditor";
+import LoadingPage from "@/stateless-container/templates/LoadingPage";
 
 export interface Props {
 }
@@ -16,6 +16,7 @@ export default function PostCreator(props: Props) {
     const {accessKey} = useLogin()
     const {enqueueSnackbar} = useSnackbar()
     const redirect = useRedirect()
+    console.log(accessKey)
 
     const submit = useCallback(async (ctx: PostEditorModel) => {
         if (!accessKey) return {ok: false}
@@ -37,6 +38,16 @@ export default function PostCreator(props: Props) {
         return {ok: false}
     }
 
+    async function onUploadFile(f: File | Blob): Promise<ImageBlobHookResponse> {
+        if (!accessKey) return {ok: false}
+        const res = await PostRepository.uploadFile(f, accessKey)
+        return Promise.resolve({
+            ok: true,
+            url: res?.uploaded_url
+        })
+    }
+
+
     async function deleteTag(tag: string): Promise<BasicRestResponse> {
         if (!accessKey) return {ok: false}
         const res = await PostRepository.deleteTag(tag, accessKey)
@@ -44,10 +55,13 @@ export default function PostCreator(props: Props) {
     }
 
     return (
-        <PostEditMolecule mode={'create'}
-                          onSubmit={submit}
-                          onAddTag={addTag}
-                          onDeleteTag={deleteTag}
-        />
+        <LoadingPage getLoadingState={async () => accessKey !== undefined ? "success" : "pending"}>
+            <PostEditMolecule mode={'create'}
+                              onSubmit={submit}
+                              onAddTag={addTag}
+                              onDeleteTag={deleteTag}
+                              onUploadFile={onUploadFile}
+            />
+        </LoadingPage>
     )
 }

@@ -18,7 +18,6 @@ const JoinVerifyEmail: NextPage = () => {
             account: user_account,
             code
         }).then(r => {
-            console.log(r)
             if (r.ok) {
                 setMsg("인증 성공.")
                 return

@@ -64,7 +64,6 @@ function getSummary(post: PostModel) {
 
 
 export default function PostSummaryCard(props: Props) {
-    console.log("뭐가 문제인데?", props.onClickEdit)
 
     async function handleClickTag(tag: string) {
         console.log(tag)

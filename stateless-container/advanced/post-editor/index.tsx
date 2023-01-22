@@ -3,13 +3,15 @@ import {styled} from "@mui/material/styles";
 import {useSnackbar} from 'notistack';
 
 import Box, {CBox} from '@/stateless-container/base/Box'
-import ToastEditor from '@/stateless-container/advanced/post-editor/ToastEditor'
+import ToastEditor, {ImageBlobHookResponse} from '@/stateless-container/advanced/post-editor/ToastEditor'
 import TextInputBox from "@/stateless-container/base/TextInputBox";
 import Button from "@/stateless-container/base/Button";
 import {FAIL_TOP_MIDDLE_OPTION} from '@/libs/snackbar'
 import ChipEditor from "@/stateless-container/advanced/chip/ChipEditor";
 
 export type Mode = 'edit' | 'create'
+
+
 
 export interface Props {
     mode: Mode
@@ -19,6 +21,8 @@ export interface Props {
 
     onAddTag: (tag: string) => Promise<BasicRestResponse>
     onDeleteTag: (tag: string) => Promise<BasicRestResponse>
+
+    onUploadFile?: (f: Blob | File) => Promise<ImageBlobHookResponse>
 }
 
 const Root = styled(CBox)`
@@ -57,7 +61,6 @@ function EditorButtonList(props: {
         await props.onSubmit()
     }
 
-
     return (
         <Box>
             <Box>
@@ -94,7 +97,6 @@ export default function PostEditor(props: Props) {
     }
 
     async function handleSubmit() {
-        console.log(title, "뭐지??")
         if (title === '') {
             enqueueSnackbar("제목을 입력 해주세요.", FAIL_TOP_MIDDLE_OPTION)
             return
@@ -121,6 +123,7 @@ export default function PostEditor(props: Props) {
     function onChangeTag(chips: ItemData[]) {
         setTags(chips.map(chip => chip.id))
     }
+
 
     return (
         <Root>
@@ -150,7 +153,9 @@ export default function PostEditor(props: Props) {
             </Item>
 
             <EditorItem>
-                <ToastEditor editorRef={ref} content={content}/>
+                <ToastEditor
+                    addImageBlobHook={props.onUploadFile}
+                    editorRef={ref} content={content}/>
             </EditorItem>
 
         </Root>

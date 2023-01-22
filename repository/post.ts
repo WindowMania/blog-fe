@@ -1,5 +1,6 @@
 import env from "@/libs/env";
 import restApi from "@/libs/RestApi";
+import formApi from "@/libs/FormApi";
 
 export interface PostUpdate {
     postId: string
@@ -17,6 +18,10 @@ export interface PostCreate {
 export interface SetDeletedPost {
     toDeleted: boolean
     postId: string
+}
+
+export interface FileUploadRes {
+    uploaded_url:string
 }
 
 
@@ -67,6 +72,14 @@ export default class PostRepository {
         const url = `${env.backUrl}/post/tag?name=${tag}`
         const res = await restApi.delete(url, {accessKey})
         return res
+    }
+
+    static async uploadFile(f: File | Blob, accessKey: string): Promise<FileUploadRes | undefined> {
+        const url = `${env.backUrl}/file`
+        const res = await formApi.post(url, f, {accessKey})
+        if (res.ok) {
+            return {uploaded_url:`${env.backUrl}/file/static/${res.data['file_id']}`}
+        }
     }
 
 }

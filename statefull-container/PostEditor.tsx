@@ -3,12 +3,13 @@ import {useSnackbar} from "notistack";
 import PostEditMolecule from "@/stateless-container/advanced/post-editor"
 import useLogin from "@/hooks/useLogin";
 import {useCallback, useState} from "react";
-import env from "@/libs/env";
-import restApi from "@/libs/RestApi";
 
 import {restResponseToSnackbar, FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 import useRedirect from "@/hooks/useRedirect";
 import PostRepository from "@/repository/post";
+import {ImageBlobHookResponse} from '@/stateless-container/advanced/post-editor/ToastEditor'
+import LoadingPage from "@/stateless-container/templates/LoadingPage";
+
 
 export interface Props {
     post: PostModel
@@ -68,6 +69,15 @@ export default function PostEditor(props: Props) {
         return Promise.resolve({"ok": true})
     }
 
+    async function onUploadFile(f: File | Blob): Promise<ImageBlobHookResponse> {
+        if (!accessKey) return {ok: false}
+        const res = await PostRepository.uploadFile(f, accessKey)
+        return Promise.resolve({
+            ok: true,
+            url: res?.uploaded_url
+        })
+    }
+
 
     const postEditorModel: PostEditorModel = {
         title: post.title,
@@ -77,12 +87,15 @@ export default function PostEditor(props: Props) {
     }
 
     return (
-        <PostEditMolecule post={postEditorModel}
-                          mode={'edit'}
-                          onSubmit={onSubmit}
-                          onDelete={onDelete}
-                          onAddTag={addTag}
-                          onDeleteTag={deleteTag}
-        />
+        <LoadingPage getLoadingState={async () => accessKey !== undefined ? "success" : "pending"}>
+            <PostEditMolecule post={postEditorModel}
+                              mode={'edit'}
+                              onSubmit={onSubmit}
+                              onDelete={onDelete}
+                              onAddTag={addTag}
+                              onDeleteTag={deleteTag}
+                              onUploadFile={onUploadFile}
+            />
+        </LoadingPage>
     )
 }

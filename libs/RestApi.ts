@@ -1,8 +1,3 @@
-export interface RestResponse {
-    success: boolean
-    data: any
-    detail?: string
-}
 
 export class RestApi {
     constructor() {
