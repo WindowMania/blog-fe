@@ -1,4 +1,4 @@
-import {useLayoutEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function useScroll() {
     const [width, setWidth] = useState<number | undefined>()
@@ -7,8 +7,9 @@ export default function useScroll() {
     const [preHeight, setPreHeight] = useState<number>(0)
     const [isReached, setReached] = useState<boolean>(false)
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         function onScrollWindow(e: any) {
+            e.stopPropagation()
             setWidth(window.scrollX)
             setHeight(window.scrollY)
         }
@@ -20,7 +21,7 @@ export default function useScroll() {
     }, [])
 
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (height && typeof window !== 'undefined') {
             const windowInnerHeight = window.innerHeight
             const bodyOffsetHeight = document.body.offsetHeight
@@ -32,7 +33,7 @@ export default function useScroll() {
             setReached(newReached)
         }
         if (height) {
-            const newIsDown = height >= preHeight ? true : false
+            const newIsDown = height >= preHeight
             setIsDown(newIsDown)
             setPreHeight(height)
         }

@@ -1,4 +1,4 @@
-import {useState, useCallback, useMemo} from "react";
+import {useState, useCallback, useEffect} from "react";
 
 
 export default function useLogin() {
@@ -16,7 +16,7 @@ export default function useLogin() {
         setIsLogin(false)
     }, [])
 
-    useMemo(() => {
+    useEffect(() => {
         if (typeof window !== 'undefined') {
             let token = window.localStorage.getItem("accessKey")
             let setupLogin = true
@@ -27,7 +27,7 @@ export default function useLogin() {
             setIsLogin(setupLogin)
             setAccessKey(token)
         }
-    }, [typeof window !== 'undefined'])
+    }, [])
 
     return {isLogin, accessKey, setAccessKey, setLogout}
 }

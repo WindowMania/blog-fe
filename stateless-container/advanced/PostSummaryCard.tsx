@@ -2,13 +2,15 @@ import Box, {CBox} from "@/stateless-container/base/Box";
 import {styled} from "@mui/material/styles";
 import Text from '@/stateless-container/base/Text'
 import Divider from "@/stateless-container/base/Divider";
-import Tag from "@/stateless-container/advanced/Tag"
+
+
 import {useState} from "react";
 import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
 export interface Props {
     post: PostModel
     onClickTitle: (postId: string) => Promise<void>
+    onClickEdit?: (postId: string) => Promise<void>
 }
 
 const Root = styled(CBox)`
@@ -43,18 +45,26 @@ const CreatedAt = styled(Text)`
   color: ${props => props.theme.fontColor.primary.summary};
 `
 
-const Tags = styled(Item)`
-  padding: 4px;
+const Edit = styled(Text)`
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 8px;
+  color: ${props => props.theme.fontColor.primary.summary};
+
+  &:hover {
+    cursor: pointer;
+    color: ${props => props.theme.fontColor.primary.main};
+  }
 `
 
 function getSummary(post: PostModel) {
     const target = post.body.split('.')[0]
-    const cleanText = target.replace(/<\/?[^>]+(>|$)/g, "");
-    return cleanText
+    return target.replace(/<\/?[^>]+(>|$)/g, "");
 }
 
 
 export default function PostSummaryCard(props: Props) {
+    console.log("뭐가 문제인데?", props.onClickEdit)
 
     async function handleClickTag(tag: string) {
         console.log(tag)
@@ -71,6 +81,10 @@ export default function PostSummaryCard(props: Props) {
         await props.onClickTitle(props.post.id)
     }
 
+    const onClickEdit = async () => {
+        await props.onClickEdit?.(props.post.id)
+    }
+
     return (
         <Root>
             <Item mb={0.5} onClick={onClickTitle}>
@@ -79,6 +93,9 @@ export default function PostSummaryCard(props: Props) {
 
             <Item>
                 <CreatedAt>{createdAt} 작성</CreatedAt>
+
+                {props.onClickEdit !== undefined ? <Edit onClick={onClickEdit}>수정</Edit> : ""}
+
             </Item>
 
             <Item>
