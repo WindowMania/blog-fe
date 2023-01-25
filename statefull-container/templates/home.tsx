@@ -22,7 +22,7 @@ const Middle = styled(CBox)`
 const Right = styled(CBox)`
   margin-left: 0.5rem;
   margin-right: auto;
-  background-color: black;
+  // background-color: black;
   height: 100vh;
 `
 
@@ -55,7 +55,7 @@ export default function Home(props: Props) {
                 </Middle>
 
                 <Right>
-                    1111111111111111111111
+                    태그 목록 들어갈 자리
                 </Right>
 
             </Body>
