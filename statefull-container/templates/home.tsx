@@ -17,6 +17,7 @@ const Body = styled(Box)``
 const Middle = styled(CBox)`
   margin-left: auto;
   margin-right: 0.5rem;
+  margin-top: 48px;
 `
 
 const Right = styled(CBox)`
@@ -24,6 +25,7 @@ const Right = styled(CBox)`
   margin-right: auto;
   // background-color: black;
   height: 100vh;
+  margin-top: 48px;
 `
 
 
@@ -35,7 +37,6 @@ export default function Home(props: Props) {
             </Box>
 
             <Body>
-
                 <Middle>
                     <Box>
                         <UserIntroCard

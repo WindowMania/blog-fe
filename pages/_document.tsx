@@ -14,7 +14,7 @@ export default class _Document extends Document {
             <Html lang='ko'>
                 <Head>
                     <meta name='theme-color' content={theme.palette.primary.main}/>
-                    <link rel='shortcut icon' href='/static/favicon.ico'/>
+                    <link rel='shortcut icon' href='/favicon.ico'/>
                     <link
                         rel='stylesheet'
                         href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
