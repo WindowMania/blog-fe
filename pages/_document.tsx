@@ -15,6 +15,7 @@ export default class _Document extends Document {
                 <Head>
                     <meta name='theme-color' content={theme.palette.primary.main}/>
                     <link rel='shortcut icon' href='/favicon.ico'/>
+                    <title>blog.kyb</title>
                     <link
                         rel='stylesheet'
                         href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'

@@ -50,6 +50,7 @@ const ViewerItem = styled(Item)`
   //border: 1px solid black;
   height: 100vh;
   min-height: 100vh;
+  margin-bottom: 48px;
 `
 
 const TagItem = styled(Item)`
