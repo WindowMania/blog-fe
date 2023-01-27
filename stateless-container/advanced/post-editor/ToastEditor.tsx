@@ -49,7 +49,7 @@ export default function ToastEditor(props: Props) {
                 <TuiEditor
                     ref={editorRef}
                     initialValue={content || ' '} // 글 수정 시 사용
-                    initialEditType="wysiwyg" // wysiwyg & markdown
+                    initialEditType="markdown" // wysiwyg & markdown
                     previewStyle={window.innerWidth > 800 ? 'vertical' : 'tab'} // tab, vertical
                     hideModeSwitch={true}
                     height={"100%"}

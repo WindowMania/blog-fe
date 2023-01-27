@@ -2,8 +2,6 @@ import dynamic from "next/dynamic";
 import {GetServerSideProps} from "next";
 
 import LoadingPage from "@/stateless-container/templates/LoadingPage";
-import env from "@/libs/env";
-import restApi from "@/libs/RestApi";
 import PostRepository from "@/repository/post";
 
 export interface Props {
@@ -26,6 +24,7 @@ const NoSsrPostEditor = dynamic(() => import('@/statefull-container/PostEditor')
 });
 
 export default function PostEdit(props: Props) {
+    console.log(props.post)
     const loading = async (): Promise<LoadingState> => {
         if (props.post) {
             return Promise.resolve("success")
