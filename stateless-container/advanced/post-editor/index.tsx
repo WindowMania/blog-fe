@@ -103,7 +103,7 @@ export default function PostEditor(props: Props) {
         }
 
         const editorIns = ref?.current?.getInstance();
-        const contentMark = editorIns.getHTML()
+        const contentMark = editorIns.getMarkdown()
         if (contentMark?.length === 0) {
             enqueueSnackbar("내용을 입력 해주세요", FAIL_TOP_MIDDLE_OPTION)
             return
