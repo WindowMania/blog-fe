@@ -6,6 +6,7 @@ import {styled} from "@mui/material/styles";
 import TagSimpleTextMenu from "@/statefull-container/TagSimpleTextMenu";
 import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 import {TagStatistics} from "@/repository/post";
+import ChipToggleList from "@/stateless-container/advanced/chip/ChipToggleList";
 
 
 export interface Props {
@@ -20,10 +21,12 @@ export interface Props {
 const Root = styled(CBox)``
 
 const Body = styled(Box)``
+
 const Middle = styled(CBox)`
   margin-left: auto;
   margin-right: 0.5rem;
   margin-top: 48px;
+  max-width: 800px;
 `
 
 const Right = styled(CBox)`
@@ -58,8 +61,19 @@ function TagMode(props: Props) {
     if (props.pageMode !== 'tag-mode') {
         return null
     }
+
+    async function onChangeSelected(idList: string[]) {
+        console.log(idList)
+    }
+
     return (
-        <ChipViewer chips={["test1", "test12"]} blackList={["All"]}/>
+        <Box width={"100%"}>
+            <ChipToggleList
+                blackIdList={["All"]}
+                onChangeSelectedList={onChangeSelected}
+                initSelectedIdList={["DDD"]}
+                chips={tagStaticsToItemDataList(props.tags)}/>
+        </Box>
     )
 }
 

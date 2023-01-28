@@ -1,9 +1,10 @@
 import React, {useCallback} from "react";
-import {styled} from "@mui/material";
 
-
-import Chip from "@/stateless-container/base/Chip";
-
+import {
+    ChipStyled,
+    ChipListStyled,
+    ChipListItemStyled
+} from "@/stateless-container/advanced/chip/index";
 
 export interface Props {
     chips: ItemData []
@@ -19,17 +20,6 @@ export interface ChipItemProps {
     onClick?: (label: string) => Promise<void>
 }
 
-const List = styled('ul')`
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-`
-
-const ListItem = styled('li')(({theme}) => ({
-    margin: theme.spacing(0.5),
-}));
 
 function ChipItem(props: ChipItemProps) {
     async function onDelete() {
@@ -41,11 +31,11 @@ function ChipItem(props: ChipItemProps) {
     }
 
     return (
-        <ListItem>
-            <Chip label={props.chip.viewValue}
-                  onClick={props.onClick ? onClick : undefined}
-                  onDelete={props.onDelete ? onDelete : undefined}/>
-        </ListItem>
+        <ChipListItemStyled>
+            <ChipStyled label={props.chip.viewValue}
+                        onClick={props.onClick ? onClick : undefined}
+                        onDelete={props.onDelete ? onDelete : undefined}/>
+        </ChipListItemStyled>
     )
 }
 
@@ -71,9 +61,8 @@ export default function ChipList(props: Props) {
         await props.onClickChip?.(chipId)
     }, [props.chips])
 
-
     return (
-        <List>
+        <ChipListStyled>
             {
                 (filterBlackList(props.chips, props.blackList || []))
                     .map((chip) =>
@@ -85,7 +74,7 @@ export default function ChipList(props: Props) {
                         )
                     )
             }
-        </List>
+        </ChipListStyled>
     )
 
 }
