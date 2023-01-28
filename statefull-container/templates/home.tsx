@@ -3,6 +3,7 @@ import UserIntroCard from "@/stateless-container/advanced/UserIntroCard";
 import BlogHeaderMenu from "@/statefull-container/BlogHeaderMenu";
 import PostSummaryBody from "@/statefull-container/PostSummaryBody";
 import {styled} from "@mui/material/styles";
+import TagSimpleTextMenu from "@/statefull-container/TagSimpleTextMenu";
 
 
 export interface Props {
@@ -21,11 +22,10 @@ const Middle = styled(CBox)`
 `
 
 const Right = styled(CBox)`
-  margin-left: 0.5rem;
+  margin-left: 64px;
   margin-right: auto;
-  // background-color: black;
   height: 100vh;
-  margin-top: 48px;
+  margin-top: 280px;
 `
 
 
@@ -56,7 +56,7 @@ export default function Home(props: Props) {
                 </Middle>
 
                 <Right>
-                    태그 목록 들어갈 자리
+                    <TagSimpleTextMenu/>
                 </Right>
 
             </Body>

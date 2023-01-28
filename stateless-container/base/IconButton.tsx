@@ -1,5 +1,5 @@
 import MuiIconButton from "@mui/material/IconButton";
-import React, {MouseEvent} from "react";
+import React from "react";
 
 export interface Props {
     onClick?: () => void
@@ -7,11 +7,9 @@ export interface Props {
 }
 
 export default function IconButton(props: Props) {
-    const onClick = React.useCallback((evt?: MouseEvent) => {
-        evt?.stopPropagation?.()
-        evt?.preventDefault?.()
+    const onClick =() => {
         props.onClick?.()
-    }, [props.onClick])
+    }
 
     return (
         <MuiIconButton
