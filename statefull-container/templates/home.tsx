@@ -4,13 +4,18 @@ import BlogHeaderMenu from "@/statefull-container/BlogHeaderMenu";
 import PostSummaryBody from "@/statefull-container/PostSummaryBody";
 import {styled} from "@mui/material/styles";
 import TagSimpleTextMenu from "@/statefull-container/TagSimpleTextMenu";
+import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
+import {TagStatistics} from "@/repository/post";
 
 
 export interface Props {
     initPosts: PostModel []
     initCurPage: number
     initPerPage: number
+    tags: TagStatistics[]
+    pageMode?: "user-home" | "tag-mode"
 }
+
 
 const Root = styled(CBox)``
 
@@ -28,8 +33,41 @@ const Right = styled(CBox)`
   margin-top: 280px;
 `
 
+function tagStaticsToItemDataList(tags: TagStatistics[]): ItemData[] {
+    return tags.map(t => ({
+        id: t.tag,
+        viewValue: `${t.tag} (${t.count})`
+    }))
+}
+
+function UserMode(props: Props) {
+    if (props.pageMode !== 'user-home') {
+        return null
+    }
+    return (
+        <UserIntroCard
+            userName={"kimhan"}
+            positionName={"CTO"}
+            introScript={"더 좋은 세상을 만들기 위해 고민합니다."}
+            profilePictureSrc={"/images/kim.png"}
+        />
+    )
+}
+
+function TagMode(props: Props) {
+    if (props.pageMode !== 'tag-mode') {
+        return null
+    }
+    return (
+        <ChipViewer chips={["test1", "test12"]} blackList={["All"]}/>
+    )
+}
+
 
 export default function Home(props: Props) {
+
+    const tagItems = tagStaticsToItemDataList(props.tags)
+
     return (
         <Root>
             <Box>
@@ -39,12 +77,8 @@ export default function Home(props: Props) {
             <Body>
                 <Middle>
                     <Box>
-                        <UserIntroCard
-                            userName={"kimhan"}
-                            positionName={"CTO"}
-                            introScript={"더 좋은 세상을 만들기 위해 고민합니다."}
-                            profilePictureSrc={"/images/kim.png"}
-                        />
+                        <UserMode {...props} />
+                        <TagMode {...props}/>
                     </Box>
                     <Box>
                         <PostSummaryBody
@@ -56,9 +90,8 @@ export default function Home(props: Props) {
                 </Middle>
 
                 <Right>
-                    <TagSimpleTextMenu/>
+                    <TagSimpleTextMenu tagItems={tagItems}/>
                 </Right>
-
             </Body>
         </Root>
     );

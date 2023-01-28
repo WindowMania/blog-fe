@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function HomePage(props: Props) {
     return (
-        <Home pageMode={'user-home'}
+        <Home pageMode={"tag-mode"}
               initPosts={props.posts}
               initCurPage={props.curPage}
               initPerPage={props.perPage}

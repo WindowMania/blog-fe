@@ -24,6 +24,10 @@ export interface FileUploadRes {
     uploaded_url: string
 }
 
+export interface TagStatistics {
+    tag: string
+    count: number
+}
 
 export default class PostRepository {
 
@@ -88,6 +92,15 @@ export default class PostRepository {
         if (res.ok) {
             return {uploaded_url: `${env.backUrl}/file/static/${res.data['file_id']}`}
         }
+    }
+
+    static async getTagStatistics(): Promise<TagStatistics[]> {
+        const url = `${PostRepository.getBaseUrl()}/post/tag/statistics`
+        const res = await restApi.get(url)
+        if (res.ok) {
+            return res.data['tags'] as TagStatistics[]
+        }
+        return []
     }
 
 }
