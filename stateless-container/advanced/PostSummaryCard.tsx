@@ -69,11 +69,11 @@ export default function PostSummaryCard(props: Props) {
         console.log(tag)
     }
 
-    const [title, setTitle] = useState<string>(props.post.title)
-    const [createdAt, setCreatedAt] = useState<string>(props.post.created_at.split('T')[0])
-    const [summary, setSummary] = useState<string>(getSummary(props.post))
-    const [tags, setTags] = useState<string[]>(props.post.tags)
-
+    const post = props.post
+    const title = post.title
+    const createdAt = post.created_at.split('T')[0]
+    const summary = getSummary(post)
+    const tags = post.tags
 
     const onClickTitle = async (e: any) => {
         e.stopPropagation()
@@ -92,9 +92,7 @@ export default function PostSummaryCard(props: Props) {
 
             <Item>
                 <CreatedAt>{createdAt} 작성</CreatedAt>
-
                 {props.onClickEdit !== undefined ? <Edit onClick={onClickEdit}>수정</Edit> : ""}
-
             </Item>
 
             <Item>

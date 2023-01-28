@@ -6,19 +6,21 @@ import PostRepository from "@/repository/post";
 import useMyRouter from "@/hooks/useMyRouter";
 import useLogin from "@/hooks/useLogin";
 
+export interface PostSearchCondition {
+    curPage: number
+    perPage: number
+    tags: string []
+}
+
 
 export interface Props {
     posts: PostModel []
-    curPage: number
-    perPage: number
+    onScrollEnd: () => Promise<void>
 }
 
 
 export default function PostSummaryBody(props: Props) {
     const {isLogin} = useLogin()
-    const [curPage, setCurPage] = useState<number>(props.curPage)
-    const [perPage,] = useState<number>(props.perPage)
-    const [posts, setPosts] = useState<PostModel []>(props.posts)
     const {isReached} = useScroll()
     const {route} = useMyRouter()
 
@@ -30,24 +32,14 @@ export default function PostSummaryBody(props: Props) {
         await route("POST_EDIT", {"id": postId})
     }
 
-
     useEffect(() => {
-        if (isReached) {
-            const nextPage = curPage + 1
-            PostRepository.getPosts(nextPage, perPage).then((loadedPosts) => {
-                if (loadedPosts.length) {
-                    setPosts([...posts, ...loadedPosts])
-                    setCurPage(nextPage)
-                }
-            })
-        }
+        isReached && props.onScrollEnd().then()
     }, [isReached])
-
 
     return (
         <CBox>
             {
-                posts.map((post, key) => {
+                props.posts.map((post, key) => {
                     return <PostSummaryCardMolecule
                         key={key}
                         post={post}

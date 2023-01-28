@@ -39,8 +39,11 @@ export default class PostRepository {
     }
 
 
-    static async getPosts(curPage: number, perPage: number): Promise<PostModel []> {
-        const url = PostRepository.getBaseUrl() + `/post/list?page=${curPage}&perPage=${perPage}`
+    static async getPosts(curPage: number, perPage: number, tags: string [] = ["All"]): Promise<PostModel []> {
+        let url = PostRepository.getBaseUrl() + `/post/list?page=${curPage}&perPage=${perPage}`
+        tags.forEach((tag) => {
+            url += "&tags=" + tag
+        })
         const res = await restApi.get(url)
         if (res.ok) {
             return res.data['posts'] as PostModel []
