@@ -143,8 +143,12 @@ export default function Home(props: Props) {
                 </Middle>
 
                 <Right>
-                    <TagSimpleTextMenu tagItems={tagItems}/>
+                    {
+                        props.pageMode === "user-home" &&
+                        <TagSimpleTextMenu tagItems={tagItems}/>
+                    }
                 </Right>
+
             </Body>
         </Root>
     );

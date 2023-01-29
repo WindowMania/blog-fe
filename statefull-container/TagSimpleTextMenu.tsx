@@ -1,4 +1,5 @@
 import SimpleTextMenu from "@/stateless-container/advanced/SimpleTextMenu";
+import useMyRouter from "@/hooks/useMyRouter";
 
 export interface Props {
     tagItems: ItemData[]
@@ -6,9 +7,10 @@ export interface Props {
 
 
 export default function TagSimpleTextMenu(props: Props) {
+    const {route} = useMyRouter()
 
     async function onClickItem(id: string) {
-        console.log(id, " zz")
+        await route("TAG_HOME_PAGE", {ids: id})
     }
 
     return (
