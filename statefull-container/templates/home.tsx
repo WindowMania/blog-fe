@@ -7,6 +7,8 @@ import TagSimpleTextMenu from "@/statefull-container/TagSimpleTextMenu";
 import PostRepository, {TagStatistics} from "@/repository/post";
 import ChipToggleList from "@/stateless-container/advanced/chip/ChipToggleList";
 import {useState} from "react";
+import Text from "@/stateless-container/base/Text";
+import Divider from "@/stateless-container/base/Divider";
 
 
 type PageMode = "user-home" | "tag-mode"
@@ -73,13 +75,21 @@ function TagMode(props: {
     }
 
     return (
-        <Box width={"100%"}>
-            <ChipToggleList
-                blackIdList={["All"]}
-                onChangeSelectedList={onChangeSelected}
-                initSelectedIdList={props.initSelectedIdList}
-                chips={props.tags}/>
-        </Box>
+        <CBox width={"100%"} padding={"16px"}>
+            <Box ml={1} mb={2}>
+                <Text fontWeight={600} variant={"h6"}>Tag 리스트</Text>
+            </Box>
+
+            <Box mb={3}>
+                <ChipToggleList
+                    blackIdList={["All"]}
+                    onChangeSelectedList={onChangeSelected}
+                    initSelectedIdList={props.initSelectedIdList}
+                    chips={props.tags}/>
+            </Box>
+
+            <Divider />
+        </CBox>
     )
 }
 

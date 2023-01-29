@@ -1,10 +1,8 @@
-import Box, {CBox} from "@/stateless-container/base/Box";
 import {styled} from "@mui/material/styles";
+
+import Box, {CBox} from "@/stateless-container/base/Box";
 import Text from '@/stateless-container/base/Text'
 import Divider from "@/stateless-container/base/Divider";
-
-
-import {useState} from "react";
 import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
 export interface Props {
@@ -15,7 +13,7 @@ export interface Props {
 
 const Root = styled(CBox)`
   width: 100%;
-  min-width: 720px;
+  min-width: 800px;
   background-color: white;
   padding: 16px;
 `
