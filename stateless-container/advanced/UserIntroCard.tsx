@@ -89,9 +89,6 @@ function UserIntroCard(props: Props) {
                         </Box>
                     </MiddleContainer>
                 </ProfileContainer>
-
-                <Divider/>
-
             </CBox>
         </UserIntroduceCardContainer>
     )

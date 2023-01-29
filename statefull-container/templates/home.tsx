@@ -9,6 +9,7 @@ import ChipToggleList from "@/stateless-container/advanced/chip/ChipToggleList";
 import {useState} from "react";
 import Text from "@/stateless-container/base/Text";
 import Divider from "@/stateless-container/base/Divider";
+import {Footer} from "@/stateless-container/advanced/Footer";
 
 
 type PageMode = "user-home" | "tag-mode"
@@ -23,7 +24,9 @@ export interface Props {
 
 const Root = styled(CBox)``
 
-const Body = styled(Box)``
+const Body = styled(Box)`
+ margin-bottom: 1rem;
+`
 
 const Middle = styled(CBox)`
   margin-left: auto;
@@ -38,6 +41,7 @@ const Right = styled(CBox)`
   height: 100vh;
   margin-top: 280px;
 `
+
 
 function tagStaticsToItemDataList(tags: TagStatistics[]): ItemData[] {
     return tags.map(t => ({
@@ -87,8 +91,6 @@ function TagMode(props: {
                     initSelectedIdList={props.initSelectedIdList}
                     chips={props.tags}/>
             </Box>
-
-            <Divider />
         </CBox>
     )
 }
@@ -158,8 +160,9 @@ export default function Home(props: Props) {
                         <TagSimpleTextMenu tagItems={tagItems}/>
                     }
                 </Right>
-
             </Body>
+
+            {isEnd && <Footer/>}
         </Root>
     );
 }

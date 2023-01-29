@@ -83,25 +83,26 @@ export default function PostSummaryCard(props: Props) {
     }
 
     return (
-        <Root>
-            <Item mb={0.5} onClick={onClickTitle}>
-                <Title>{title}</Title>
-            </Item>
-
-            <Item>
-                <CreatedAt>{createdAt} 작성</CreatedAt>
-                {props.onClickEdit !== undefined ? <Edit onClick={onClickEdit}>수정</Edit> : ""}
-            </Item>
-
-            <Item>
-                <Summary>{summary}</Summary>
-            </Item>
-
-            <Item mb={4}>
-                <ChipViewer chips={tags} blackList={['All']}/>
-            </Item>
-
+        <>
             <Divider/>
-        </Root>
+            <Root>
+                <Item mb={0.5} onClick={onClickTitle}>
+                    <Title>{title}</Title>
+                </Item>
+
+                <Item>
+                    <CreatedAt>{createdAt} 작성</CreatedAt>
+                    {props.onClickEdit !== undefined ? <Edit onClick={onClickEdit}>수정</Edit> : ""}
+                </Item>
+
+                <Item>
+                    <Summary>{summary}</Summary>
+                </Item>
+
+                <Item mb={4}>
+                    <ChipViewer chips={tags} blackList={['All']}/>
+                </Item>
+            </Root>
+        </>
     )
 }
