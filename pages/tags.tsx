@@ -12,10 +12,14 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const query = context.query
+    const tagQuery = query['ids'] as string || ''
+
+
     const perPage = 10
     const curPage = 1
-    const tagIds = ["All"]
-    const posts = await PostRepository.getPosts(curPage, perPage)
+    const tagIds = tagQuery.split(',')
+    const posts = await PostRepository.getPosts(curPage, perPage, tagIds)
     const tags = await PostRepository.getTagStatistics()
 
     const search: PostSearchCondition = {

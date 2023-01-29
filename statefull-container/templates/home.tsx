@@ -60,7 +60,8 @@ function UserMode(props: Props) {
 
 function TagMode(props: {
     pageMode: PageMode,
-    tags: ItemData []
+    tags: ItemData [],
+    initSelectedIdList: string [],
     onChangeSelectedTags: (idList: string[]) => Promise<void>
 }) {
     if (props.pageMode !== 'tag-mode') {
@@ -76,7 +77,7 @@ function TagMode(props: {
             <ChipToggleList
                 blackIdList={["All"]}
                 onChangeSelectedList={onChangeSelected}
-                initSelectedIdList={[]}
+                initSelectedIdList={props.initSelectedIdList}
                 chips={props.tags}/>
         </Box>
     )
@@ -99,7 +100,7 @@ export default function Home(props: Props) {
 
         setPosts([...loadedPosts])
         setSearch({curPage: defaultPage, perPage: defaultPerPage, tags: idList})
-        setIsEnd(loadedPosts.length < defaultPerPage ? true : false)
+        setIsEnd(loadedPosts.length < defaultPerPage)
     }
 
     async function onScrollEnd() {
@@ -129,6 +130,7 @@ export default function Home(props: Props) {
                         <TagMode
                             pageMode={props.pageMode}
                             tags={tagItems}
+                            initSelectedIdList={search.tags}
                             onChangeSelectedTags={handleTags}
                         />
                     </Box>
