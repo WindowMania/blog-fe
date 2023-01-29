@@ -8,8 +8,7 @@ import PostRepository, {TagStatistics} from "@/repository/post";
 import ChipToggleList from "@/stateless-container/advanced/chip/ChipToggleList";
 import {useState} from "react";
 import Text from "@/stateless-container/base/Text";
-import Divider from "@/stateless-container/base/Divider";
-import {Footer} from "@/stateless-container/advanced/Footer";
+import Footer from "@/stateless-container/advanced/Footer";
 
 
 type PageMode = "user-home" | "tag-mode"

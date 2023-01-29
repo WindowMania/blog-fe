@@ -10,7 +10,6 @@ export interface Props {
 
 const Root = styled(Box)`
   background-color: ${props => props.theme.bg.primary.main};
-  position: sticky;
   width: 100%;
   border-top: 1px solid ${props => props.theme.border.primary.main};
   min-height: 80px;
@@ -35,7 +34,7 @@ const Link = styled("a")`
 `
 
 
-export function Footer(props: Props) {
+export default function Footer(props: Props) {
     const url = props.url || "https://github.com/WindowMania"
     return (
         <Root>
