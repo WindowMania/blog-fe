@@ -1,8 +1,9 @@
 import Divider, {DividerProps} from '@mui/material/Divider';
-import styled from '@emotion/styled'
+import {styled} from "@mui/material";
 
 const DefaultDivider = styled(Divider)`
   width: 100%;
+  background-color: ${props => props.theme.border.primary.main};
 `
 export default DefaultDivider
 
@@ -11,14 +12,6 @@ export interface DividerTextProps extends DividerProps {
     color?: string
     font_size?: string
 }
-
-
-// const DividerTextRoot = styled('div')(({theme}) => ({
-//     width: '100%',
-//     '& > :not(style) + :not(style)': {
-//         marginTop: "16px",
-//     },
-// }));
 
 
 const DividerTextRoot = styled('div')`

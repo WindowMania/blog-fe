@@ -2,15 +2,13 @@ import Head from 'next/head';
 import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
 import type {EmotionCache} from '@emotion/react';
-import {ThemeProvider} from '@mui/material/styles';
 import {CacheProvider} from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import {QueryClient, QueryClientProvider} from "react-query";
-import {ReactQueryDevtools} from "react-query/devtools";
 import {SnackbarProvider} from 'notistack';
 
+import CustomThemeProvider from "@/provider/CustomThemeProvider";
 
-import theme from '../libs/theme';
 import createEmotionCache from '../libs/emotionCache';
 
 const queryClient = new QueryClient();
@@ -31,17 +29,16 @@ const MyApp = ({
         <CacheProvider value={emotionCache}>
             <Head>
                 <meta name='viewport' content='initial-scale=1, width=device-width'/>
+                <title>kyb.blog</title>
             </Head>
-
-            <ThemeProvider theme={theme}>
+            <CustomThemeProvider>
                 <SnackbarProvider maxSnack={3}>
                     <QueryClientProvider client={queryClient}>
-                        {/*<ReactQueryDevtools initialIsOpen={true}/>*/}
                         <CssBaseline/>
                         <Component {...pageProps} />
                     </QueryClientProvider>
                 </SnackbarProvider>
-            </ThemeProvider>
+            </CustomThemeProvider>
         </CacheProvider>
     );
 };

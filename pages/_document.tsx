@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Document, {Html, Head, Main, NextScript} from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import theme from '../libs/theme';
 import createEmotionCache from '../libs/emotionCache';
-
 import type {DocumentContext, DocumentInitialProps} from 'next/document';
 
 // https://dev.to/soom/nextjs-12-mui-5-material-ui-tutorial-hoh
@@ -13,7 +11,6 @@ export default class _Document extends Document {
         return (
             <Html lang='ko'>
                 <Head>
-                    <meta name='theme-color' content={theme.palette.primary.main}/>
                     <link rel='shortcut icon' href='/favicon.ico'/>
                     <link
                         rel='stylesheet'

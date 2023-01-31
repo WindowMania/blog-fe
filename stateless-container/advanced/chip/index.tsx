@@ -11,8 +11,8 @@ export const ChipStyled = styled(Chip)`
 
   background-color: ${
           props => props.selected === true ?
-                  props.theme.bg.secondary.main :
-                  props.theme.bg.primary.main
+                  props.theme.chip.secondary.main :
+                  props.theme.chip.primary.main
   };
 
 `

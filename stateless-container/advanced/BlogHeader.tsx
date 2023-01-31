@@ -1,21 +1,21 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {styled} from "@mui/material/styles"
 import {Brightness7, Brightness4} from "@mui/icons-material"
 
 import Box from "@/stateless-container/base/Box"
 import Menu, {MenuItemComponent} from "@/stateless-container/base/Menu"
 import Avatar from "@/stateless-container/base/Avatar";
-
+import {ThemeMode} from "@/hooks/useMyTheme";
+import {ThemeContext} from "@/provider/CustomThemeProvider";
 
 export interface Props {
     menuItems: MenuItem []
     onClickMenu: (item: MenuItem) => Promise<void>
-    defaultTheme?: ThemeToggleType
-    onClickThemeIcon?: (t: ThemeToggleType) => void
+    onClickThemeIcon?: (t: ThemeMode) => void
 }
 
 const Root = styled(Box)`
-  background-color: ${props => props.theme.bg.primary.main};
+  background-color: ${props => props.theme.bg.secondary.main};
   position: sticky;
   width: 100%;
   border-bottom: 1px solid ${props => props.theme.border.primary.main};
@@ -38,25 +38,28 @@ const Item = styled(Box)`
 const LogoItem = styled(Item)`
   font-family: 'Nanum Myeongjo', serif;
   font-weight: 800;
+  color: ${props=>props.theme.fontColor.primary.main};
 `
 
 const ThemeToggleItem = styled(Item)`
   margin-left: auto;
   margin-right: 32px;
+  color: ${props=>props.theme.fontColor.primary.main};
 `
 
 const BlogMenuItem = styled(Item)``
 
 function BlogHeaderMenu(props: Props) {
     const menuItems = props.menuItems
-    const [theme, setTheme] = React.useState<ThemeToggleType>(props.defaultTheme || 'light')
+    const {mode, onChangeThemeMode} = useContext(ThemeContext)
+
 
     const handleMenuClick = React.useCallback(async (item: MenuItem) => {
         await props.onClickMenu(item)
     }, [props.onClickMenu])
 
-    const handleThemeClick = React.useCallback((t: ThemeToggleType) => {
-        props.onClickThemeIcon?.(t)
+    const handleThemeClick = React.useCallback((t: ThemeMode) => {
+        onChangeThemeMode(t)
     }, [props?.onClickThemeIcon])
 
     const handleHomeIconClick = React.useCallback(async (e: any) => {
@@ -76,7 +79,7 @@ function BlogHeaderMenu(props: Props) {
             </LogoItem>
 
             <ThemeToggleItem>
-                <ThemeToggleIcon onChangeType={handleThemeClick} type={theme}/>
+                <ThemeToggleIcon onChangeType={handleThemeClick} type={mode}/>
             </ThemeToggleItem>
 
             <BlogMenuItem>
@@ -93,11 +96,11 @@ export default BlogHeaderMenu;
 export type ThemeToggleType = "light" | "dark"
 
 function ThemeToggleIcon(props: {
-    onChangeType?: (type: ThemeToggleType) => void
-    type?: ThemeToggleType
+    onChangeType?: (type: ThemeMode) => void
+    type?: ThemeMode
 }) {
     const defaultType = props.type ?? "light"
-    const [type, setType] = useState<ThemeToggleType>(defaultType)
+    const [type, setType] = useState<ThemeMode>(defaultType)
 
     function onClickChange() {
         const nextType = type === "light" ? "dark" : "light"
@@ -193,7 +196,6 @@ function ProfileIcon(props: {
             </Menu>
         </>
     )
-
 }
 
 

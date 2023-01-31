@@ -14,7 +14,6 @@ export interface Props {
 const Root = styled(CBox)`
   width: 100%;
   min-width: 800px;
-  background-color: white;
   padding: 16px;
 `
 
@@ -25,8 +24,7 @@ const Item = styled(Box)`
 const Title = styled(Text)`
   font-size: 32px;
   font-weight: 600;
-  color: ${props => props.theme.fontColor.primary.main};
-
+  
   &:hover {
     cursor: pointer;
   }

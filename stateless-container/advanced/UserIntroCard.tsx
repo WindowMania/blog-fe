@@ -3,8 +3,7 @@ import Text from '@/stateless-container/base/Text'
 import Avatar from "@/stateless-container/base/Avatar";
 import {styled} from "@mui/material/styles"
 import {GitHub, Mail} from "@mui/icons-material";
-import IconButton from "@/stateless-container/base/IconButton";
-import Divider from "@/stateless-container/base/Divider";
+
 
 export interface Props {
     userName: string
@@ -14,7 +13,6 @@ export interface Props {
 }
 
 const UserIntroduceCardContainer = styled(CBox)`
-    // background-color: ${props => props.theme.bg.primary.main};
   padding-top: 16px;
   padding-bottom: 16px;
   width: 100%;
@@ -40,6 +38,15 @@ const IntroText = styled(Text)`
   white-space: pre-line;
 `
 
+const IconBox = styled(Box)`
+  color: ${props => props.theme.fontColor.primary.main};
+  margin-right: 8px;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+
 function onClickGithub() {
     if (typeof window !== 'undefined') {
         window.open("https://github.com/yogru")
@@ -57,8 +64,6 @@ function onClickMail() {
 
 
 function UserIntroCard(props: Props) {
-
-
     return (
         <UserIntroduceCardContainer>
             <CBox>
@@ -79,13 +84,12 @@ function UserIntroCard(props: Props) {
                         </IntroText>
 
                         <Box>
-                            <IconButton>
+                            <IconBox>
                                 <GitHub onClick={onClickGithub}/>
-                            </IconButton>
-
-                            <IconButton onClick={onClickMail}>
-                                <Mail/>
-                            </IconButton>
+                            </IconBox>
+                            <IconBox>
+                                <Mail onClick={onClickMail}/>
+                            </IconBox>
                         </Box>
                     </MiddleContainer>
                 </ProfileContainer>

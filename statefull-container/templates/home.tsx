@@ -8,6 +8,7 @@ import PostRepository, {TagStatistics} from "@/repository/post";
 import ChipToggleList from "@/stateless-container/advanced/chip/ChipToggleList";
 import {useState} from "react";
 import Text from "@/stateless-container/base/Text";
+
 import Footer from "@/stateless-container/advanced/Footer";
 
 
@@ -21,10 +22,13 @@ export interface Props {
 }
 
 
-const Root = styled(CBox)``
+const Root = styled(CBox)`
+  background-color: ${props => props.theme.bg.primary.main};
+  color: ${props=>props.theme.fontColor.primary.main};
+`
 
 const Body = styled(Box)`
- margin-bottom: 1rem;
+  margin-bottom: 1rem;
 `
 
 const Middle = styled(CBox)`
