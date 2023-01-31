@@ -28,7 +28,10 @@ const NoSsrPostViewer = dynamic(() => import('@/statefull-container/PostViewer')
 });
 
 
-const Root = styled(CBox)``
+const Root = styled(CBox)`
+  background-color: ${props => props.theme.bg.primary.main};
+  color: ${props => props.theme.fontColor.primary.main};
+`
 
 const Item = styled(Box)``
 

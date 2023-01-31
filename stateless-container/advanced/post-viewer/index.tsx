@@ -3,7 +3,7 @@ import {styled} from '@mui/material/styles'
 import Box, {CBox} from "@/stateless-container/base/Box";
 import Text from "@/stateless-container/base/Text";
 import TuiViewer from "@/stateless-container/advanced/post-viewer/ToastViewer"
-import Divider from "@mui/material/Divider";
+import Divider from "@/stateless-container/base/Divider";
 import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
 export interface Props {
