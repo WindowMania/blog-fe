@@ -40,6 +40,8 @@ export default class PostRepository {
 
 
     static async getPosts(curPage: number, perPage: number, tags: string [] = ["All"]): Promise<PostModel []> {
+        console.log(tags)
+
         let url = PostRepository.getBaseUrl() + `/post/list?page=${curPage}&perPage=${perPage}`
         tags.forEach((tag) => {
             url += "&tags=" + tag

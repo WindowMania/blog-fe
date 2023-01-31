@@ -24,7 +24,7 @@ export interface Props {
 
 const Root = styled(CBox)`
   background-color: ${props => props.theme.bg.primary.main};
-  color: ${props=>props.theme.fontColor.primary.main};
+  color: ${props => props.theme.fontColor.primary.main};
 `
 
 const Body = styled(Box)`
@@ -91,7 +91,7 @@ function TagMode(props: {
                 <ChipToggleList
                     blackIdList={["All"]}
                     onChangeSelectedList={onChangeSelected}
-                    initSelectedIdList={props.initSelectedIdList}
+                    initSelectedIdList={props.initSelectedIdList.filter(t => t.length >= 1)}
                     chips={props.tags}/>
             </Box>
         </CBox>

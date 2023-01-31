@@ -15,7 +15,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query
     const tagQuery = query['ids'] as string || ''
 
-
     const perPage = 10
     const curPage = 1
     const tagIds = tagQuery.split(',')
