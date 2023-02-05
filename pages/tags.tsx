@@ -2,7 +2,7 @@ import Home from '@/statefull-container/templates/home'
 
 import {GetServerSideProps} from "next";
 import PostRepository, {TagStatistics} from "@/repository/post";
-import {PostSearchCondition} from "@/statefull-container/PostSummaryBody";
+import {PostSearchCondition} from "@/statefull-container/advanced/PostSummaryBody";
 
 
 interface Props {

@@ -1,5 +1,5 @@
 import Box,{CBox} from "../../base/Box";
-import Login, {Props as LoginProps} from '@/stateless-container/advanced/login/Login'
+import Login, {Props as LoginProps} from '@/stateless-container/templates/login/Login'
 import {styled} from '@mui/material/styles'
 
 

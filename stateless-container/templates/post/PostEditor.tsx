@@ -3,7 +3,7 @@ import {styled} from "@mui/material/styles";
 import {useSnackbar} from 'notistack';
 
 import Box, {CBox} from '@/stateless-container/base/Box'
-import ToastEditor, {ImageBlobHookResponse} from '@/stateless-container/advanced/post-editor/ToastEditor'
+import ToastEditor, {ImageBlobHookResponse} from '@/stateless-container/advanced/toast/ToastEditor'
 import TextInputBox from "@/stateless-container/base/TextInputBox";
 import Button from "@/stateless-container/base/Button";
 import {FAIL_TOP_MIDDLE_OPTION} from '@/libs/snackbar'

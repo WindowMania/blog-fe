@@ -1,9 +1,9 @@
 import Box, {CBox} from "@/stateless-container/base/Box"
 import UserIntroCard from "@/stateless-container/advanced/UserIntroCard";
-import BlogHeaderMenu from "@/statefull-container/BlogHeaderMenu";
-import PostSummaryBody, {PostSearchCondition} from "@/statefull-container/PostSummaryBody";
+import BlogHeaderMenu from "@/statefull-container/advanced/BlogHeaderMenu";
+import PostSummaryBody, {PostSearchCondition} from "@/statefull-container/advanced/PostSummaryBody";
 import {styled} from "@mui/material/styles";
-import TagSimpleTextMenu from "@/statefull-container/TagSimpleTextMenu";
+import TagSimpleTextMenu from "@/statefull-container/advanced/TagSimpleTextMenu";
 import PostRepository, {TagStatistics} from "@/repository/post";
 import ChipToggleList from "@/stateless-container/advanced/chip/ChipToggleList";
 import {useState} from "react";

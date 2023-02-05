@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import {GetServerSideProps} from 'next'
 
 import Box, {CBox} from "@/stateless-container/base/Box";
-import BlogHeaderMenu from "@/statefull-container/BlogHeaderMenu";
+import BlogHeaderMenu from "@/statefull-container/advanced/BlogHeaderMenu";
 import LoadingPage from "@/stateless-container/templates/LoadingPage";
 import PostRepository from "@/repository/post";
 import Footer from "@/stateless-container/advanced/Footer";
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 
-const NoSsrPostViewer = dynamic(() => import('@/statefull-container/PostViewer'), {
+const NoSsrPostViewer = dynamic(() => import('@/statefull-container/templates/PostViewer'), {
     ssr: false,
 });
 

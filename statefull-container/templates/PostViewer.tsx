@@ -1,4 +1,4 @@
-import PostViewerMolecule from "@/stateless-container/advanced/post-viewer";
+import PostViewerMolecule from "@/stateless-container/templates/post/PostViewer";
 
 export interface Props {
     post: PostModel

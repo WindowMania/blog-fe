@@ -1,11 +1,11 @@
-import PostEditMolecule from "@/stateless-container/advanced/post-editor"
+import PostEditMolecule from "@/stateless-container/templates/post/PostEditor"
 import {useCallback} from "react";
 import useLogin from "@/hooks/useLogin";
 import {FAIL_TOP_MIDDLE_OPTION, restResponseToSnackbar} from "@/libs/snackbar";
 import {useSnackbar} from "notistack";
 import useRedirect from "@/hooks/useRedirect";
 import PostRepository from "@/repository/post";
-import {ImageBlobHookResponse} from "@/stateless-container/advanced/post-editor/ToastEditor";
+import {ImageBlobHookResponse} from "@/stateless-container/advanced/toast/ToastEditor";
 import LoadingPage from "@/stateless-container/templates/LoadingPage";
 
 export interface Props {

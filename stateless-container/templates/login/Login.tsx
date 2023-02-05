@@ -3,7 +3,7 @@ import Text from "../../base/Text";
 import styled from "@emotion/styled";
 import TextInputBox from "../../base/TextInputBox";
 import Button from "../../base/Button";
-import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/stateless-container/advanced/login/LoginOAuthIcon";
+import LoginOAuthIcon, {OAuthContext, OAuthLoginResult} from "@/stateless-container/templates/login/LoginOAuthIcon";
 import GoogleLoginLogo from "@/public/svg/google_icon.svg";
 import GithubLoginLogo from "@/public/svg/github_icon.svg";
 import {DividerText} from "../../base/Divider";

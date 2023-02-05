@@ -1,5 +1,5 @@
 import Box from "../stateless-container/base/Box"
-import Login from "../statefull-container/LoginPage"
+import Login from "../statefull-container/templates/LoginPage"
 
 import type {NextPage} from 'next';
 

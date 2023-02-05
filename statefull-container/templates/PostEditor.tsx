@@ -1,13 +1,13 @@
 import {useSnackbar} from "notistack";
 
-import PostEditMolecule from "@/stateless-container/advanced/post-editor"
+import PostEditMolecule from "@/stateless-container/templates/post/PostEditor"
 import useLogin from "@/hooks/useLogin";
 import {useCallback, useState} from "react";
 
 import {restResponseToSnackbar, FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 import useRedirect from "@/hooks/useRedirect";
 import PostRepository from "@/repository/post";
-import {ImageBlobHookResponse} from '@/stateless-container/advanced/post-editor/ToastEditor'
+import {ImageBlobHookResponse} from '@/stateless-container/advanced/toast/ToastEditor'
 import LoadingPage from "@/stateless-container/templates/LoadingPage";
 
 

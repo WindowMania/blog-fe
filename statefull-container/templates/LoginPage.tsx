@@ -2,9 +2,9 @@ import {useCallback} from "react";
 import {useRouter} from "next/router";
 
 
-import {JoinUserDto} from "@/stateless-container/advanced/login/Login"
-import LoginPageMolecule from "@/stateless-container/advanced/login/LoginPage";
-import {OAuthContext, OAuthLoginResult} from "@/stateless-container/advanced/login/LoginOAuthIcon";
+import {JoinUserDto} from "@/stateless-container/templates/login/Login"
+import LoginPageMolecule from "@/stateless-container/templates/login/LoginPage";
+import {OAuthContext, OAuthLoginResult} from "@/stateless-container/templates/login/LoginOAuthIcon";
 import restApi from "@/libs/RestApi";
 import useLogin from "@/hooks/useLogin";
 import env from '@/libs/env'
