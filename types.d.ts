@@ -21,17 +21,6 @@ interface PostEditorModel {
     deleted?: boolean
 }
 
-interface SeriesPostModel {
-    postId: string
-    postTitle: string
-}
-
-interface SeriesEditorModel {
-    title: string
-    body: string
-    posts: SeriesPostModel []
-}
-
 
 interface PostModel {
     id: string
@@ -47,10 +36,6 @@ interface PostModel {
 interface ItemData {
     id: string
     viewValue: string
-}
-
-interface OrderItemData extends ItemData {
-    order: number
 }
 
 

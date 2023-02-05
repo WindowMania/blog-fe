@@ -1,13 +1,22 @@
 import {styled} from "@mui/material/styles";
 import Box, {CBox} from "@/stateless-container/base/Box";
 import TextInputBox from "@/stateless-container/base/TextInputBox";
-import React from "react";
+import React, {useState} from "react";
 import ToastEditor, {ImageBlobHookResponse} from "@/stateless-container/advanced/toast/ToastEditor";
 import Autocomplete from "@/stateless-container/base/Autocomplete";
+import DraggableList from "@/stateless-container/base/draggable/List";
+import {DropResult} from 'react-beautiful-dnd';
+
+export type SeriesEditorModel = {
+    title: string
+    body: string
+    items: ItemData []
+}
 
 export interface Props {
-    model?: SeriesEditorModel
-
+    model: SeriesEditorModel
+    onChangeModel: (model: SeriesEditorModel) => void
+    loadItems: (keyword: string) => Promise<ItemData[]>
     onUploadFile?: (f: Blob | File) => Promise<ImageBlobHookResponse>
 }
 
@@ -27,33 +36,49 @@ const EditorItem = styled(Item)`
   height: 450px;
 `
 
-async function async_call(keyword: string) {
-    function sleep(ms: number) {
-        return new Promise((r) => setTimeout(r, ms));
-    }
-
-    const items = [
-        {id: "1", viewValue: "zz"}, {id: "2", viewValue: "zz2"},
-        {id: "3", viewValue: "안녕하세요.."}
-    ]
-    await sleep(3000)
-    return items
-}
-
 
 export default function SeriesEditor(props: Props) {
     const ref = React.useRef<any>(null);
-    const model = props.model || {
-        title: '',
-        body: '',
-        posts: []
+
+    const model = props.model
+    const itemIdDict = model.items.reduce((acc, item) => {
+        acc[item.id] = true
+        return acc
+    }, {} as any)
+
+
+    function onChangeModel(m: SeriesEditorModel) {
+        props.onChangeModel(m)
     }
-    const [title, setTitle] = React.useState<string>(model.title)
 
     function handleTitle(e: any) {
         e.stopPropagation()
-        setTitle(e.target.value)
+        onChangeModel({...model, title: e.target.value})
     }
+
+    function handAddItem(item: ItemData) {
+        !itemIdDict[item.id] && onChangeModel({...props.model, items: [...model.items, item]})
+    }
+
+    function onDeleteMenuItem(itemId: string) {
+        const newList = model.items.filter(m => m.id != itemId)
+        onChangeModel({...model, items: newList})
+    }
+
+    const onDragEnd = ({destination, source}: DropResult) => {
+        function reorder(list: any [],
+                         startIndex: number,
+                         endIndex: number): any [] {
+            const result = Array.from(list);
+            const [removed] = result.splice(startIndex, 1);
+            result.splice(endIndex, 0, removed);
+            return result;
+        }
+
+        if (!destination) return;
+        const newItems = reorder(model.items, source.index, destination.index);
+        onChangeModel({...model, items: newItems})
+    };
 
     return (
         <Root>
@@ -61,7 +86,7 @@ export default function SeriesEditor(props: Props) {
                 <TextInputBox
                     fullWidth
                     onChange={handleTitle}
-                    defaultValue={title} label={"제목"}
+                    defaultValue={model.title} label={"제목"}
                 />
             </Item>
 
@@ -72,10 +97,13 @@ export default function SeriesEditor(props: Props) {
             </EditorItem>
 
             <Item>
-                <Autocomplete load={async_call}
-                              onSelect={(k) => console.log("selecte..", k)}
-                />
+                <Autocomplete load={props.loadItems} onSelect={handAddItem}/>
+            </Item>
 
+            <Item>
+                <DraggableList
+                    onDelete={onDeleteMenuItem}
+                    items={model.items} onDragEnd={onDragEnd}/>
             </Item>
         </Root>
     )
