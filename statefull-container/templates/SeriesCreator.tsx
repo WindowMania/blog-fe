@@ -1,4 +1,4 @@
-import SeriesCreatorStateless from "@/stateless-container/templates/series/SeriesCreator"
+import SeriesCreatorStateless from "@/stateless-container/templates/series/SeriesEditor"
 
 
 export interface Props {}

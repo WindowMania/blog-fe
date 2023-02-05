@@ -12,7 +12,6 @@ import ChipEditor from "@/stateless-container/advanced/chip/ChipEditor";
 export type Mode = 'edit' | 'create'
 
 
-
 export interface Props {
     mode: Mode
     post?: PostEditorModel
@@ -31,6 +30,8 @@ const Root = styled(CBox)`
   padding-right: 150px;
   padding-left: 150px;
 `
+
+
 const Item = styled(Box)`
   margin-bottom: 16px;
   width: 100%;

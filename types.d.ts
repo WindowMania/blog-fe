@@ -21,6 +21,17 @@ interface PostEditorModel {
     deleted?: boolean
 }
 
+interface SeriesPostModel {
+    postId: string
+    postTitle: string
+}
+
+interface SeriesEditorModel {
+    title: string
+    body: string
+    posts: SeriesPostModel []
+}
+
 
 interface PostModel {
     id: string
