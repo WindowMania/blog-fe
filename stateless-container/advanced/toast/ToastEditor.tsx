@@ -14,8 +14,8 @@ export interface ImageBlobHookResponse {
 
 
 interface Props {
-    content?: string;
-    editorRef: React.MutableRefObject<any>;
+    content?: string
+    editorRef: React.MutableRefObject<any>
     addImageBlobHook?: (f: Blob | File) => Promise<ImageBlobHookResponse>
 }
 
@@ -36,7 +36,6 @@ export default function ToastEditor(props: Props) {
     const editorRef = props.editorRef
 
     async function addImageBlobHook(f: Blob | File, callback: HookCallback) {
-        console.log(props.addImageBlobHook)
         if (props.addImageBlobHook) {
             const res = await props.addImageBlobHook(f)
             res.ok && res.url && callback(res.url, res.imageTxt)
@@ -58,7 +57,6 @@ export default function ToastEditor(props: Props) {
                     toolbarItems={toolbarItems}
                     useCommandShortcut={true}
                     plugins={[colorSyntax]}
-
                     hooks={{addImageBlobHook}}
                 />
             )}

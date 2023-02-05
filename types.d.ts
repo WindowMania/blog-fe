@@ -49,6 +49,10 @@ interface ItemData {
     viewValue: string
 }
 
+interface OrderItemData extends ItemData {
+    order: number
+}
+
 
 const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout"]
 type MenuItem = typeof MenuItems[number]
