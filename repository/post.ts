@@ -29,6 +29,14 @@ export interface TagStatistics {
     count: number
 }
 
+export interface SearchPost {
+    curPage: number
+    perPage: number
+    tags?: string[]
+    title?: string
+
+}
+
 export default class PostRepository {
 
     static getBaseUrl() {
@@ -39,13 +47,17 @@ export default class PostRepository {
     }
 
 
-    static async getPosts(curPage: number, perPage: number, tags: string [] = ["All"]): Promise<PostModel []> {
-        console.log(tags)
-
+    static async getPosts(search: SearchPost): Promise<PostModel []> {
+        let {tags, curPage, perPage, title} = search
         let url = PostRepository.getBaseUrl() + `/post/list?page=${curPage}&perPage=${perPage}`
-        tags.forEach((tag) => {
-            url += "&tags=" + tag
-        })
+        if (Array.isArray(tags) && tags.length >= 1) {
+            tags.forEach((tag) => {
+                url += "&tags=" + tag
+            })
+        }
+        if (title && title?.length >= 2) {
+            url += "&title=" + title
+        }
         const res = await restApi.get(url)
         if (res.ok) {
             return res.data['posts'] as PostModel []
@@ -107,6 +119,7 @@ export default class PostRepository {
         }
         return []
     }
+
 
 }
 

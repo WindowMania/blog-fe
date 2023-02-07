@@ -111,7 +111,11 @@ export default function Home(props: Props) {
     async function handleTags(idList: string[]) {
         const defaultPage = 1
         const defaultPerPage = 10
-        const loadedPosts = await PostRepository.getPosts(defaultPage, defaultPerPage, idList)
+        const loadedPosts = await PostRepository.getPosts({
+            curPage: defaultPage,
+            perPage: defaultPerPage,
+            tags: idList
+        })
 
         setPosts([...loadedPosts])
         setSearch({curPage: defaultPage, perPage: defaultPerPage, tags: idList})
@@ -120,9 +124,12 @@ export default function Home(props: Props) {
 
     async function onScrollEnd() {
         if (isEnd) return
-
         const nextPage = search.curPage + 1
-        const loadedPosts = await PostRepository.getPosts(nextPage, search.perPage, search.tags)
+        const loadedPosts = await PostRepository.getPosts({
+            curPage: nextPage,
+            perPage: search.perPage,
+            tags: search.tags
+        })
         if (loadedPosts.length >= 1) {
             setSearch({...search, curPage: nextPage})
             setPosts([...posts, ...loadedPosts])

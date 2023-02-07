@@ -16,7 +16,6 @@ export default function PostCreator(props: Props) {
     const {accessKey} = useLogin()
     const {enqueueSnackbar} = useSnackbar()
     const redirect = useRedirect()
-    console.log(accessKey)
 
     const submit = useCallback(async (ctx: PostEditorModel) => {
         if (!accessKey) return {ok: false}

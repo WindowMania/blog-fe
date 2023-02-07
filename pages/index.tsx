@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const perPage = 10
     const curPage = 1
     const tagIds = ["All"]
-    const posts = await PostRepository.getPosts(curPage, perPage)
+    const posts = await PostRepository.getPosts({curPage, perPage})
     const tags = await PostRepository.getTagStatistics()
     const search: PostSearchCondition = {
         curPage,
