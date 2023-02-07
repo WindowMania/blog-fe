@@ -38,13 +38,13 @@ const Item = styled(Box)`
 const LogoItem = styled(Item)`
   font-family: 'Nanum Myeongjo', serif;
   font-weight: 800;
-  color: ${props=>props.theme.fontColor.primary.main};
+  color: ${props => props.theme.fontColor.primary.main};
 `
 
 const ThemeToggleItem = styled(Item)`
   margin-left: auto;
   margin-right: 32px;
-  color: ${props=>props.theme.fontColor.primary.main};
+  color: ${props => props.theme.fontColor.primary.main};
 `
 
 const BlogMenuItem = styled(Item)``
@@ -52,20 +52,23 @@ const BlogMenuItem = styled(Item)``
 function BlogHeaderMenu(props: Props) {
     const menuItems = props.menuItems
     const {mode, onChangeThemeMode} = useContext(ThemeContext)
-
+    const [type, setType] = useState<ThemeMode>(mode)
 
     const handleMenuClick = React.useCallback(async (item: MenuItem) => {
         await props.onClickMenu(item)
     }, [props.onClickMenu])
 
-    const handleThemeClick = React.useCallback((t: ThemeMode) => {
-        onChangeThemeMode(t)
-    }, [props?.onClickThemeIcon])
-
     const handleHomeIconClick = React.useCallback(async (e: any) => {
         e.stopPropagation()
         await props.onClickMenu("Home")
     }, [props.onClickMenu])
+
+
+    function onClickTheme() {
+        const nextType = type === "light" ? "dark" : "light"
+        setType(nextType)
+        onChangeThemeMode(nextType)
+    }
 
     return (
         <Root>
@@ -79,7 +82,9 @@ function BlogHeaderMenu(props: Props) {
             </LogoItem>
 
             <ThemeToggleItem>
-                <ThemeToggleIcon onChangeType={handleThemeClick} type={mode}/>
+                <ThemeToggleIcon type={mode}
+                                 onClick={onClickTheme}
+                />
             </ThemeToggleItem>
 
             <BlogMenuItem>
@@ -93,24 +98,16 @@ export default BlogHeaderMenu;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export type ThemeToggleType = "light" | "dark"
-
 function ThemeToggleIcon(props: {
-    onChangeType?: (type: ThemeMode) => void
-    type?: ThemeMode
+    type: ThemeMode
+    onClick: () => void
 }) {
-    const defaultType = props.type ?? "light"
-    const [type, setType] = useState<ThemeMode>(defaultType)
-
-    function onClickChange() {
-        const nextType = type === "light" ? "dark" : "light"
-        setType(nextType)
-        props.onChangeType?.(nextType)
+    function onClick() {
+        props.onClick()
     }
-
     return (
-        <Box onClick={onClickChange} fontSize={"32px"}>
-            {type === "light" ? <Brightness7 fontSize={'large'}/> : <Brightness4 fontSize={'large'}/>}
+        <Box onClick={onClick} fontSize={"32px"}>
+            {props.type === "light" ? <Brightness7 fontSize={'large'}/> : <Brightness4 fontSize={'large'}/>}
         </Box>
     )
 }
