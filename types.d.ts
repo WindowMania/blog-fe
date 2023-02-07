@@ -38,8 +38,10 @@ interface ItemData {
     viewValue: string
 }
 
+type EditorMode = 'edit' | 'create'
 
 const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout"]
+
 type MenuItem = typeof MenuItems[number]
 
 type LoadingState = "pending" | "success" | "fail"

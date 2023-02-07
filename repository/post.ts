@@ -34,7 +34,12 @@ export interface SearchPost {
     perPage: number
     tags?: string[]
     title?: string
+}
 
+export interface CreateSeriesDto {
+    title: string
+    body: string
+    postIdList: string[]
 }
 
 export default class PostRepository {
@@ -118,6 +123,18 @@ export default class PostRepository {
             return res.data['tags'] as TagStatistics[]
         }
         return []
+    }
+
+    static async createSeries(createDto: CreateSeriesDto, accessKey: string) {
+        const url = PostRepository.getBaseUrl() + "/post/series"
+        const res = await restApi.post(url, {
+            "title": createDto.title,
+            "body": createDto.body,
+            "post_id_list": createDto.postIdList
+        }, {accessKey})
+        if (res.ok) {
+            return res.data["id"]
+        }
     }
 
 

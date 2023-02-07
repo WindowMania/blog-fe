@@ -9,11 +9,8 @@ import Button from "@/stateless-container/base/Button";
 import {FAIL_TOP_MIDDLE_OPTION} from '@/libs/snackbar'
 import ChipEditor from "@/stateless-container/advanced/chip/ChipEditor";
 
-export type Mode = 'edit' | 'create'
-
-
 export interface Props {
-    mode: Mode
+    mode: EditorMode
     post?: PostEditorModel
     onSubmit: (model: PostEditorModel) => Promise<BasicRestResponse>
     onDelete?: (toDelete: boolean) => Promise<BasicRestResponse>
@@ -44,7 +41,7 @@ const EditorItem = styled(Item)`
 
 
 function EditorButtonList(props: {
-    mode: Mode
+    mode: EditorMode
     post?: PostEditorModel
     onSubmit: () => Promise<void>
     onDelete: (toDelete: boolean) => Promise<void>

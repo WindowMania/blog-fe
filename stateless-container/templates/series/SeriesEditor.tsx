@@ -6,6 +6,9 @@ import ToastEditor, {ImageBlobHookResponse} from "@/stateless-container/advanced
 import Autocomplete from "@/stateless-container/base/Autocomplete";
 import DraggableList from "@/stateless-container/base/draggable/List";
 import {DropResult} from 'react-beautiful-dnd';
+import Button from "@/stateless-container/base/Button";
+import {useSnackbar} from "notistack";
+import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 
 export type SeriesEditorModel = {
     title: string
@@ -14,10 +17,13 @@ export type SeriesEditorModel = {
 }
 
 export interface Props {
+    mode: EditorMode
     model: SeriesEditorModel
-    onChangeModel: (model: SeriesEditorModel) => void
     loadItems: (keyword: string) => Promise<ItemData[]>
     onUploadFile?: (f: Blob | File) => Promise<ImageBlobHookResponse>
+    onChangeModel: (model: SeriesEditorModel) => void
+    onSubmit: () => Promise<void>
+    onDelete: () => Promise<void>
 }
 
 const Root = styled(CBox)`
@@ -36,10 +42,44 @@ const EditorItem = styled(Item)`
   height: 450px;
 `
 
+function SeriesButtonList(props: {
+    mode: EditorMode
+    onSubmit: () => Promise<void>
+    onDelete: () => Promise<void>
+}) {
+
+    async function onDelete(e: any): Promise<void> {
+        e.stopPropagation()
+        await props.onDelete()
+    }
+
+    async function onSubmit(e: any): Promise<void> {
+        e.stopPropagation()
+        await props.onSubmit()
+    }
+
+    const submitBtnText = props.mode == 'edit' ? "수정 하기" : "작성 하기"
+    return (
+        <Box>
+            <Box>
+                <Button onClick={onSubmit} variant={'outlined'}> {submitBtnText}</Button>
+            </Box>
+            {props.mode === 'edit' &&
+                <Box ml={1}>
+                    <Button onClick={onDelete} variant={'outlined'}>
+                        삭제
+                    </Button>
+                </Box>
+            }
+        </Box>
+    )
+
+}
+
 
 export default function SeriesEditor(props: Props) {
     const ref = React.useRef<any>(null);
-
+    const {enqueueSnackbar} = useSnackbar();
     const model = props.model
     const itemIdDict = model.items.reduce((acc, item) => {
         acc[item.id] = true
@@ -80,8 +120,30 @@ export default function SeriesEditor(props: Props) {
         onChangeModel({...model, items: newItems})
     };
 
+    async function checkSubmit() {
+        const model = props.model
+        if (!model.title || model.title === '') {
+            enqueueSnackbar("제목을 입력 해주세요.", FAIL_TOP_MIDDLE_OPTION)
+            return
+        }
+        await props.onSubmit()
+    }
+
+    async function checkDelete() {
+        await props.onDelete
+    }
+
     return (
         <Root>
+            <Item>
+                <SeriesButtonList
+                    mode={props.mode}
+                    onSubmit={checkSubmit}
+                    onDelete={checkDelete}
+                />
+            </Item>
+
+
             <Item height={"64px"}>
                 <TextInputBox
                     fullWidth

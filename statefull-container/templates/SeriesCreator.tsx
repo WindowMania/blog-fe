@@ -3,28 +3,17 @@ import {useState} from "react";
 import useLogin from "@/hooks/useLogin";
 import {useSnackbar} from "notistack";
 import PostRepository from "@/repository/post";
+import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 
 
 export interface Props {
 }
 
 
-// async function async_call(keyword: string) {
-//     function sleep(ms: number) {
-//         return new Promise((r) => setTimeout(r, ms));
-//     }
-//
-//     const items = [
-//         {id: "1", viewValue: "zz"}, {id: "2", viewValue: "zz2"},
-//         {id: "3", viewValue: "안녕하세요.."}
-//     ]
-//     await sleep(3000)
-//     return items
-// }
-
 export default function SeriesCreator(props: Props) {
     const {accessKey} = useLogin()
     const {enqueueSnackbar} = useSnackbar()
+    const mode: EditorMode = 'create'
 
     const [model, setModel] = useState<SeriesEditorModel>({
         title: '',
@@ -40,10 +29,30 @@ export default function SeriesCreator(props: Props) {
         }))
     }
 
+    async function onSubmit() {
+        if (!accessKey) {
+            enqueueSnackbar("생성할 수 없는 로그인 계정", FAIL_TOP_MIDDLE_OPTION)
+            return
+        }
+        const ret = await PostRepository.createSeries({
+            title: model.title,
+            body: model.body,
+            postIdList: model.items.map(i => i.id)
+        }, accessKey)
+        console.log(ret)
+    }
+
+    async function onDelete() {
+    }
+
     return (
-        <SeriesCreatorStateless model={model}
-                                loadItems={searchTitle}
-                                onChangeModel={(m) => setModel(m)}
+        <SeriesCreatorStateless
+            mode={mode}
+            model={model}
+            loadItems={searchTitle}
+            onChangeModel={(m) => setModel(m)}
+            onSubmit={onSubmit}
+            onDelete={onDelete}
         />
     )
 }
