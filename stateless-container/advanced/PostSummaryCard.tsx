@@ -1,7 +1,7 @@
 import {styled} from "@mui/material/styles";
 
 import Box, {CBox} from "@/stateless-container/base/Box";
-import Text from '@/stateless-container/base/Text'
+import Text, {TextButton} from '@/stateless-container/base/Text'
 import Divider from "@/stateless-container/base/Divider";
 import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 
@@ -24,7 +24,7 @@ const Item = styled(Box)`
 const Title = styled(Text)`
   font-size: 32px;
   font-weight: 600;
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -39,18 +39,6 @@ const CreatedAt = styled(Text)`
   font-size: 14px;
   font-weight: 400;
   color: ${props => props.theme.fontColor.primary.summary};
-`
-
-const Edit = styled(Text)`
-  font-size: 14px;
-  font-weight: 400;
-  margin-left: 8px;
-  color: ${props => props.theme.fontColor.primary.summary};
-
-  &:hover {
-    cursor: pointer;
-    color: ${props => props.theme.fontColor.primary.main};
-  }
 `
 
 function getSummary(post: PostModel) {
@@ -90,7 +78,7 @@ export default function PostSummaryCard(props: Props) {
 
                 <Item>
                     <CreatedAt>{createdAt} 작성</CreatedAt>
-                    {props.onClickEdit !== undefined ? <Edit onClick={onClickEdit}>수정</Edit> : ""}
+                    {props.onClickEdit !== undefined ? <TextButton fontSize={"14px"}  fontWeight={400} ml={1} onClick={onClickEdit}>수정</TextButton> : ""}
                 </Item>
 
                 <Item>
