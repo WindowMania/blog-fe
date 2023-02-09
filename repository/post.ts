@@ -45,8 +45,16 @@ export interface CreateSeriesDto {
 export interface SeriesSearch {
     page: number
     perPage: number
-
 }
+
+export type SeriesWithPostModel = {
+    id: string
+    title: string,
+    body: string,
+    updatedAt: string,
+    posts: PostModel[]
+}
+
 
 export default class PostRepository {
 
@@ -154,6 +162,20 @@ export default class PostRepository {
     static async deleteSeries(seriesId: string, accessKey: string) {
         const url = PostRepository.getBaseUrl() + `/post/series?seriesId=${seriesId}`
         await restApi.delete(url, {accessKey})
+    }
+
+    static async getSeriesWithPost(seriesId: string): Promise<SeriesWithPostModel | null> {
+        const url = PostRepository.getBaseUrl() + `/post/series?seriesId=${seriesId}`
+        const ret = await restApi.get(url)
+        if (!ret.ok) return null
+        const series = ret.data['series']
+        return {
+            id: series.id,
+            title: series.title,
+            body: series.body,
+            updatedAt: series.updated_at,
+            posts: series.series_post_list.map((pl: any) => pl['post'] as PostModel)
+        }
     }
 
 

@@ -4,14 +4,8 @@ import TuiViewer from '@/stateless-container/advanced/toast/ToastViewer'
 
 import {styled} from "@mui/material/styles";
 import PostSummaryBody from "@/statefull-container/advanced/PostSummaryBody";
+import {SeriesWithPostModel} from "@/repository/post";
 
-export type SeriesWithPostModel = {
-    id: string
-    title: string,
-    body: string,
-    updatedAt: string,
-    posts: PostModel[]
-}
 
 
 export interface Props {
@@ -34,12 +28,11 @@ const TextBgBox = styled(Box)`
 
 
 export default function SeriesViewerBody(props: Props) {
-
     async function onScrollEnd(){}
 
     return (
         <Root>
-            <TextBgBox width={"64px"}>
+            <TextBgBox width={"64px"} mb={1}>
                 SERIES
             </TextBgBox>
             <Box>

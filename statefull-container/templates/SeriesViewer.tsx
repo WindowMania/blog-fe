@@ -1,12 +1,13 @@
-import {SeriesWithPostModel} from '@/stateless-container/templates/series/SeriesViewerBody'
 import {styled} from "@mui/material/styles";
 import Box, {CBox} from "@/stateless-container/base/Box";
 import BlogHeaderMenu from "@/statefull-container/advanced/BlogHeaderMenu";
 import Footer from "@/stateless-container/advanced/Footer";
 import {useState} from "react";
 import dynamic from 'next/dynamic';
+import {SeriesWithPostModel} from "@/repository/post";
 
 export interface Props {
+    series?: SeriesWithPostModel
 }
 
 const Root = styled(CBox)`
@@ -27,38 +28,16 @@ const NoSsrSeriesViewer = dynamic(() => import("@/stateless-container/templates/
 })
 
 export default function SeriesViewer(props: Props) {
-
-    const series: SeriesWithPostModel = {
-        id: "1",
-        title: "test",
-        body:
-            "![Untitled.png](https://blog.kyb.pe.kr/api/v1/file/static/07ef122f692b4437b59a44f7eb01f021)\n" +
-            "어쩌고 저쩌고 관련되었다..\n"
-        ,
-        updatedAt: "2022-02-03 21:32:12",
-        posts: [
-            {
-                id: "11",
-                title: "테라폼 어쩌고 저쩌고",
-                body: "안녕하세요..",
-                tags: ["All", "테라폼"],
-                created_at: "2022-02-03 21:55:12",
-                username: "hi",
-                deleted: false,
-                updated_at: "2022-02-03 21:55:12"
-            }
-        ]
-    }
-
     return (
         <Root>
             <Head>
                 <BlogHeaderMenu/>
             </Head>
-            <Body>
-                <NoSsrSeriesViewer series={series}/>
-            </Body>
-
+            {props.series &&
+                <Body>
+                    <NoSsrSeriesViewer series={props.series}/>
+                </Body>
+            }
             <Footer/>
         </Root>
 
