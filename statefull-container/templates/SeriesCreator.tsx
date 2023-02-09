@@ -4,6 +4,7 @@ import useLogin from "@/hooks/useLogin";
 import {useSnackbar} from "notistack";
 import PostRepository from "@/repository/post";
 import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
+import {ImageBlobHookResponse} from "@/stateless-container/advanced/toast/ToastEditor";
 
 
 export interface Props {
@@ -29,6 +30,16 @@ export default function SeriesCreator(props: Props) {
         }))
     }
 
+    async function onUploadFile(f: File | Blob): Promise<ImageBlobHookResponse> {
+        if (!accessKey) return {ok: false}
+        const res = await PostRepository.uploadFile(f, accessKey)
+        return Promise.resolve({
+            ok: true,
+            url: res?.uploaded_url
+        })
+    }
+
+
     async function onSubmit() {
         if (!accessKey) {
             enqueueSnackbar("생성할 수 없는 로그인 계정", FAIL_TOP_MIDDLE_OPTION)
@@ -53,6 +64,7 @@ export default function SeriesCreator(props: Props) {
             onChangeModel={(m) => setModel(m)}
             onSubmit={onSubmit}
             onDelete={onDelete}
+            onUploadFile={onUploadFile}
         />
     )
 }
