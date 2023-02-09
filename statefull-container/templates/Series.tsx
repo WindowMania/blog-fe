@@ -85,7 +85,6 @@ export default function Series(props: Props) {
                 />
             </Body>
 
-
             {isEnd && <Footer/>}
         </Root>
 
