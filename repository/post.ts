@@ -42,6 +42,12 @@ export interface CreateSeriesDto {
     postIdList: string[]
 }
 
+export interface SeriesSearch {
+    page: number
+    perPage: number
+
+}
+
 export default class PostRepository {
 
     static getBaseUrl() {
@@ -135,6 +141,14 @@ export default class PostRepository {
         if (res.ok) {
             return res.data["id"]
         }
+    }
+
+    static async getSeriesList(seriesSearch: SeriesSearch) {
+        const curPage = seriesSearch.page || 1
+        const perPage = seriesSearch.perPage || 10
+        const url = PostRepository.getBaseUrl() + `/post/series/list?page=${curPage}&perPage=${perPage}`
+        const ret = await restApi.get(url)
+        return ret
     }
 
 

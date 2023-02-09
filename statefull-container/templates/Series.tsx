@@ -2,9 +2,10 @@ import SeriesStateless, {SeriesListItem} from "@/stateless-container/templates/s
 import {styled} from "@mui/material/styles";
 import Box, {CBox} from "@/stateless-container/base/Box";
 import BlogHeaderMenu from "@/statefull-container/advanced/BlogHeaderMenu";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Footer from "@/stateless-container/advanced/Footer";
 import useLogin from "@/hooks/useLogin";
+import PostRepository from "@/repository/post";
 
 export interface Props {
 
@@ -27,20 +28,35 @@ const Body = styled(Item)`
 export default function Series(props: Props) {
     const {isLogin, accessKey} = useLogin()
     const [isEnd, setIsEnd] = useState<boolean>(false)
+    const [seriesList, setSeriesList] = useState<SeriesListItem[]>([])
+    const [page, setPage] = useState<number>(0)
+    const [perPage, setPerPage] = useState<number>(10)
 
-    const seriesList: SeriesListItem[] = [
-        {"id": "1", title: "테스트1", updatedAt: "2022-02-09", postCount: 3},
-        {"id": "2", title: "테스트2", updatedAt: "2022-02-09", postCount: 13},
-        {"id": "3", title: "테스트3", updatedAt: "2022-02-09", postCount: 23},
-        {"id": "4", title: "테스트4", updatedAt: "2022-02-09", postCount: 113},
-        {"id": "5", title: "테스트5", updatedAt: "2022-02-09", postCount: 33},
-    ]
+    async function loadSeries() {
+        const ret = await PostRepository.getSeriesList({page: page + 1, perPage})
+        if (ret.ok) {
+            const seriesListRes: SeriesListItem[] = ret.data['seriesList'].map((series: any) => ({
+                "id": series.id,
+                "title": series.title,
+                "updatedAt": series.updated_at,
+                "postCount": series.series_post_list.length
+            }))
+            if (seriesListRes.length < perPage) {
+                setIsEnd(true)
+            }
+            setPage(page + 1)
+            setSeriesList([...seriesList, ...seriesListRes])
+        }
+    }
+
+    useEffect(() => {
+        loadSeries().then()
+    }, [])
+
 
     async function onScrollEnd() {
         if (isEnd) return
-
-        // 개수가 0이라면..
-        setIsEnd(true)
+        await loadSeries()
     }
 
     async function onDeleteSeries(id: string) {
