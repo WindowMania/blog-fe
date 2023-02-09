@@ -60,7 +60,9 @@ export default function Series(props: Props) {
     }
 
     async function onDeleteSeries(id: string) {
-        console.log("del,,", id)
+        if (!accessKey) return
+        await PostRepository.deleteSeries(id, accessKey)
+        setSeriesList(seriesList.filter(s => s.id != id))
     }
 
     async function onEditSeries(id: string) {
