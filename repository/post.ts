@@ -49,10 +49,18 @@ export interface SeriesSearch {
 
 export type SeriesWithPostModel = {
     id: string
-    title: string,
-    body: string,
-    updatedAt: string,
+    title: string
+    body: string
+    updatedAt: string
     posts: PostModel[]
+}
+
+
+export type SeriesUpdate = {
+    id: string
+    title?: string
+    body?: string
+    postIdList: string[]
 }
 
 
@@ -165,7 +173,7 @@ export default class PostRepository {
     }
 
     static async getSeriesWithPost(seriesId: string): Promise<SeriesWithPostModel | null> {
-        const url = PostRepository.getBaseUrl() + `/post/series?seriesId=${seriesId}`
+        const url = PostRepository.getBaseUrl() + `/post/series-with-post?seriesId=${seriesId}`
         const ret = await restApi.get(url)
         if (!ret.ok) return null
         const series = ret.data['series']
@@ -176,6 +184,14 @@ export default class PostRepository {
             updatedAt: series.updated_at,
             posts: series.series_post_list.map((pl: any) => pl['post'] as PostModel)
         }
+    }
+
+    static async updateSeries(updatedDto: SeriesUpdate, accessKey: string): Promise<boolean> {
+        const url = PostRepository.getBaseUrl() + `/post/series`
+        const ret = await restApi.put(url, updatedDto, {
+            accessKey
+        })
+        return ret.ok
     }
 
 

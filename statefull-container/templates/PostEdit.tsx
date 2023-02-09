@@ -16,7 +16,7 @@ export interface Props {
 }
 
 
-export default function PostEditor(props: Props) {
+export default function PostEdit(props: Props) {
     const [post, setPost] = useState<PostModel>(props.post)
     const {accessKey} = useLogin()
     const {enqueueSnackbar} = useSnackbar()

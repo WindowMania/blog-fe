@@ -11,6 +11,7 @@ import {useSnackbar} from "notistack";
 import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 
 export type SeriesEditorModel = {
+    id?: string
     title: string
     body: string
     items: ItemData []
@@ -22,8 +23,7 @@ export interface Props {
     loadItems: (keyword: string) => Promise<ItemData[]>
     onUploadFile?: (f: Blob | File) => Promise<ImageBlobHookResponse>
     onChangeModel: (model: SeriesEditorModel) => void
-    onSubmit: () => Promise<void>
-    onDelete: () => Promise<void>
+    onSubmit: (body:string) => Promise<void>
 }
 
 const Root = styled(CBox)`
@@ -45,13 +45,13 @@ const EditorItem = styled(Item)`
 function SeriesButtonList(props: {
     mode: EditorMode
     onSubmit: () => Promise<void>
-    onDelete: () => Promise<void>
+    // onDelete: () => Promise<void>
 }) {
 
-    async function onDelete(e: any): Promise<void> {
-        e.stopPropagation()
-        await props.onDelete()
-    }
+    // async function onDelete(e: any): Promise<void> {
+    //     e.stopPropagation()
+    //     await props.onDelete()
+    // }
 
     async function onSubmit(e: any): Promise<void> {
         e.stopPropagation()
@@ -64,13 +64,13 @@ function SeriesButtonList(props: {
             <Box>
                 <Button onClick={onSubmit} variant={'outlined'}> {submitBtnText}</Button>
             </Box>
-            {props.mode === 'edit' &&
-                <Box ml={1}>
-                    <Button onClick={onDelete} variant={'outlined'}>
-                        삭제
-                    </Button>
-                </Box>
-            }
+            {/*{props.mode === 'edit' &&*/}
+            {/*    <Box ml={1}>*/}
+            {/*        <Button onClick={onDelete} variant={'outlined'}>*/}
+            {/*            삭제*/}
+            {/*        </Button>*/}
+            {/*    </Box>*/}
+            {/*}*/}
         </Box>
     )
 
@@ -126,12 +126,14 @@ export default function SeriesEditor(props: Props) {
             enqueueSnackbar("제목을 입력 해주세요.", FAIL_TOP_MIDDLE_OPTION)
             return
         }
-        await props.onSubmit()
+        const editorIns = ref?.current?.getInstance();
+        const contentMark = editorIns.getMarkdown()
+        await props.onSubmit(contentMark)
     }
 
-    async function checkDelete() {
-        await props.onDelete
-    }
+    // async function checkDelete() {
+    //     await props.onDelete()
+    // }
 
     return (
         <Root>
@@ -139,7 +141,7 @@ export default function SeriesEditor(props: Props) {
                 <SeriesButtonList
                     mode={props.mode}
                     onSubmit={checkSubmit}
-                    onDelete={checkDelete}
+                    // onDelete={checkDelete}
                 />
             </Item>
 

@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 
-const NoSsrPostEditor = dynamic(() => import('@/statefull-container/templates/PostEditor'), {
+const NoSsrPostEditor = dynamic(() => import('@/statefull-container/templates/PostEdit'), {
     ssr: false,
 });
 

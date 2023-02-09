@@ -5,6 +5,7 @@ import {useSnackbar} from "notistack";
 import PostRepository from "@/repository/post";
 import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 import {ImageBlobHookResponse} from "@/stateless-container/advanced/toast/ToastEditor";
+import LoadingPage from "@/stateless-container/templates/LoadingPage";
 
 
 export interface Props {
@@ -40,31 +41,29 @@ export default function SeriesCreator(props: Props) {
     }
 
 
-    async function onSubmit() {
+    async function onSubmit(body: string) {
         if (!accessKey) {
             enqueueSnackbar("생성할 수 없는 로그인 계정", FAIL_TOP_MIDDLE_OPTION)
             return
         }
         const ret = await PostRepository.createSeries({
             title: model.title,
-            body: model.body,
+            body,
             postIdList: model.items.map(i => i.id)
         }, accessKey)
         console.log(ret)
     }
 
-    async function onDelete() {
-    }
-
     return (
-        <SeriesCreatorStateless
-            mode={mode}
-            model={model}
-            loadItems={searchTitle}
-            onChangeModel={(m) => setModel(m)}
-            onSubmit={onSubmit}
-            onDelete={onDelete}
-            onUploadFile={onUploadFile}
-        />
+        <LoadingPage getLoadingState={async () => accessKey !== undefined ? "success" : "pending"}>
+            <SeriesCreatorStateless
+                mode={mode}
+                model={model}
+                loadItems={searchTitle}
+                onChangeModel={(m) => setModel(m)}
+                onSubmit={onSubmit}
+                onUploadFile={onUploadFile}
+            />
+        </LoadingPage>
     )
 }
