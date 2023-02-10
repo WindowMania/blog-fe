@@ -20,7 +20,7 @@ const Body = styled(Item)`
   padding: 3rem 1rem 1rem 1rem;
   margin-left: auto;
   margin-right: auto;
-  height: 100vh;
+  min-height: 100vh;
 `
 
 const NoSsrSeriesViewer = dynamic(() => import("@/stateless-container/templates/series/SeriesViewerBody"), {
