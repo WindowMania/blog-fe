@@ -1,6 +1,7 @@
 import React, {useContext, useState} from "react";
 import {styled} from "@mui/material/styles"
-import {Brightness7, Brightness4} from "@mui/icons-material"
+import {Brightness7, Brightness4, Bookmarks, AutoStories} from "@mui/icons-material"
+
 
 import Box from "@/stateless-container/base/Box"
 import Menu, {MenuItemComponent} from "@/stateless-container/base/Menu"
@@ -12,6 +13,8 @@ export interface Props {
     menuItems: MenuItem []
     onClickMenu: (item: MenuItem) => Promise<void>
     onClickThemeIcon?: (t: ThemeMode) => void
+    onClickTagIcon?: () => Promise<void>
+    onClickSeriesIcon?: () => Promise<void>
 }
 
 const Root = styled(Box)`
@@ -38,13 +41,18 @@ const Item = styled(Box)`
 const LogoItem = styled(Item)`
   font-family: 'Nanum Myeongjo', serif;
   font-weight: 800;
-  color: ${props => props.theme.fontColor.primary.main};
 `
 
 const ThemeToggleItem = styled(Item)`
   margin-left: auto;
-  margin-right: 32px;
-  color: ${props => props.theme.fontColor.primary.main};
+  margin-right: 16px;
+`
+
+const TagItem = styled(Item)`
+  margin-right: 16px;
+`
+const SeriesItem = styled(Item)`
+  margin-right: 16px;
 `
 
 const BlogMenuItem = styled(Item)``
@@ -64,6 +72,15 @@ function BlogHeaderMenu(props: Props) {
     }, [props.onClickMenu])
 
 
+    async function onClickTag() {
+        await props.onClickTagIcon?.()
+    }
+
+    async function onClickSeries() {
+        await props.onClickSeriesIcon?.()
+    }
+
+
     function onClickTheme() {
         const nextType = type === "light" ? "dark" : "light"
         setType(nextType)
@@ -81,11 +98,20 @@ function BlogHeaderMenu(props: Props) {
                 </Box>
             </LogoItem>
 
+
             <ThemeToggleItem>
                 <ThemeToggleIcon type={mode}
                                  onClick={onClickTheme}
                 />
             </ThemeToggleItem>
+
+            <TagItem>
+                <Bookmarks onClick={onClickTag}/>
+            </TagItem>
+
+            <SeriesItem>
+                <AutoStories onClick={onClickSeries}/>
+            </SeriesItem>
 
             <BlogMenuItem>
                 <ProfileIcon menuItems={menuItems} onMenuItemClick={handleMenuClick}/>
@@ -105,6 +131,7 @@ function ThemeToggleIcon(props: {
     function onClick() {
         props.onClick()
     }
+
     return (
         <Box onClick={onClick} fontSize={"32px"}>
             {props.type === "light" ? <Brightness7 fontSize={'large'}/> : <Brightness4 fontSize={'large'}/>}
@@ -176,6 +203,7 @@ function ProfileIcon(props: {
             <ProfileAvatar onClick={handleClick}>
                 <Avatar src={props.hrefImage}/>
             </ProfileAvatar>
+
             <Menu
                 id="long-menu"
                 elevation={2}
