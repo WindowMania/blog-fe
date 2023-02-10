@@ -154,9 +154,7 @@ export default class PostRepository {
             "body": createDto.body,
             "post_id_list": createDto.postIdList
         }, {accessKey})
-        if (res.ok) {
-            return res.data["id"]
-        }
+        return res
     }
 
     static async getSeriesList(seriesSearch: SeriesSearch) {
@@ -169,7 +167,7 @@ export default class PostRepository {
 
     static async deleteSeries(seriesId: string, accessKey: string) {
         const url = PostRepository.getBaseUrl() + `/post/series?seriesId=${seriesId}`
-        const ret =await restApi.delete(url, {accessKey})
+        const ret = await restApi.delete(url, {accessKey})
         return ret
     }
 

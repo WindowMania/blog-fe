@@ -3,9 +3,10 @@ import {useState} from "react";
 import useLogin from "@/hooks/useLogin";
 import {useSnackbar} from "notistack";
 import PostRepository from "@/repository/post";
-import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
+import {FAIL_TOP_MIDDLE_OPTION, restResponseToSnackbar} from "@/libs/snackbar";
 import {ImageBlobHookResponse} from "@/stateless-container/advanced/toast/ToastEditor";
 import LoadingPage from "@/stateless-container/templates/LoadingPage";
+import useMyRouter from "@/hooks/useMyRouter";
 
 
 export interface Props {
@@ -15,6 +16,7 @@ export interface Props {
 export default function SeriesCreator(props: Props) {
     const {accessKey} = useLogin()
     const {enqueueSnackbar} = useSnackbar()
+    const {routeReplace} = useMyRouter()
     const mode: EditorMode = 'create'
 
     const [model, setModel] = useState<SeriesEditorModel>({
@@ -46,12 +48,14 @@ export default function SeriesCreator(props: Props) {
             enqueueSnackbar("생성할 수 없는 로그인 계정", FAIL_TOP_MIDDLE_OPTION)
             return
         }
-        const ret = await PostRepository.createSeries({
+        const res = await PostRepository.createSeries({
             title: model.title,
             body,
             postIdList: model.items.map(i => i.id)
         }, accessKey)
-        console.log(ret)
+        const {message, option} = restResponseToSnackbar(res, "글이 작성 되었습니다.")
+        enqueueSnackbar(message, option)
+        res.ok && await routeReplace("SERIES_READ", {"seriesId": res['data'].id})
     }
 
     return (
