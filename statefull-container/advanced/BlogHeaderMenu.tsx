@@ -6,7 +6,7 @@ import useMyRouter from "@/hooks/useMyRouter";
 
 
 export default function BlogHeaderMenu() {
-    const {menuItems, onClickMenu} = useMenu({})
+    const {menuItems, onClickMenu} = useMenu()
     const {route} = useMyRouter()
     return (
         <BlogHeaderMenuMolecule

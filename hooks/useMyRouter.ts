@@ -2,7 +2,15 @@ import {useRouter} from "next/router";
 import {useCallback} from "react";
 
 
-export type RouterURL = "HOME" | "POST_READ" | "POST_EDIT" | "TAG_HOME" | "SERIES_HOME"
+export type RouterURL =
+    "HOME"
+    | "POST_READ"
+    | "POST_EDIT"
+    | "TAG_HOME"
+    | "SERIES_HOME"
+    | "POST_WRITE"
+    | "LOGIN"
+    | "SERIES_WRITE"
 
 export default function useMyRouter() {
     const router = useRouter()
@@ -17,9 +25,15 @@ export default function useMyRouter() {
                 return '/tags'
             case "SERIES_HOME":
                 return '/series'
+            case "SERIES_WRITE":
+                return "/series-creator"
+            case "POST_WRITE":
+                return '/post-write'
+            case "LOGIN":
+                return "/login"
             case "HOME":
             default:
-                return ''
+                return '/'
         }
     }
 

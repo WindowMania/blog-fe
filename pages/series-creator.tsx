@@ -1,4 +1,3 @@
-import SeriesCreator from "@/statefull-container/templates/SeriesCreator";
 import dynamic from "next/dynamic";
 
 const NoSsrSeriesEditor = dynamic(() => import("@/statefull-container/templates/SeriesCreator"), {
@@ -6,7 +5,6 @@ const NoSsrSeriesEditor = dynamic(() => import("@/statefull-container/templates/
 })
 
 export default function SeriesCreatorPage() {
-
     return (
         <NoSsrSeriesEditor/>
     )

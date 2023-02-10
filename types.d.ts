@@ -40,7 +40,7 @@ interface ItemData {
 
 type EditorMode = 'edit' | 'create'
 
-const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout"]
+const MenuItems = ["Home", "Login", "PostWrite", "Setting", "Logout", "SeriesWrite"]
 
 type MenuItem = typeof MenuItems[number]
 

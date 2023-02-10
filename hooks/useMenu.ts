@@ -1,43 +1,56 @@
 import useLogin from "@/hooks/useLogin";
-import React from "react";
-import {useRouter} from "next/router";
-
-export interface Props {
-    writeHref?: string
-    loginHref?: string
-    homeHref?: string
-}
+import useMyRouter from "@/hooks/useMyRouter";
 
 
-export function useMenu(props: Props) {
+export function useMenu() {
     const {isLogin, setLogout} = useLogin()
-    const router = useRouter()
+    const {route,routeReplace} = useMyRouter()
 
-    const writeHref = props.writeHref || "/post-write"
-    const loginHref = props.homeHref || "/login"
-    const home = props.homeHref || "/"
-
-    const handleClickMenu = React.useCallback(async (item: MenuItem) => {
+    async function onClickMenu(item: MenuItem) {
         switch (item) {
             case "PostWrite":
-                await router.push(writeHref)
+                await route("POST_WRITE")
                 break
-            case "Login":
-                await router.push(loginHref)
-                break
-            case "Home":
-                await router.push(home)
+            case "SeriesWrite":
+                await routeReplace("SERIES_WRITE")
                 break
             case "Logout":
-                await router.push(loginHref)
                 setLogout()
+            case "Login":
+                await route("LOGIN")
+                break
+            case "Home":
+            default:
+                await route("HOME")
                 break
         }
-    }, [])
+    }
+
+    function koMenuItem(item: MenuItem) {
+        switch (item) {
+            case "PostWrite":
+                return "글 쓰기"
+            case "SeriesWrite":
+                return "시리즈 만들기"
+            case "Logout":
+                return "로그아웃"
+            case "Login":
+                return "로그인"
+            case "Home":
+                return "홈"
+        }
+        return item
+    }
+
+    function translateMenuItem(item: MenuItem, language: string = 'ko') {
+        if (language === 'ko') {
+            return koMenuItem(item)
+        }
+    }
 
     let items = ["Login"]
     if (isLogin) {
-        items = ["PostWrite", "Setting", "Logout"]
+        items = ["PostWrite", "SeriesWrite", "Setting", "Logout"]
     }
-    return {menuItems: items, onClickMenu: handleClickMenu}
+    return {menuItems: items, onClickMenu, translateMenuItem}
 }

@@ -8,6 +8,7 @@ import Menu, {MenuItemComponent} from "@/stateless-container/base/Menu"
 import Avatar from "@/stateless-container/base/Avatar";
 import {ThemeMode} from "@/hooks/useMyTheme";
 import {ThemeContext} from "@/provider/CustomThemeProvider";
+import {useMenu} from "@/hooks/useMenu";
 
 export interface Props {
     menuItems: MenuItem []
@@ -157,7 +158,7 @@ const ProfileAvatar = styled(Box)`
 
 const AvatarMenuItem = styled(MenuItemComponent)`
   font-size: 16px;
-  width: ${props => props.theme.spacing(10)};
+  width: ${props => props.theme.spacing(15)};
 `
 
 
@@ -167,22 +168,7 @@ function ProfileIcon(props: {
     onMenuItemClick: (opt: string) => void
 }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const covertMenuItems = React.useCallback((i: MenuItem) => {
-        switch (i) {
-            case "Home":
-                return "Home"
-            case "Login":
-                return "로그인"
-            case "PostWrite":
-                return "글 쓰기"
-            case "Setting":
-                return "설정"
-            case "Logout":
-                return "로그아웃"
-            default:
-                return i
-        }
-    }, [])
+    const {translateMenuItem} = useMenu()
 
     function handleClose() {
         setAnchorEl(null)
@@ -214,7 +200,7 @@ function ProfileIcon(props: {
                 {
                     props.menuItems.map((option) =>
                         <AvatarMenuItem key={option} onClick={() => handleChange(option)}>
-                            {covertMenuItems(option)}
+                            {translateMenuItem(option)}
                         </AvatarMenuItem>
                     )
                 }
