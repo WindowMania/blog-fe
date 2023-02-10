@@ -11,6 +11,9 @@ export type RouterURL =
     | "POST_WRITE"
     | "LOGIN"
     | "SERIES_WRITE"
+    | "SERIES_READ"
+    | "SERIES_EDIT"
+
 
 export default function useMyRouter() {
     const router = useRouter()
@@ -23,10 +26,14 @@ export default function useMyRouter() {
                 return '/post-edit'
             case "TAG_HOME":
                 return '/tags'
-            case "SERIES_HOME":
-                return '/series'
             case "SERIES_WRITE":
                 return "/series-creator"
+            case "SERIES_EDIT":
+                return "/series-edit"
+            case "SERIES_HOME":
+                return '/series'
+            case "SERIES_READ":
+                return "/series-viewer"
             case "POST_WRITE":
                 return '/post-write'
             case "LOGIN":

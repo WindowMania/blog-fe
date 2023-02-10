@@ -1,7 +1,7 @@
 import {styled} from "@mui/material/styles";
 import Box, {CBox} from "@/stateless-container/base/Box";
 import TextInputBox from "@/stateless-container/base/TextInputBox";
-import React, {useState} from "react";
+import React from "react";
 import ToastEditor, {ImageBlobHookResponse} from "@/stateless-container/advanced/toast/ToastEditor";
 import Autocomplete from "@/stateless-container/base/Autocomplete";
 import DraggableList from "@/stateless-container/base/draggable/List";
@@ -23,7 +23,7 @@ export interface Props {
     loadItems: (keyword: string) => Promise<ItemData[]>
     onUploadFile?: (f: Blob | File) => Promise<ImageBlobHookResponse>
     onChangeModel: (model: SeriesEditorModel) => void
-    onSubmit: (body:string) => Promise<void>
+    onSubmit: (body: string) => Promise<void>
 }
 
 const Root = styled(CBox)`

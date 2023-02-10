@@ -6,6 +6,9 @@ import {useEffect, useState} from "react";
 import Footer from "@/stateless-container/advanced/Footer";
 import useLogin from "@/hooks/useLogin";
 import PostRepository from "@/repository/post";
+import useMyRouter from "@/hooks/useMyRouter";
+import {useSnackbar} from "notistack";
+import {FAIL_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 
 export interface Props {
 
@@ -27,10 +30,12 @@ const Body = styled(Item)`
 
 export default function Series(props: Props) {
     const {isLogin, accessKey} = useLogin()
+    const {routeReplace} = useMyRouter()
     const [isEnd, setIsEnd] = useState<boolean>(false)
     const [seriesList, setSeriesList] = useState<SeriesListItem[]>([])
     const [page, setPage] = useState<number>(0)
     const [perPage, setPerPage] = useState<number>(10)
+    const {enqueueSnackbar} = useSnackbar()
 
     async function loadSeries() {
         const ret = await PostRepository.getSeriesList({page: page + 1, perPage})
@@ -61,12 +66,17 @@ export default function Series(props: Props) {
 
     async function onDeleteSeries(id: string) {
         if (!accessKey) return
-        await PostRepository.deleteSeries(id, accessKey)
-        setSeriesList(seriesList.filter(s => s.id != id))
+        const ret = await PostRepository.deleteSeries(id, accessKey)
+        ret.ok && setSeriesList(seriesList.filter(s => s.id != id))
+        !ret.ok && enqueueSnackbar("삭제 실패", FAIL_TOP_MIDDLE_OPTION)
     }
 
     async function onEditSeries(id: string) {
-        console.log("edit..", id)
+        await routeReplace("SERIES_EDIT", {seriesId: id})
+    }
+
+    async function onClickSeriesTitle(id: string) {
+        await routeReplace("SERIES_READ", {seriesId: id})
     }
 
     return (
@@ -77,6 +87,7 @@ export default function Series(props: Props) {
 
             <Body>
                 <SeriesStateless
+                    onClickTitle={onClickSeriesTitle}
                     onClickEdit={onEditSeries}
                     onClickDelete={onDeleteSeries}
                     onScrollEnd={onScrollEnd}

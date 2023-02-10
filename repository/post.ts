@@ -169,7 +169,8 @@ export default class PostRepository {
 
     static async deleteSeries(seriesId: string, accessKey: string) {
         const url = PostRepository.getBaseUrl() + `/post/series?seriesId=${seriesId}`
-        await restApi.delete(url, {accessKey})
+        const ret =await restApi.delete(url, {accessKey})
+        return ret
     }
 
     static async getSeriesWithPost(seriesId: string): Promise<SeriesWithPostModel | null> {

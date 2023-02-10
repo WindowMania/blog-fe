@@ -6,6 +6,7 @@ import PostRepository, {SeriesWithPostModel} from "@/repository/post";
 import {useState} from "react";
 import {FAIL_TOP_MIDDLE_OPTION, SUCCESS_TOP_MIDDLE_OPTION} from "@/libs/snackbar";
 import {useSnackbar} from "notistack";
+
 import dynamic from "next/dynamic";
 
 export interface Props {
@@ -45,7 +46,7 @@ export default function SeriesEdit(props: Props) {
         }))
     }
 
-    async function onSubmit(body:string) {
+    async function onSubmit(body: string) {
         if (!accessKey) {
             enqueueSnackbar("생성할 수 없는 로그인 계정", FAIL_TOP_MIDDLE_OPTION)
             return

@@ -18,6 +18,7 @@ export interface Props {
     onScrollEnd: () => Promise<void>
     onClickEdit: (id: string) => Promise<void>
     onClickDelete: (id: string) => Promise<void>
+    onClickTitle: (id: string) => Promise<void>
 }
 
 const SummaryRoot = styled(CBox)`
@@ -25,9 +26,14 @@ const SummaryRoot = styled(CBox)`
   min-width: 640px;
 `
 
+const TitleText = styled(Text)`
+  cursor: pointer;
+`
+
 function SeriesSummary(props: {
     series: SeriesListItem
     isLogin: boolean
+    onClickTitle: (id: string) => Promise<void>
     onClickEdit: (id: string) => Promise<void>
     onClickDelete: (id: string) => Promise<void>
 }) {
@@ -42,11 +48,16 @@ function SeriesSummary(props: {
         await props.onClickDelete(props.series.id)
     }
 
+    async function onClickTitle(e: any) {
+        e.stopPropagation()
+        await props.onClickTitle(props.series.id)
+    }
+
     return (
         <SummaryRoot>
             <Divider/>
-            <Box mt={2}>
-                <Text variant={'h3'}>{props.series.title}</Text>
+            <Box mt={2} onClick={onClickTitle}>
+                <TitleText variant={'h3'}>{props.series.title}</TitleText>
             </Box>
 
             <Box mt={1}>
@@ -64,11 +75,9 @@ export default function SeriesList(props: Props) {
     const {isReached} = useScroll()
     const isLogin = props.isLogin || false
 
-
     useEffect(() => {
         isReached && props.onScrollEnd().then()
     }, [isReached])
-
 
     return (
         <Root>
@@ -79,11 +88,15 @@ export default function SeriesList(props: Props) {
             <CBox>
                 {
                     props.seriesList
-                        .map(s => <SeriesSummary
-                            onClickDelete={props.onClickDelete}
-                            onClickEdit={props.onClickEdit}
-                            isLogin={isLogin}
-                            key={s.id} series={s}/>)
+                        .map(s =>
+                            <SeriesSummary
+                                key={s.id}
+                                series={s}
+                                isLogin={isLogin}
+                                onClickTitle={props.onClickTitle}
+                                onClickDelete={props.onClickDelete}
+                                onClickEdit={props.onClickEdit}
+                            />)
                 }
             </CBox>
         </Root>

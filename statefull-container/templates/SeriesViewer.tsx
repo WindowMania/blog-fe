@@ -2,7 +2,7 @@ import {styled} from "@mui/material/styles";
 import Box, {CBox} from "@/stateless-container/base/Box";
 import BlogHeaderMenu from "@/statefull-container/advanced/BlogHeaderMenu";
 import Footer from "@/stateless-container/advanced/Footer";
-import {useState} from "react";
+
 import dynamic from 'next/dynamic';
 import {SeriesWithPostModel} from "@/repository/post";
 
