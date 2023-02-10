@@ -10,7 +10,8 @@ export default function TagSimpleTextMenu(props: Props) {
     const {route} = useMyRouter()
 
     async function onClickItem(id: string) {
-        await route("TAG_HOME_PAGE", {ids: id})
+        id === 'All' && await route("TAG_HOME")
+        id !== 'All' && await route("TAG_HOME", {ids: id})
     }
 
     return (
