@@ -193,6 +193,21 @@ export default class PostRepository {
         return ret.ok
     }
 
+    static async getSeriesListByPostId(postId: string): Promise<SeriesWithPostModel[]> {
+        const url = PostRepository.getBaseUrl() + `/post/series/post-id/` + postId
+        const res = await restApi.get(url)
+        if (res.ok) {
+            const seriesList = res.data['seriesList']
+            return seriesList.map((s: any) => ({
+                id: s.id,
+                title: s.title,
+                body: s.body,
+                updatedAt: s.updated_at,
+                posts: s.series_post_list.map((pl: any) => pl['post'] as PostModel)
+            }))
+        }
+        return []
+    }
 
 }
 

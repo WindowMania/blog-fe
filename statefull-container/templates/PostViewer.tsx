@@ -6,6 +6,8 @@ import TuiViewer from "@/stateless-container/advanced/toast/ToastViewer"
 import Divider from "@/stateless-container/base/Divider";
 import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 import SeriesNavigation from "@/statefull-container/advanced/SeriesNavigation";
+import {useEffect, useState} from "react";
+import PostRepository from "@/repository/post";
 
 
 const Root = styled(CBox)`
@@ -54,7 +56,7 @@ const TagItem = styled(Item)`
 `
 
 const SeriesNavItem = styled(Item)`
- margin-top: 16px;
+  margin-top: 16px;
 `
 
 
@@ -62,41 +64,71 @@ function toStringByFormatting(source: string) {
     return source.split("T")[0]
 }
 
+
+type SeriesNav = {
+    title: string
+    items: ItemData []
+}
+
 export default function PostViewer(props: {
     post: PostModel
 }) {
-    const title = props.post.title
-    const content = props.post.body
-    const username = props.post.username
-    const createdAt = props.post.created_at
-    const tags = props.post.tags
+    // 주소 바꿔줘야함..
+    const [post, setPost] = useState<PostModel>(props.post)
+
+    const [seriesNavList, setSeriesNavList] = useState<SeriesNav []>([])
+
+    useEffect(() => {
+        PostRepository.getSeriesListByPostId(post.id).then((r) => {
+            const loadedSeriesNavList = r.map(seriesDto => ({
+                title: seriesDto.title,
+                items: seriesDto.posts.map((post) => ({
+                    id: post.id,
+                    viewValue: post.title
+                }))
+            }))
+            console.log(loadedSeriesNavList)
+            setSeriesNavList([...loadedSeriesNavList])
+        })
+    }, [post])
 
     async function handleClickTag(tag: string) {
         console.log(tag)
     }
 
+    async function onClickSeriesNav(postId: string) {
+        const loadPost = await PostRepository.getPost(postId)
+        console.log(loadPost)
+        loadPost && setPost({...loadPost})
+    }
+
     return (
         <Root>
             <TitleItem>
-                <Title variant={"h1"}>{title}</Title>
+                <Title variant={"h1"}>{post.title}</Title>
             </TitleItem>
 
             <PostInfoItem>
-                <UserNameBox>{username}</UserNameBox>
-                <CreatedAtBox>{toStringByFormatting(createdAt)}</CreatedAtBox>
+                <UserNameBox>{post.username}</UserNameBox>
+                <CreatedAtBox>{toStringByFormatting(post.created_at)}</CreatedAtBox>
             </PostInfoItem>
 
             <TagItem>
-                <ChipViewer chips={tags} blackList={['All']}/>
+                <ChipViewer chips={post.tags} blackList={['All']}/>
             </TagItem>
             <Divider/>
-
-            <SeriesNavItem>
-                <SeriesNavigation/>
-            </SeriesNavItem>
-
+            {
+                seriesNavList.map((seriesNav, idx) =>
+                    <SeriesNavItem key={idx}>
+                        <SeriesNavigation
+                            currentPostId={post.id}
+                            onClickItem={onClickSeriesNav}
+                            seriesTitle={seriesNav.title} items={seriesNav.items}/>
+                    </SeriesNavItem>
+                )
+            }
             <ViewerItem>
-                <TuiViewer content={content}/>
+                <TuiViewer content={post.body}/>
             </ViewerItem>
         </Root>
     )

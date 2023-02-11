@@ -17,6 +17,10 @@ function ListItemText(props: ListItemTextMuiProps) {
 
 
 export interface Props {
+    seriesTitle: string
+    currentPostId: string
+    items: ItemData []
+    onClickItem: (id: string) => Promise<void>
 }
 
 const Root = styled(CBox)`
@@ -37,6 +41,11 @@ const ListItemTextStyled = styled(ListItemText)`
   }
 `
 
+const ListItemIconStyled = styled(ListItemIcon)`
+  color: ${props => props.theme.fontColor.primary.main};
+  min-width: 16px;
+`
+
 const Title = styled(Text)`
   font-weight: bold;
   font-size: 18px;
@@ -49,18 +58,22 @@ const Title = styled(Text)`
 
 
 function NavButton(props: {
-    viewData: string,
-    href: string,
+    item: ItemData
     selected?: boolean
+    onClick: (id: string) => Promise<void>
 }) {
+
+
     return (
         <ListItemMui disablePadding>
             {
-                props.selected && <ListItemIcon style={{minWidth: "16px"}}>
+                props.selected && <ListItemIconStyled>
                     <ArrowRightIcon/>
-                </ListItemIcon>
+                </ListItemIconStyled>
             }
-            <ListItemTextStyled selected={props.selected} primary={props.viewData}/>
+            <ListItemTextStyled
+                onClick={async () => await props.onClick(props.item.id)}
+                selected={props.selected} primary={props.item.viewValue}/>
         </ListItemMui>
     )
 }
@@ -71,15 +84,19 @@ export default function SeriesNavigation(props: Props) {
         <Root>
             <CBox mb={1}>
                 <SimpleLogo mb={1} size={18} text={"SERIES"}/>
-                <Title> 시리즈 제목 </Title>
+                <Title> {props.seriesTitle} </Title>
             </CBox>
-
             <Box mt={-1} width={"100%"}>
                 <List>
-                    <NavButton selected viewData={"test"} href={"/"}/>
-                    <NavButton viewData={"test1"} href={"/"}/>
-                    <NavButton viewData={"test2"} href={"/"}/>
-                    <NavButton selected viewData={"test3"} href={"/"}/>
+                    {
+                        props.items.map((item) =>
+                            <NavButton
+                                item={item}
+                                onClick={props.onClickItem}
+                                key={item.id}
+                                selected={props.currentPostId === item.id}
+                            />)
+                    }
                 </List>
             </Box>
         </Root>

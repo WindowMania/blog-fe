@@ -5,37 +5,33 @@ import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin
 
 import {Viewer} from '@toast-ui/react-editor';
 import {styled} from "@mui/material";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ThemeContext} from "@/provider/CustomThemeProvider";
 
 export interface Props {
-    content: string;
+    content?: string;
 }
 
 const Root = styled("div")`
   margin-top: 10px;
 `
 
-function DarkViewer({content = ''}: Props) {
+export default function ToastViewer(props: Props) {
+    const {mode} = useContext(ThemeContext)
+    const content = props.content || ''
+    const [count, setCount] = useState<number>(1)
+    useEffect(() => {
+        setCount(count + 1)
+    }, [content])
+
+
+    useEffect(() => {
+        setCount(count + 1)
+    }, [mode])
 
     return (
-        <Root>
-            <Viewer theme={'dark'} initialValue={content}/>
+        <Root key={count}>
+            <Viewer theme={mode} initialValue={content}/>
         </Root>
     )
 }
-
-
-const TuiEditor = ({content = ''}: Props) => {
-    const {mode} = useContext(ThemeContext)
-    if (mode == "dark") {
-        return <DarkViewer content={content}/>
-    }
-    return (
-        <Root>
-            <Viewer initialValue={content}/>
-        </Root>
-    );
-};
-
-export default TuiEditor;
