@@ -5,7 +5,7 @@ import TuiViewer from '@/stateless-container/advanced/toast/ToastViewer'
 import {styled} from "@mui/material/styles";
 import PostSummaryBody from "@/statefull-container/advanced/PostSummaryBody";
 import {SeriesWithPostModel} from "@/repository/post";
-
+import SimpleLogo from "@/stateless-container/base/SimpleLogo";
 
 
 export interface Props {
@@ -13,28 +13,17 @@ export interface Props {
 }
 
 const Root = styled(CBox)`
-    max-width: 640px;
+  max-width: 640px;
 `
-
-const TextBgBox = styled(Box)`
-  background-color:${props => props.theme.fontColor.primary.main};
-  color:  ${props => props.theme.bg.primary.main};
-  text-align: center;
-  padding: 4px;
-  font-weight: 600;
-  border-radius: 3px;
-`
-
 
 
 export default function SeriesViewerBody(props: Props) {
-    async function onScrollEnd(){}
+    async function onScrollEnd() {
+    }
 
     return (
         <Root>
-            <TextBgBox width={"64px"} mb={1}>
-                SERIES
-            </TextBgBox>
+            <SimpleLogo mb={1} size={14} text={"SERIES"}/>
             <Box>
                 <Text variant={'h2'}>{props.series.title}</Text>
             </Box>
@@ -52,13 +41,10 @@ export default function SeriesViewerBody(props: Props) {
 
 
             <CBox mt={6}>
-                <TextBgBox width={"84px"} mb={4}>
-                    POST 목록
-                </TextBgBox>
-
+                <SimpleLogo mb={4} size={14} text={"POST 목록"}/>
                 <PostSummaryBody
                     posts={props.series.posts}
-                     onScrollEnd={onScrollEnd}
+                    onScrollEnd={onScrollEnd}
                 />
             </CBox>
         </Root>
