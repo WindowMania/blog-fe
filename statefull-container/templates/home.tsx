@@ -10,6 +10,7 @@ import {useState} from "react";
 import Text from "@/stateless-container/base/Text";
 
 import Footer from "@/stateless-container/advanced/Footer";
+import useMyRouter from "@/hooks/useMyRouter";
 
 
 type PageMode = "user-home" | "tag-mode"
@@ -104,7 +105,7 @@ export default function Home(props: Props) {
     const [posts, setPosts] = useState<PostModel []>(props.initPosts)
     const [search, setSearch] = useState<PostSearchCondition>(props.search)
     const [isEnd, setIsEnd] = useState<boolean>(false)
-
+    const {shallowReplace} = useMyRouter()
     const tagItems = tagStaticsToItemDataList(props.tags)
 
 
@@ -120,6 +121,7 @@ export default function Home(props: Props) {
         setPosts([...loadedPosts])
         setSearch({curPage: defaultPage, perPage: defaultPerPage, tags: idList})
         setIsEnd(loadedPosts.length < defaultPerPage)
+        await shallowReplace("TAG_HOME", {ids: idList})
     }
 
     async function onScrollEnd() {
