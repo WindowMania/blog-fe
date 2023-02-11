@@ -20,9 +20,10 @@ const Container = styled(Box)`
     margin: auto;
     min-width: 450px;
     min-height: 450px;
-    border: 1px solid ${props=>props.theme.border.primary.main};
-    background: ${props=>props.theme.bg.primary.main};
-    border-radius: 12px;
+    // border: 1px solid ${props=>props.theme.border.primary.main};
+    // background: ${props=>props.theme.bg.primary.main};
+    background-color: white;  
+    border-radius: 8px;
 `
 
 export default function LoginPage(props: Props) {
