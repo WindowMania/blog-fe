@@ -1,4 +1,5 @@
 import {styled} from '@mui/material/styles'
+import {useRouter} from "next/router";
 
 import Box, {CBox} from "@/stateless-container/base/Box";
 import Text from "@/stateless-container/base/Text";
@@ -8,6 +9,7 @@ import ChipViewer from "@/stateless-container/advanced/chip/ChipViewer";
 import SeriesNavigation from "@/statefull-container/advanced/SeriesNavigation";
 import {useEffect, useState} from "react";
 import PostRepository from "@/repository/post";
+import useMyRouter from "@/hooks/useMyRouter";
 
 
 const Root = styled(CBox)`
@@ -73,9 +75,9 @@ type SeriesNav = {
 export default function PostViewer(props: {
     post: PostModel
 }) {
-    // 주소 바꿔줘야함..
-    const [post, setPost] = useState<PostModel>(props.post)
 
+    const [post, setPost] = useState<PostModel>(props.post)
+    const {shallowReplace, route} = useMyRouter()
     const [seriesNavList, setSeriesNavList] = useState<SeriesNav []>([])
 
     useEffect(() => {
@@ -87,19 +89,18 @@ export default function PostViewer(props: {
                     viewValue: post.title
                 }))
             }))
-            console.log(loadedSeriesNavList)
             setSeriesNavList([...loadedSeriesNavList])
         })
     }, [post])
 
     async function handleClickTag(tag: string) {
-        console.log(tag)
+        await route("TAG_HOME", {ids: [tag]})
     }
 
     async function onClickSeriesNav(postId: string) {
         const loadPost = await PostRepository.getPost(postId)
-        console.log(loadPost)
         loadPost && setPost({...loadPost})
+        loadPost && await shallowReplace("POST_READ", {id: postId})
     }
 
     return (
@@ -114,7 +115,7 @@ export default function PostViewer(props: {
             </PostInfoItem>
 
             <TagItem>
-                <ChipViewer chips={post.tags} blackList={['All']}/>
+                <ChipViewer onClickChip={handleClickTag} chips={post.tags} blackList={['All']}/>
             </TagItem>
             <Divider/>
             {

@@ -60,5 +60,17 @@ export default function useMyRouter() {
         await router.replace(__makeUrl(url, param))
     }, [router])
 
-    return {route, routeReplace}
+    const shallowReplace = useCallback(async (url: RouterURL, param?: any) => {
+        const as = __makeUrl(url, param)
+        await router.push(
+            {
+                pathname: __switching_url(url),
+                query: {...param}
+            }
+            , as,
+            {shallow: true}
+        )
+    }, [])
+
+    return {route, routeReplace, shallowReplace}
 }
