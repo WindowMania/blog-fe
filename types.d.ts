@@ -21,14 +21,20 @@ interface PostEditorModel {
     deleted?: boolean
 }
 
+interface PostUser {
+    writerName: String
+    writerEmail: String
+}
+
 
 interface PostModel {
     id: string
     title: string
     body: string
+    writer: PostUser
     username: string
-    created_at: string
-    updated_at: string
+    createdAt: string
+    updatedAt: string
     tags: string []
     deleted: boolean
 }

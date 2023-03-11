@@ -40,12 +40,15 @@ export default function Series(props: Props) {
     async function loadSeries() {
         const ret = await PostRepository.getSeriesList({page: page + 1, perPage})
         if (ret.ok) {
+            console.log(ret.data['seriesList'])
+
             const seriesListRes: SeriesListItem[] = ret.data['seriesList'].map((series: any) => ({
                 "id": series.id,
                 "title": series.title,
-                "updatedAt": series.updated_at,
-                "postCount": series.series_post_list.length
+                "updatedAt": series.updatedAt,
+                "postCount": series.postIds.length
             }))
+
             if (seriesListRes.length < perPage) {
                 setIsEnd(true)
             }

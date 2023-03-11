@@ -71,7 +71,7 @@ export default function LoginPage() {
         const url = env.backUrl + "/user/login"
         const res = await restApi.post(url, {username, password})
         if (res.ok) {
-            setAccessKey?.(res.data['access_key'] as string)
+            setAccessKey?.(res.data['accessToken'] as string)
             await route.replace(homeHref)
         }
         return res

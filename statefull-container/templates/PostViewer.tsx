@@ -110,8 +110,8 @@ export default function PostViewer(props: {
             </TitleItem>
 
             <PostInfoItem>
-                <UserNameBox>{post.username}</UserNameBox>
-                <CreatedAtBox>{toStringByFormatting(post.created_at)}</CreatedAtBox>
+                <UserNameBox>{post.writer.writerName}</UserNameBox>
+                <CreatedAtBox>{toStringByFormatting(post.createdAt)}</CreatedAtBox>
             </PostInfoItem>
 
             <TagItem>

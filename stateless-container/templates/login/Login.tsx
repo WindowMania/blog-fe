@@ -24,7 +24,7 @@ interface MyInputCtx {
 export interface JoinUserDto {
     email?: string
     password?: string
-    nick_name?: string
+    nickName?: string
 }
 
 const emailReg = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -194,7 +194,7 @@ function JoinFormDialogButton(props: JoinFormProps) {
         props.onSubmit({
             email: emailCtx?.value,
             password: pwdOneCtx?.value,
-            nick_name: nickNameCtx?.value
+            nickName: nickNameCtx?.value
         }).then((r) => {
             if (r.ok) {
                 setOpen(false)

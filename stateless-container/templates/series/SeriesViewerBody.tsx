@@ -32,7 +32,7 @@ export default function SeriesViewerBody(props: Props) {
                     <Text>{props.series.posts.length} Posts</Text>
                 </Box>
                 <Box ml={1}>
-                    <Text> 마지막 업데이트 일시 {props.series.updatedAt}</Text>
+                    <Text> 마지막 업데이트 일시 {props.series.updatedAt.split("T")[0]}</Text>
                 </Box>
             </Box>
             <Box>

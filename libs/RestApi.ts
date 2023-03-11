@@ -15,6 +15,7 @@ export class RestApi {
     }
 
     private async makeResponse(res: Response) {
+        console.log(res)
         const res_data = await res.json()
         const ret: BasicRestResponse = {
             ok: res.ok,

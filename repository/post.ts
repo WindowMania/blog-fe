@@ -86,6 +86,7 @@ export default class PostRepository {
             url += "&title=" + title
         }
         const res = await restApi.get(url)
+        console.log(res.data)
         if (res.ok) {
             return res.data['posts'] as PostModel []
         }
@@ -96,7 +97,7 @@ export default class PostRepository {
         const url = PostRepository.getBaseUrl() + "/post/" + id
         const res = await restApi.get(url)
         if (res.ok) {
-            return res.data as PostModel
+            return res.data['post'] as PostModel
         }
     }
 
@@ -134,7 +135,7 @@ export default class PostRepository {
         const url = `${PostRepository.getBaseUrl()}/file`
         const res = await formApi.post(url, f, {accessKey})
         if (res.ok) {
-            return {uploaded_url: `${env.backUrl}/file/static/${res.data['file_id']}`}
+            return {uploaded_url: `${env.backUrl}/file/static/${res.data['fileId']}`}
         }
     }
 
@@ -152,7 +153,7 @@ export default class PostRepository {
         const res = await restApi.post(url, {
             "title": createDto.title,
             "body": createDto.body,
-            "post_id_list": createDto.postIdList
+            "postIdList": createDto.postIdList
         }, {accessKey})
         return res
     }
@@ -176,12 +177,13 @@ export default class PostRepository {
         const ret = await restApi.get(url)
         if (!ret.ok) return null
         const series = ret.data['series']
+        console.log(series)
         return {
             id: series.id,
             title: series.title,
             body: series.body,
-            updatedAt: series.updated_at,
-            posts: series.series_post_list.map((pl: any) => pl['post'] as PostModel)
+            updatedAt: series.updatedAt,
+            posts: series.posts.map((pl: any) => pl as PostModel)
         }
     }
 
@@ -203,7 +205,7 @@ export default class PostRepository {
                 title: s.title,
                 body: s.body,
                 updatedAt: s.updated_at,
-                posts: s.series_post_list.map((pl: any) => pl['post'] as PostModel)
+                posts: s.posts.map((pl: any) => pl as PostModel)
             }))
         }
         return []

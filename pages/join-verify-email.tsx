@@ -7,7 +7,6 @@ import env from "@/libs/env";
 const JoinVerifyEmail: NextPage = () => {
     const [msg, setMsg] = useState<string>("인증 중~")
 
-
     useEffect(() => {
         const currentUrl = window.location.href;
         const searchParams = new URL(currentUrl).searchParams;

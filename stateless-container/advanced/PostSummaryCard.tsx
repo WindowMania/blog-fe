@@ -55,7 +55,7 @@ export default function PostSummaryCard(props: Props) {
 
     const post = props.post
     const title = post.title
-    const createdAt = post.created_at.split('T')[0]
+    const createdAt = post.createdAt.split('T')[0]
     const summary = getSummary(post)
     const tags = post.tags
 
