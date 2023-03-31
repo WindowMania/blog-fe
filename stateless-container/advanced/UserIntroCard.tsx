@@ -31,9 +31,9 @@ const MiddleContainer = styled(CBox)`
 
 const IntroText = styled(Text)`
   font-family: 'Nanum Myeongjo', serif;
-  font-weight: 450;
+  font-weight: 600;
   margin-top: 2px;
-  margin-bottom: 1px;
+  margin-bottom: 4px;
   font-size: 16px;
   white-space: pre-line;
 `

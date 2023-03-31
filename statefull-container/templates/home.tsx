@@ -60,9 +60,9 @@ function UserMode(props: Props) {
     }
     return (
         <UserIntroCard
-            userName={"kimhan"}
-            positionName={"CTO"}
-            introScript={"더 좋은 세상을 만들기 위해 고민합니다."}
+            userName={"권영복"}
+            positionName={"dev"}
+            introScript={"기술을 배우고, 적용 하고, 정리 합니다."}
             profilePictureSrc={"/images/kim.png"}
         />
     )
